@@ -211,35 +211,27 @@ Page({
 
   // 查看用户资料
   viewProfile(e) {
-    const { id } = e.currentTarget.dataset;
+    const userId = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: `/pages/profile/profile?id=${id}`
+      url: `/pages/profile/profile?id=${userId}`
     });
   },
 
-  // 导航功能点击
+  // 导航点击
   onNavTap(e) {
-    const { type } = e.currentTarget.dataset;
-    switch (type) {
+    const type = e.currentTarget.dataset.type;
+    switch(type) {
       case 'square':
-        wx.switchTab({
-          url: '/pages/dynamic/dynamic'
-        });
+        wx.navigateTo({ url: '/pages/square/square' });
         break;
       case 'match':
-        wx.navigateTo({
-          url: '/pages/match/match'
-        });
+        wx.navigateTo({ url: '/pages/match/match' });
         break;
       case 'date':
-        wx.navigateTo({
-          url: '/pages/date/date'
-        });
+        wx.navigateTo({ url: '/pages/date/date' });
         break;
       case 'more':
-        wx.navigateTo({
-          url: '/pages/more/more'
-        });
+        wx.navigateTo({ url: '/pages/more/more' });
         break;
     }
   }

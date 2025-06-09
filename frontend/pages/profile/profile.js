@@ -1,4 +1,4 @@
-import config from "../utils/config";
+import config from "../../utils/config";
 import Dialog from '@vant/weapp/dialog/dialog';
 
 Page({
@@ -23,26 +23,49 @@ Page({
   },
 
   onLoad() {
+    this.checkLoginStatus();
     this.getUserInfo();
+  },
+
+  // 检查登录状态
+  checkLoginStatus() {
+    const token = wx.getStorageSync('token');
+    if (!token) {
+      wx.showToast({
+        title: '请先登录',
+        icon: 'none',
+        success: () => {
+          setTimeout(() => {
+            wx.redirectTo({
+              url: '/pages/login/login'
+            });
+          }, 1500);
+        }
+      });
+      return false;
+    }
+    return true;
   },
 
   // 获取用户信息
   getUserInfo() {
+    if (!this.checkLoginStatus()) return;
+
     wx.showLoading({
       title: '加载中...'
     });
 
     wx.request({
-      url: config.baseUrl + "/users/me",
-      method: "GET",
+      url: config.baseUrl + '/users/me',
+      method: 'GET',
       header: {
-        Authorization: "Bearer " + wx.getStorageSync("token")
+        'Authorization': 'Bearer ' + wx.getStorageSync('token')
       },
       success: (res) => {
         if (res.statusCode === 200) {
           const data = res.data;
           const userInfo = {
-            avatar: data.profilePhoto || '',
+            avatar: data.profilePhoto || '/images/default-avatar.png',
             nickname: data.nickname || '',
             gender: data.gender || '',
             birthday: data.birthday || '',
@@ -54,7 +77,7 @@ Page({
           
           this.setData({
             userInfo,
-            originalData: JSON.stringify(userInfo), // 保存原始数据
+            originalData: JSON.stringify(userInfo),
             region: data.location ? data.location.split(' ') : ['北京市', '北京市', '东城区'],
             signatureCount: data.signature ? data.signature.length : 0
           });
@@ -63,7 +86,31 @@ Page({
             const heightIndex = this.data.heightArray.indexOf(parseInt(data.height));
             this.setData({ heightIndex: heightIndex > -1 ? heightIndex : 0 });
           }
+        } else if (res.statusCode === 401) {
+          wx.removeStorageSync('token');
+          wx.showToast({
+            title: '登录已过期，请重新登录',
+            icon: 'none',
+            success: () => {
+              setTimeout(() => {
+                wx.redirectTo({
+                  url: '/pages/login/login'
+                });
+              }, 1500);
+            }
+          });
+        } else {
+          wx.showToast({
+            title: '获取信息失败',
+            icon: 'error'
+          });
         }
+      },
+      fail: () => {
+        wx.showToast({
+          title: '网络错误',
+          icon: 'error'
+        });
       },
       complete: () => {
         wx.hideLoading();
@@ -237,17 +284,11 @@ Page({
 
   // 保存资料
   saveProfile() {
+    if (!this.checkLoginStatus()) return;
+
     if (!this.data.userInfo.nickname) {
       wx.showToast({
         title: '请输入昵称',
-        icon: 'none'
-      });
-      return;
-    }
-
-    if (!this.data.userInfo.gender) {
-      wx.showToast({
-        title: '请选择性别',
         icon: 'none'
       });
       return;
@@ -259,7 +300,8 @@ Page({
 
     const profileData = {
       ...this.data.userInfo,
-      location: this.data.region.join(' ')
+      location: this.data.region.join(' '),
+      height: this.data.heightArray[this.data.heightIndex]
     };
 
     wx.request({
@@ -267,7 +309,8 @@ Page({
       method: 'PUT',
       data: profileData,
       header: {
-        Authorization: "Bearer " + wx.getStorageSync("token")
+        'Authorization': 'Bearer ' + wx.getStorageSync('token'),
+        'Content-Type': 'application/json'
       },
       success: (res) => {
         if (res.statusCode === 200) {
@@ -275,20 +318,37 @@ Page({
             title: '保存成功',
             icon: 'success'
           });
+          this.setData({
+            isDataModified: false,
+            originalData: JSON.stringify(this.data.userInfo)
+          });
           // 延迟返回上一页
           setTimeout(() => {
             wx.navigateBack();
           }, 1500);
+        } else if (res.statusCode === 401) {
+          wx.removeStorageSync('token');
+          wx.showToast({
+            title: '登录已过期，请重新登录',
+            icon: 'none',
+            success: () => {
+              setTimeout(() => {
+                wx.redirectTo({
+                  url: '/pages/login/login'
+                });
+              }, 1500);
+            }
+          });
         } else {
           wx.showToast({
-            title: '保存失败',
+            title: res.data?.message || '保存失败',
             icon: 'error'
           });
         }
       },
       fail: () => {
         wx.showToast({
-          title: '保存失败',
+          title: '网络错误',
           icon: 'error'
         });
       },

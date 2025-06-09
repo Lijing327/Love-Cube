@@ -1,2 +1,41 @@
 <!--pages/search/search.wxml-->
-<text>pages/search/search.wxml</text>
+<view class="container">
+  <!-- 搜索框 -->
+  <view class="search-bar">
+    <van-search
+      value="{{ keyword }}"
+      placeholder="搜索昵称/标签/地区"
+      bind:change="onInput"
+      shape="round"
+      background="#ffffff"
+    />
+  </view>
+
+  <!-- 搜索结果 -->
+  <view class="search-results">
+    <view class="user-item" 
+      wx:for="{{ searchResults }}" 
+      wx:key="id"
+      bindtap="viewProfile"
+      data-id="{{ item.id }}">
+      <image class="user-avatar" src="{{ item.avatar }}" mode="aspectFill" />
+      <view class="user-info">
+        <view class="user-basic">
+          <text class="user-name">{{ item.nickname }}</text>
+          <text class="user-age">{{ item.age }}岁</text>
+        </view>
+        <view class="user-tags">
+          <text class="tag" wx:for="{{ item.tags }}" wx:key="*this">{{ item }}</text>
+        </view>
+        <text class="user-location">{{ item.province }} {{ item.city }}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-status">
+    <van-loading wx:if="{{ loading }}" type="spinner" size="24px" />
+    <text wx:if="{{ !hasMore && searchResults.length > 0 }}">没有更多了</text>
+    <text wx:if="{{ !loading && searchResults.length === 0 }}">暂无搜索结果</text>
+  </view>
+</view>

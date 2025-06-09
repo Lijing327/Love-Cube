@@ -8,32 +8,40 @@
     <!-- 头像和基本信息 -->
     <view class="profile-header">
       <view class="avatar-wrapper">
-        <van-image class="avatar" round width="120rpx" height="120rpx" src="{{userInfo.avatar ? userInfo.avatar : '/images/default-avatar.png'}}" />
+        <van-image 
+          class="avatar" 
+          round 
+          width="120rpx" 
+          height="120rpx" 
+          src="{{userInfo.avatar}}"
+          fit="cover"
+        />
+        <view class="vip-badge" wx:if="{{userInfo.isVip}}">VIP</view>
       </view>
       <view class="user-basic-info">
         <view class="nickname-row">
-          <text class="nickname">{{userInfo.nickname || '用户3636'}}</text>
+          <text class="nickname">{{userInfo.nickname}}</text>
           <view class="level-tags">
-            <text class="level">{{userInfo.level || 1}}级</text>
-            <text class="constellation">未知</text>
+            <text class="level">Lv.{{userInfo.level}}</text>
+            <text class="constellation">{{userInfo.constellation}}</text>
           </view>
         </view>
-        <text class="signature">这个人很懒，什么都没写~</text>
+        <text class="signature">{{userInfo.bio}}</text>
       </view>
     </view>
 
     <!-- 统计数据 -->
     <view class="statistics">
       <view class="stat-item">
-        <text class="number">{{statistics.todayVisitors || 0}}</text>
+        <text class="number">{{statistics.todayVisitors}}</text>
         <text class="label">今日访客</text>
       </view>
       <view class="stat-item">
-        <text class="number">{{statistics.newLikes || 0}}</text>
+        <text class="number">{{statistics.newLikes}}</text>
         <text class="label">收到喜欢</text>
       </view>
       <view class="stat-item">
-        <text class="number">{{statistics.newMatches || 0}}</text>
+        <text class="number">{{statistics.newMatches}}</text>
         <text class="label">新增匹配</text>
       </view>
     </view>
@@ -42,10 +50,10 @@
     <view class="profile-completion">
       <view class="completion-header">
         <text class="completion-title">资料完整度</text>
-        <text class="percentage">71%</text>
+        <text class="percentage">{{userInfo.completionRate}}%</text>
       </view>
       <view class="progress-bar">
-        <view class="progress-inner" style="width: 71%"></view>
+        <view class="progress-inner" style="width: {{userInfo.completionRate}}%"></view>
       </view>
       <text class="completion-tip">完善资料可以获得更多匹配机会哦~</text>
     </view>
@@ -54,37 +62,37 @@
     <view class="info-list">
       <view class="info-item">
         <text class="info-label">性别</text>
-        <text class="info-value">男</text>
+        <text class="info-value">{{userInfo.gender}}</text>
       </view>
       <view class="info-item">
         <text class="info-label">年龄</text>
-        <text class="info-value">28</text>
+        <text class="info-value">{{userInfo.age}}岁</text>
       </view>
       <view class="info-item">
         <text class="info-label">所在地</text>
-        <text class="info-value">上海</text>
+        <text class="info-value">{{userInfo.location}}</text>
       </view>
       <view class="info-item">
-        <text class="info-label">星座</text>
-        <text class="info-value">未知</text>
+        <text class="info-label">职业</text>
+        <text class="info-value">{{userInfo.occupation || '未设置'}}</text>
       </view>
     </view>
 
     <!-- 功能按钮 -->
     <view class="action-buttons">
-      <navigator url="/pages/profile/profile" class="action-button">
+      <view class="action-button" bindtap="editProfile">
         <text class="button-text">编辑资料</text>
-        <text class="arrow">></text>
-      </navigator>
-      <navigator url="/pages/vip/vip" class="action-button">
+        <van-icon name="arrow" />
+      </view>
+      <view class="action-button" bindtap="viewVip">
         <text class="button-text">VIP会员</text>
-        <text class="arrow">></text>
-      </navigator>
+        <van-icon name="arrow" />
+      </view>
     </view>
   </view>
 
   <!-- 退出登录按钮 -->
-  <view class="logout-btn">
+  <view class="logout-btn" bindtap="logout">
     <text>退出登录</text>
   </view>
 </view>

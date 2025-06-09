@@ -41,7 +41,7 @@ public class User
     private Integer gender;//性别
 
     @Column(name = "age")
-    private int age;//年龄
+    private Integer age;//年龄
 
     @Column(name = "birth_date")
     private Date birth_date;//出生日期
@@ -58,11 +58,23 @@ public class User
     @Column(name = "profile_photo")
     private String profile_photo;//头像url
 
+    @Column(name = "height")
+    private Integer height;
+
     @Column(name = "created_at")
     private Date created_at;//注册时间
 
     @Column(name = "updated_at")
     private Date updated_at;//最后更新时间
 
+    @PrePersist
+    protected void onCreate() {
+        created_at = new Date();
+        updated_at = new Date();
+    }
 
+    @PreUpdate
+    protected void onUpdate() {
+        updated_at = new Date();
+    }
 }

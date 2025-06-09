@@ -1,0 +1,24 @@
+<view class="container">
+  <!-- 头部标题 -->
+  <view class="header">
+    <text class="title">设置</text>
+  </view>
+
+  <!-- 设置选项列表 -->
+  <view class="settings-list">
+    <van-cell title="修改资料" is-link url="/pages/profile/profile" />
+    <van-cell title="账户安全" is-link url="/pages/security/security" />
+    <van-cell title="隐私设置" is-link url="/pages/privacy/privacy" />
+    <van-cell title="通知管理" is-link url="/pages/notifications/notifications" />
+    <van-cell title="清理缓存" is-link bindtap="clearCache" />
+    <van-cell title="关于我们" is-link url="/pages/about/about" />
+  </view>
+
+  <!-- 退出登录按钮 -->
+  <view class="logout-container">
+    <van-button type="danger" round block bindtap="logout">退出登录</van-button>
+  </view>
+</view>
+
+<!-- 退出登录和清理缓存的弹窗 -->
+<van-dialog id="dialog" />

@@ -1,0 +1,139 @@
+<view class="container">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-bar-content">
+      <text class="nav-title">动态</text>
+      <view class="post-btn" bindtap="onPostDynamic">
+        <van-icon name="plus" size="40rpx" color="#ff4d6a" />
+      </view>
+    </view>
+  </view>
+
+  <!-- 动态内容区 -->
+  <scroll-view 
+    scroll-y 
+    class="dynamic-list"
+    refresher-enabled="{{true}}"
+    refresher-triggered="{{isRefreshing}}"
+    bindrefresherrefresh="onRefresh"
+    bindscrolltolower="onLoadMore"
+  >
+    <!-- 动态列表 -->
+    <view class="dynamic-item" wx:for="{{dynamicList}}" wx:key="id">
+      <!-- 用户信息 -->
+      <view class="user-info">
+        <view class="user-basic">
+          <image class="avatar" src="{{item.userInfo.avatar}}" mode="aspectFill" />
+          <view class="user-detail">
+            <text class="nickname">{{item.userInfo.nickname}}</text>
+            <text class="time">{{item.createTime}}</text>
+          </view>
+        </view>
+        <view class="more-actions" data-id="{{item.id}}" bindtap="showActionSheet">
+          <van-icon name="ellipsis" size="40rpx" color="#999" />
+        </view>
+      </view>
+
+      <!-- 动态内容 -->
+      <view class="content" bindtap="onDynamicTap" data-id="{{item.id}}">
+        <text class="text">{{item.content}}</text>
+        <!-- 图片展示 -->
+        <view class="image-list" wx:if="{{item.images && item.images.length > 0}}">
+          <image 
+            wx:for="{{item.images}}" 
+            wx:for-item="img" 
+            wx:key="*this"
+            src="{{img}}"
+            mode="aspectFill"
+            class="dynamic-image {{item.images.length === 1 ? 'single-image' : ''}}"
+            data-urls="{{item.images}}"
+            data-current="{{img}}"
+            bindtap="previewImage"
+          />
+        </view>
+        <!-- 位置信息 -->
+        <view class="location" wx:if="{{item.location}}">
+          <van-icon name="location" size="24rpx" color="#999" />
+          <text>{{item.location}}</text>
+        </view>
+      </view>
+
+      <!-- 互动区域 -->
+      <view class="interaction-bar">
+        <view class="action-item" bindtap="onLike" data-id="{{item.id}}">
+          <van-icon 
+            name="like" 
+            size="36rpx" 
+            color="{{item.isLiked ? '#ff4d6a' : '#999'}}" 
+          />
+          <text class="{{item.isLiked ? 'active' : ''}}">{{item.likeCount || '点赞'}}</text>
+        </view>
+        <view class="action-item" bindtap="onComment" data-id="{{item.id}}">
+          <van-icon name="chat" size="36rpx" color="#999" />
+          <text>{{item.commentCount || '评论'}}</text>
+        </view>
+        <view class="action-item" bindtap="onShare" data-id="{{item.id}}">
+          <van-icon name="share" size="36rpx" color="#999" />
+          <text>分享</text>
+        </view>
+      </view>
+
+      <!-- 评论预览 -->
+      <view class="comment-preview" wx:if="{{item.topComments && item.topComments.length > 0}}">
+        <view 
+          class="comment-item" 
+          wx:for="{{item.topComments}}" 
+          wx:for-item="comment" 
+          wx:key="id"
+        >
+          <text class="comment-user">{{comment.userInfo.nickname}}</text>
+          <text class="comment-content">{{comment.content}}</text>
+        </view>
+        <view class="view-more" wx:if="{{item.commentCount > 2}}" bindtap="viewAllComments" data-id="{{item.id}}">
+          查看全部{{item.commentCount}}条评论
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="loading-more" wx:if="{{isLoading}}">
+      <van-loading size="24rpx" color="#999">加载中...</van-loading>
+    </view>
+    <view class="no-more" wx:if="{{noMore}}">
+      没有更多内容了
+    </view>
+  </scroll-view>
+
+  <!-- 动态操作菜单 -->
+  <van-action-sheet
+    show="{{showActionSheet}}"
+    actions="{{actions}}"
+    bind:close="onCloseActionSheet"
+    bind:select="onSelectAction"
+  />
+
+  <!-- 评论输入框 -->
+  <van-popup
+    show="{{showCommentInput}}"
+    position="bottom"
+    custom-style="padding-bottom: {{keyboardHeight}}px"
+    bind:close="onCloseCommentInput"
+  >
+    <view class="comment-input-area">
+      <input
+        class="comment-input"
+        value="{{commentContent}}"
+        placeholder="说点什么..."
+        focus="{{showCommentInput}}"
+        bindinput="onCommentInput"
+        bindconfirm="submitComment"
+        adjust-position="{{false}}"
+        bindfocus="onInputFocus"
+        bindblur="onInputBlur"
+      />
+      <view class="submit-btn {{commentContent ? 'active' : ''}}" bindtap="submitComment">
+        发送
+      </view>
+    </view>
+  </van-popup>
+</view>

@@ -1,0 +1,10 @@
+{
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "van-icon": "@vant/weapp/icon/index",
+    "van-action-sheet": "@vant/weapp/action-sheet/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-popup": "@vant/weapp/popup/index"
+  }
+}

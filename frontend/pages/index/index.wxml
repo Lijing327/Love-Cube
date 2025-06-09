@@ -1,0 +1,167 @@
+<view class="container">
+  <!-- 顶部搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input" bindtap="onTapSearch">
+      <van-icon name="search" size="36rpx" color="#999" />
+      <text class="placeholder">搜索心仪的Ta</text>
+    </view>
+    <view class="filter-btn" bindtap="showFilter">
+      <van-icon name="filter-o" size="40rpx" color="#ff4d6a" />
+    </view>
+  </view>
+
+  <!-- 轮播图 -->
+  <swiper class="banner" 
+    indicator-dots
+    autoplay
+    circular
+    indicator-active-color="#ff4d6a">
+    <swiper-item wx:for="{{banners}}" wx:key="id">
+      <image src="{{item.imageUrl}}" mode="aspectFill" class="banner-image" />
+    </swiper-item>
+  </swiper>
+
+  <!-- 功能导航 -->
+  <view class="nav-grid">
+    <view class="nav-item" wx:for="{{navItems}}" wx:key="id" bindtap="onNavTap" data-type="{{item.type}}">
+      <image class="nav-icon" src="{{item.icon}}" mode="aspectFit" />
+      <text class="nav-text">{{item.text}}</text>
+    </view>
+  </view>
+
+  <!-- 推荐用户 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">今日推荐</text>
+      <view class="refresh-btn" bindtap="refreshRecommends">
+        <van-icon name="replay" size="28rpx" />
+        <text>换一批</text>
+      </view>
+    </view>
+    <scroll-view scroll-x class="recommend-scroll">
+      <view class="recommend-list">
+        <view class="recommend-item" 
+          wx:for="{{recommends}}" 
+          wx:key="id"
+          bindtap="viewProfile"
+          data-id="{{item.id}}">
+          <image class="recommend-avatar" src="{{item.avatar}}" mode="aspectFill" />
+          <view class="recommend-info">
+            <text class="recommend-name">{{item.nickname}}</text>
+            <text class="recommend-age">{{item.age}}岁</text>
+          </view>
+          <text class="recommend-tag">{{item.tag}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 新人推荐 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">新人推荐</text>
+      <navigator url="/pages/newcomers/newcomers" class="more-btn">
+        更多<van-icon name="arrow" />
+      </navigator>
+    </view>
+    <view class="newcomer-grid">
+      <view class="newcomer-item" 
+        wx:for="{{newcomers}}" 
+        wx:key="id"
+        bindtap="viewProfile"
+        data-id="{{item.id}}">
+        <image class="newcomer-avatar" src="{{item.avatar}}" mode="aspectFill" />
+        <view class="newcomer-info">
+          <view class="newcomer-basic">
+            <text class="newcomer-name">{{item.nickname}}</text>
+            <text class="newcomer-age">{{item.age}}岁</text>
+          </view>
+          <text class="newcomer-location">{{item.city}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 筛选弹出层 -->
+  <van-popup
+    show="{{showFilterPopup}}"
+    position="right"
+    custom-style="width: 80%; height: 100%"
+    bind:close="onCloseFilter"
+  >
+    <view class="filter-container">
+      <view class="filter-header">
+        <text class="filter-title">筛选条件</text>
+        <view class="filter-reset" bindtap="resetFilter">
+          <van-icon name="replay" size="28rpx" />
+          <text>重置</text>
+        </view>
+      </view>
+      
+      <view class="filter-section">
+        <text class="filter-section-title">年龄范围</text>
+        <van-slider
+          value="{{ageRange}}"
+          range
+          min="18"
+          max="60"
+          bind:change="onAgeChange"
+        />
+        <view class="range-text">
+          <text>{{ageRange[0]}}岁</text>
+          <text>{{ageRange[1]}}岁</text>
+        </view>
+      </view>
+
+      <view class="filter-section">
+        <text class="filter-section-title">性别</text>
+        <van-radio-group value="{{gender}}" bind:change="onGenderChange">
+          <van-radio name="female">女生</van-radio>
+          <van-radio name="male">男生</van-radio>
+        </van-radio-group>
+      </view>
+
+      <view class="filter-section">
+        <text class="filter-section-title">地区</text>
+        <van-cell title="选择地区" 
+          is-link 
+          value="{{selectedRegion}}"
+          bind:click="showRegionPicker"
+        />
+      </view>
+
+      <view class="filter-section">
+        <text class="filter-section-title">更多筛选</text>
+        <view class="tag-list">
+          <view class="tag-item {{item.selected ? 'selected' : ''}}" 
+            wx:for="{{filterTags}}" 
+            wx:key="id"
+            bindtap="toggleTag"
+            data-id="{{item.id}}">
+            {{item.text}}
+          </view>
+        </view>
+      </view>
+
+      <view class="filter-footer">
+        <van-button block type="primary" color="#ff4d6a" bind:click="applyFilter">
+          确认
+        </van-button>
+      </view>
+    </view>
+  </van-popup>
+
+  <!-- 地区选择器 -->
+  <van-popup
+    show="{{showRegionPicker}}"
+    position="bottom"
+    bind:close="closeRegionPicker"
+  >
+    <van-area 
+      area-list="{{areaList}}"
+      value="{{selectedRegionCode}}"
+      bind:confirm="onRegionConfirm"
+      bind:cancel="closeRegionPicker"
+    />
+  </van-popup>
+</view>

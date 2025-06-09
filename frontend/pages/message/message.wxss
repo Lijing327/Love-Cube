@@ -1,0 +1,292 @@
+.container {
+  min-height: 100vh;
+  background: #f7f8f9;
+}
+
+/* 导航栏 */
+.nav-bar {
+  background: #fff;
+  padding-top: 88rpx;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.nav-bar-content {
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30rpx;
+}
+
+.nav-title {
+  font-size: 34rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+}
+
+.action-btn {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 消息类型导航 */
+.message-nav {
+  position: fixed;
+  top: 176rpx;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  display: flex;
+  background: #fff;
+  padding: 20rpx 0;
+  border-bottom: 2rpx solid #f7f8f9;
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.nav-item text {
+  font-size: 28rpx;
+  color: #666;
+  padding: 12rpx 0;
+}
+
+.nav-item.active text {
+  color: #ff4d6a;
+  font-weight: 500;
+  position: relative;
+}
+
+.nav-item.active text::after {
+  content: '';
+  position: absolute;
+  bottom: -4rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40rpx;
+  height: 4rpx;
+  background: #ff4d6a;
+  border-radius: 2rpx;
+}
+
+.badge {
+  position: absolute;
+  top: -6rpx;
+  right: 50%;
+  transform: translateX(20rpx);
+  background: #ff4d6a;
+  color: #fff;
+  font-size: 20rpx;
+  padding: 0 8rpx;
+  height: 28rpx;
+  min-width: 28rpx;
+  border-radius: 14rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 列表通用样式 */
+.chat-list, .interact-list, .visitor-list {
+  margin-top: 268rpx;
+  padding: 0 30rpx;
+}
+
+.avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+}
+
+.nickname {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 聊天列表 */
+.chat-item {
+  display: flex;
+  align-items: center;
+  padding: 30rpx 0;
+  border-bottom: 2rpx solid #f7f8f9;
+}
+
+.chat-info {
+  flex: 1;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.chat-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.message {
+  font-size: 26rpx;
+  color: #666;
+  width: 400rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.unread-count {
+  background: #ff4d6a;
+  color: #fff;
+  font-size: 20rpx;
+  padding: 0 12rpx;
+  height: 32rpx;
+  min-width: 32rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 互动列表 */
+.interact-item {
+  display: flex;
+  align-items: center;
+  padding: 30rpx 0;
+  border-bottom: 2rpx solid #f7f8f9;
+}
+
+.interact-info {
+  flex: 1;
+}
+
+.interact-content {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.action {
+  font-size: 26rpx;
+  color: #666;
+  margin: 0 8rpx;
+}
+
+.target {
+  font-size: 26rpx;
+  color: #333;
+}
+
+.interact-action .action-btn {
+  font-size: 26rpx;
+  color: #ff4d6a;
+  background: rgba(255, 77, 106, 0.1);
+  padding: 8rpx 20rpx;
+  border-radius: 24rpx;
+}
+
+.interact-action .action-btn.liked {
+  color: #999;
+  background: #f7f8f9;
+}
+
+/* 访客列表 */
+.visitor-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 30rpx 0;
+  border-bottom: 2rpx solid #f7f8f9;
+}
+
+.visitor-info {
+  flex: 1;
+}
+
+.visitor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.visitor-tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 8rpx;
+}
+
+.tag {
+  font-size: 22rpx;
+  color: #666;
+  background: #f7f8f9;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  margin-right: 12rpx;
+  margin-bottom: 8rpx;
+}
+
+.visitor-count {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.visitor-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.visitor-action .action-btn {
+  font-size: 26rpx;
+  color: #ff4d6a;
+  background: rgba(255, 77, 106, 0.1);
+  padding: 8rpx 20rpx;
+  border-radius: 24rpx;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 400rpx;
+}
+
+.empty-icon {
+  width: 240rpx;
+  height: 240rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+} 

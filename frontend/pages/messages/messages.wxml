@@ -1,0 +1,21 @@
+<view class="container">
+  <!-- 消息列表 -->
+  <block wx:for="{{messages}}" wx:key="id">
+    <swiper class="swipe-item" data-id="{{item.id}}" catch:change="onSwipeChange">
+      <swiper-item>
+        <navigator url="/pages/chat/chat?userId={{item.id}}&username={{item.username}}&profile_photo={{item.avatar}}" class="message-item">
+          <image class="avatar" src="{{item.avatar}}" />
+          <view class="message-content">
+            <text class="username">{{item.username}}</text>
+            <text class="last-message">{{item.lastMessage}}</text>
+          </view>
+          <text class="time">{{item.time}}</text>
+        </navigator>
+      </swiper-item>
+      <swiper-item class="swipe-actions">
+        <button class="hide-btn" data-id="{{item.id}}" bindtap="hideMessage">隐藏</button>
+        <button class="delete-btn" data-id="{{item.id}}" bindtap="deleteMessage">删除</button>
+      </swiper-item>
+    </swiper>
+  </block>
+</view>

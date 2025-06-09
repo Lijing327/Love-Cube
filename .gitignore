@@ -1,0 +1,9 @@
+# 微信小程序相关
+frontend/.DS_Store
+frontend/miniprogram_npm/
+frontend/node_modules/
+
+# Java 后端相关
+backend/target/
+backend/.idea/
+backend/*.iml

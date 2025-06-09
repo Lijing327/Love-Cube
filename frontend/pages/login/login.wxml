@@ -1,0 +1,19 @@
+<view class="container">
+  <!-- 头部标题 -->
+  <view class="header">
+    <text class="title">用户登录</text>
+  </view>
+
+  <!-- 用户信息显示 -->
+  <view class="user-info" wx:if="{{userInfo}}">
+    <image class="avatar" src="{{userInfo.avatarUrl}}" />
+    <text class="nickname">{{userInfo.nickName}}</text>
+  </view>
+
+  <!-- 登录按钮 -->
+  <view class="login-btn-container">
+    <van-button type="primary" round block bindtap="login" wx:if="!userInfo">
+      微信一键登录
+    </van-button>
+  </view>
+</view>

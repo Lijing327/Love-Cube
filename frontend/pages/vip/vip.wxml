@@ -1,0 +1,46 @@
+<view class="vip-container">
+  <!-- 顶部会员卡 -->
+  <view class="vip-card">
+    <image class="vip-avatar" src="{{userInfo.avatar}}" />
+    <view class="vip-info">
+      <text class="vip-name">{{userInfo.name}}</text>
+      <text class="vip-status">{{vipStatus}}</text>
+    </view>
+  </view>
+
+  <!-- 会员特权 -->
+  <view class="vip-benefits">
+    <text class="section-title">VIP 会员特权</text>
+    <view class="benefit-list">
+      <block wx:for="{{benefits}}" wx:key="index">
+        <view class="benefit-item">
+          <van-icon name="{{item.icon}}" size="30px" />
+          <text class="benefit-text">{{item.text}}</text>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 会员套餐 -->
+  <view class="vip-packages">
+    <text class="section-title">选择会员套餐</text>
+    <radio-group class="package-list" bindchange="onPackageSelect">
+      <block wx:for="{{packages}}" wx:key="index">
+        <label class="package-item">
+          <radio value="{{item.id}}" checked="{{item.id === selectedPackage}}" />
+          <view class="package-info">
+            <text class="package-name">{{item.name}}</text>
+            <text class="package-price">{{item.price}} 元</text>
+          </view>
+        </label>
+      </block>
+    </radio-group>
+  </view>
+
+  <!-- 立即支付 -->
+  <view class="vip-action">
+    <van-button type="primary" block bindtap="onPay">
+      立即开通 VIP
+    </van-button>
+  </view>
+</view>

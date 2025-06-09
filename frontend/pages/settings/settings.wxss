@@ -1,0 +1,33 @@
+/* 页面整体 */
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f8f8;
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+/* 头部标题 */
+.header {
+  width: 100%;
+  text-align: center;
+  padding: 15px 0;
+  background: white;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 设置列表 */
+.settings-list {
+  width: 100%;
+  background: white;
+  margin-top: 10px;
+}
+
+/* 退出登录按钮 */
+.logout-container {
+  margin-top: 20px;
+  padding: 0 20px;
+}

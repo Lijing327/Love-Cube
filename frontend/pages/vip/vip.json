@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "VIP会员",
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-icon": "@vant/weapp/icon/index"
+  }
+}

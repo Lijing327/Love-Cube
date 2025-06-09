@@ -1,0 +1,71 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/message/message",
+    "pages/match/match",
+    "pages/profile/profile",
+    "pages/personal/personal",
+    "pages/chat/chat",
+    "pages/dynamic/dynamic",
+    "pages/search/search",
+    "pages/newcomers/newcomers",
+    "pages/gift/detail",
+    "pages/gift/send",
+    "pages/chat/create-group",
+    "pages/contact/add-friend"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "心愿魔方",
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#ff4d6a",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/icons/home.png",
+        "selectedIconPath": "images/icons/home_active.png"
+      },
+      {
+        "pagePath": "pages/match/match",
+        "text": "匹配",
+        "iconPath": "images/icons/match.png",
+        "selectedIconPath": "images/icons/match_active.png"
+      },
+      {
+        "pagePath": "pages/message/message",
+        "text": "消息",
+        "iconPath": "images/icons/messages.png",
+        "selectedIconPath": "images/icons/messages_active.png"
+      },
+      {
+        "pagePath": "pages/personal/personal",
+        "text": "我的",
+        "iconPath": "images/icons/personal.png",
+        "selectedIconPath": "images/icons/personal_active.png"
+      }
+    ]
+  },
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-action-sheet": "@vant/weapp/action-sheet/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-slider": "@vant/weapp/slider/index",
+    "van-radio": "@vant/weapp/radio/index",
+    "van-radio-group": "@vant/weapp/radio-group/index",
+    "van-area": "@vant/weapp/area/index"
+  },
+  "sitemapLocation": "sitemap.json"
+}
+
+

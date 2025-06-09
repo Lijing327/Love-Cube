@@ -1,0 +1,25 @@
+.tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px 0; /* 调整底部间距，增大点击范围 */
+  background: white;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tab-item {
+  font-size: 16px; /* 增大字体，提高可点击性 */
+  color: #666;
+  text-align: center;
+  padding: 12px 0; /* 增加上下内边距，让按钮更大 */
+  flex: 1; /* 让每个按钮平分整个底部导航栏 */
+}
+
+.active {
+  color: #ff4d6a;
+  font-weight: bold;
+}

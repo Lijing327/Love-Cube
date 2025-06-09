@@ -1,0 +1,133 @@
+<view class="container">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-bar-content">
+      <text class="nav-title">消息</text>
+      <view class="nav-actions">
+        <view class="action-btn" bindtap="onSearch">
+          <van-icon name="search" size="40rpx" color="#333" />
+        </view>
+        <view class="action-btn" bindtap="showMoreActions">
+          <van-icon name="add-o" size="40rpx" color="#333" />
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 消息类型导航 -->
+  <view class="message-nav">
+    <view class="nav-item {{currentTab === 'chat' ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="chat">
+      <text>聊天</text>
+      <view wx:if="{{unreadChat > 0}}" class="badge">{{unreadChat}}</view>
+    </view>
+    <view class="nav-item {{currentTab === 'interact' ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="interact">
+      <text>互动</text>
+      <view wx:if="{{unreadInteract > 0}}" class="badge">{{unreadInteract}}</view>
+    </view>
+    <view class="nav-item {{currentTab === 'visitor' ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="visitor">
+      <text>访客</text>
+      <view wx:if="{{unreadVisitor > 0}}" class="badge">{{unreadVisitor}}</view>
+    </view>
+  </view>
+
+  <!-- 聊天列表 -->
+  <view class="chat-list" wx:if="{{currentTab === 'chat'}}">
+    <view class="chat-item" 
+      wx:for="{{chatList}}" 
+      wx:key="id"
+      bindtap="enterChat"
+      data-id="{{item.id}}"
+      data-type="{{item.type}}">
+      <image class="avatar" src="{{item.avatar}}" mode="aspectFill" />
+      <view class="chat-info">
+        <view class="chat-header">
+          <text class="nickname">{{item.nickname}}</text>
+          <text class="time">{{item.lastTime}}</text>
+        </view>
+        <view class="chat-content">
+          <text class="message">{{item.lastMessage}}</text>
+          <view wx:if="{{item.unread > 0}}" class="unread-count">{{item.unread}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 互动列表 -->
+  <view class="interact-list" wx:if="{{currentTab === 'interact'}}">
+    <view class="interact-item" 
+      wx:for="{{interactList}}" 
+      wx:key="id"
+      bindtap="handleInteract"
+      data-id="{{item.id}}"
+      data-type="{{item.type}}">
+      <image class="avatar" src="{{item.avatar}}" mode="aspectFill" />
+      <view class="interact-info">
+        <view class="interact-content">
+          <text class="nickname">{{item.nickname}}</text>
+          <text class="action">{{item.action}}</text>
+          <text wx:if="{{item.target}}" class="target">{{item.target}}</text>
+        </view>
+        <text class="time">{{item.time}}</text>
+      </view>
+      <view class="interact-action">
+        <block wx:if="{{item.type === 'like'}}">
+          <text class="action-btn liked">已点赞</text>
+        </block>
+        <block wx:elif="{{item.type === 'follow'}}">
+          <text class="action-btn" bindtap="followBack" data-id="{{item.id}}">关注</text>
+        </block>
+        <block wx:elif="{{item.type === 'gift'}}">
+          <text class="action-btn" bindtap="sendGift" data-id="{{item.id}}">回赠</text>
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <!-- 访客列表 -->
+  <view class="visitor-list" wx:if="{{currentTab === 'visitor'}}">
+    <view class="visitor-item" 
+      wx:for="{{visitorList}}" 
+      wx:key="id"
+      bindtap="viewProfile"
+      data-id="{{item.id}}">
+      <image class="avatar" src="{{item.avatar}}" mode="aspectFill" />
+      <view class="visitor-info">
+        <view class="visitor-header">
+          <text class="nickname">{{item.nickname}}</text>
+          <text class="time">{{item.visitTime}}</text>
+        </view>
+        <view class="visitor-tags">
+          <text class="tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</text>
+        </view>
+        <text class="visitor-count" wx:if="{{item.visitCount > 1}}">
+          共访问{{item.visitCount}}次
+        </text>
+      </view>
+      <view class="visitor-action">
+        <van-icon wx:if="{{item.isMatch}}" name="like" color="#ff4d6a" size="40rpx" />
+        <text class="action-btn" bindtap="sayHi" data-id="{{item.id}}">打招呼</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 更多操作菜单 -->
+  <van-action-sheet
+    show="{{showMoreActions}}"
+    actions="{{moreActions}}"
+    bind:close="onCloseMoreActions"
+    bind:select="onSelectAction"
+    cancel-text="取消"
+  />
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{showEmpty}}">
+    <image class="empty-icon" src="/images/empty-{{currentTab}}.png" mode="aspectFit" />
+    <text class="empty-text">{{emptyText[currentTab]}}</text>
+  </view>
+</view> 

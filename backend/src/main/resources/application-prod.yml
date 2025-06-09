@@ -1,0 +1,3 @@
+﻿app:
+  base-url: https://xifg.com.cn/admin
+  avatar-path: /uploads/avatar/

@@ -1,0 +1,23 @@
+<view class="container">
+  <!-- 顶部导航 -->
+  <view class="chat-header">
+    <image class="chat-avatar" src="{{avatar}}" />
+    <text class="chat-username">{{username}}</text>
+  </view>
+
+  <!-- 聊天消息列表 -->
+  <scroll-view class="chat-box" scroll-y="true">
+    <block wx:for="{{chatMessages}}" wx:key="id">
+      <view class="chat-item {{item.isSelf ? 'self' : 'other'}}">
+        <image class="chat-avatar" src="{{item.isSelf ? userAvatar : avatar}}" />
+        <view class="chat-content">{{item.content}}</view>
+      </view>
+    </block>
+  </scroll-view>
+
+  <!-- 底部输入框 -->
+  <view class="chat-input">
+    <input class="input-box" bindinput="onInput" value="{{inputText}}" placeholder="请输入消息..." />
+    <button class="send-btn" bindtap="sendMessage">发送</button>
+  </view>
+</view>

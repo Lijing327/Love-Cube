@@ -1,0 +1,173 @@
+<view class="container">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-bar-content">
+      <text class="nav-title">心动速配</text>
+      <view class="nav-actions">
+        <view class="action-btn" bindtap="showFilter">
+          <van-icon name="filter-o" size="40rpx" color="#333" />
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 匹配卡片区域 -->
+  <view class="match-area">
+    <!-- 卡片堆叠效果 -->
+    <view class="card-stack">
+      <view class="match-card {{index === currentIndex ? 'active' : ''}}"
+        wx:for="{{matchList}}"
+        wx:key="id"
+        style="transform: translateX({{index === currentIndex ? x : 0}}rpx) rotate({{index === currentIndex ? rotate : 0}}deg); z-index: {{matchList.length - index}};">
+        <image class="card-image" src="{{item.photos[0]}}" mode="aspectFill" />
+        <view class="card-info">
+          <view class="basic-info">
+            <text class="name">{{item.nickname}}</text>
+            <text class="age">{{item.age}}岁</text>
+            <image wx:if="{{item.verified}}" class="verified-icon" src="/images/verified.png" mode="aspectFit" />
+          </view>
+          <view class="detail-info">
+            <text class="occupation">{{item.occupation}}</text>
+            <text class="location">{{item.city}}</text>
+          </view>
+          <view class="tags">
+            <text class="tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-buttons">
+      <view class="action-btn dislike" bindtap="onDislike">
+        <van-icon name="close" size="60rpx" color="#ff4d6a" />
+      </view>
+      <view class="action-btn like" bindtap="onLike">
+        <van-icon name="like" size="60rpx" color="#ff4d6a" />
+      </view>
+      <view class="action-btn super-like" bindtap="onSuperLike">
+        <van-icon name="star" size="60rpx" color="#ff4d6a" />
+      </view>
+    </view>
+  </view>
+
+  <!-- 筛选弹出层 -->
+  <van-popup
+    show="{{showFilterPopup}}"
+    position="right"
+    custom-style="width: 80%; height: 100%"
+    bind:close="onCloseFilter"
+  >
+    <view class="filter-container">
+      <view class="filter-header">
+        <text class="filter-title">筛选条件</text>
+        <view class="filter-reset" bindtap="resetFilter">
+          <van-icon name="replay" size="28rpx" />
+          <text>重置</text>
+        </view>
+      </view>
+      
+      <view class="filter-section">
+        <text class="filter-section-title">年龄范围</text>
+        <van-slider
+          value="{{ageRange}}"
+          range
+          min="18"
+          max="60"
+          bind:change="onAgeChange"
+        />
+        <view class="range-text">
+          <text>{{ageRange[0]}}岁</text>
+          <text>{{ageRange[1]}}岁</text>
+        </view>
+      </view>
+
+      <view class="filter-section">
+        <text class="filter-section-title">距离范围</text>
+        <van-slider
+          value="{{distanceRange}}"
+          min="0"
+          max="100"
+          bind:change="onDistanceChange"
+        />
+        <view class="range-text">
+          <text>{{distanceRange}}km以内</text>
+        </view>
+      </view>
+
+      <view class="filter-section">
+        <text class="filter-section-title">性别</text>
+        <van-radio-group value="{{gender}}" bind:change="onGenderChange">
+          <van-radio name="female">女生</van-radio>
+          <van-radio name="male">男生</van-radio>
+        </van-radio-group>
+      </view>
+
+      <view class="filter-section">
+        <text class="filter-section-title">地区</text>
+        <van-cell title="选择地区" 
+          is-link 
+          value="{{selectedRegion}}"
+          bind:click="showRegionPicker"
+        />
+      </view>
+
+      <view class="filter-section">
+        <text class="filter-section-title">更多筛选</text>
+        <view class="tag-list">
+          <view class="tag-item {{item.selected ? 'selected' : ''}}" 
+            wx:for="{{filterTags}}" 
+            wx:key="id"
+            bindtap="toggleTag"
+            data-id="{{item.id}}">
+            {{item.text}}
+          </view>
+        </view>
+      </view>
+
+      <view class="filter-footer">
+        <van-button block type="primary" color="#ff4d6a" bind:click="applyFilter">
+          确认
+        </van-button>
+      </view>
+    </view>
+  </van-popup>
+
+  <!-- 地区选择器 -->
+  <van-popup
+    show="{{showRegionPicker}}"
+    position="bottom"
+    bind:close="closeRegionPicker"
+  >
+    <van-area 
+      area-list="{{areaList}}"
+      value="{{selectedRegionCode}}"
+      bind:confirm="onRegionConfirm"
+      bind:cancel="closeRegionPicker"
+    />
+  </van-popup>
+
+  <!-- 匹配成功弹窗 -->
+  <van-popup
+    show="{{showMatchSuccess}}"
+    round
+    custom-style="width: 80%"
+  >
+    <view class="match-success">
+      <image class="success-image" src="/images/match-success.png" mode="aspectFit" />
+      <text class="success-title">配对成功</text>
+      <text class="success-desc">你们已经配对成功，快去聊天吧！</text>
+      <view class="success-actions">
+        <van-button plain round type="default" bind:click="closeMatchSuccess">继续匹配</van-button>
+        <van-button round type="primary" color="#ff4d6a" bind:click="goToChat">立即聊天</van-button>
+      </view>
+    </view>
+  </van-popup>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{showEmpty}}">
+    <image class="empty-icon" src="/images/empty-match.png" mode="aspectFit" />
+    <text class="empty-text">暂无更多推荐</text>
+    <text class="empty-desc">调整筛选条件，可以遇见更多有趣的人</text>
+  </view>
+</view>

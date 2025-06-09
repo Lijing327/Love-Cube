@@ -1,0 +1,6 @@
+<view class="navbar">
+  <view class="logo-container">
+    <image class="logo-icon" src="/images/icons/dynamic.png"></image>
+    <text class="logo-text">心愿魔方</text>
+  </view>
+</view>

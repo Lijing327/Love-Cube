@@ -1,0 +1,130 @@
+/* 页面整体样式 */
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f8f8;
+  min-height: 100vh;
+  padding-bottom: 50px; /* 预留底部导航栏位置 */
+}
+
+/* 头部标题 */
+.header {
+  width: 100%;
+  text-align: center;
+  padding: 15px 0;
+  background: white;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 消息列表 */
+.message-list {
+  width: 100%;
+  background: white;
+  margin-top: 10px;
+}
+
+/* 单个消息项 */
+.message-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* 头像 */
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* 消息内容 */
+.message-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.username {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.last-message {
+  font-size: 14px;
+  color: #999;
+  margin-top: 5px;
+}
+
+/* 时间显示 */
+.time {
+  font-size: 12px;
+  color: #bbb;
+}
+
+
+.swipe-item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  overflow: hidden;
+}
+
+.message-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  width: 100%;
+  background: white;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.message-content {
+  flex: 1;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.last-message {
+  color: #666;
+  font-size: 12px;
+}
+
+.time {
+  font-size: 12px;
+  color: #999;
+}
+
+.swipe-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: #fff;
+}
+
+.hide-btn {
+  background-color: #f0ad4e;
+  color: white;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.delete-btn {
+  background-color: #d9534f;
+  color: white;
+  border-radius: 5px;
+  padding: 10px;
+}

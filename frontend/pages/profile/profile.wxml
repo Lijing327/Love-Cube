@@ -1,0 +1,154 @@
+<view class="container">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="nav-bar-content">
+      <view class="back-btn" bindtap="onBack">
+        <van-icon name="arrow-left" size="40rpx" color="#333" />
+      </view>
+      <text class="nav-title">编辑资料</text>
+      <view class="placeholder-block"></view>
+    </view>
+  </view>
+
+  <!-- 头像编辑区 -->
+  <view class="avatar-section">
+    <view class="avatar-wrapper" bindtap="chooseImage">
+      <van-image 
+        class="avatar" 
+        round 
+        width="160rpx" 
+        height="160rpx" 
+        src="{{userInfo.avatar || '/images/default-avatar.png'}}" 
+      />
+      <view class="avatar-edit-icon">
+        <van-icon name="photograph" size="40rpx" color="#fff" />
+      </view>
+    </view>
+    <text class="avatar-tip">点击更换头像</text>
+  </view>
+
+  <!-- 基本信息编辑 -->
+  <view class="edit-section">
+    <view class="section-title">基本信息</view>
+    <view class="form-group">
+      <view class="form-item">
+        <text class="label">昵称</text>
+        <input 
+          class="input" 
+          value="{{userInfo.nickname}}" 
+          placeholder="请输入昵称" 
+          bindinput="onNicknameInput"
+        />
+      </view>
+      <view class="form-item">
+        <text class="label">性别</text>
+        <view class="gender-select">
+          <view class="gender-option {{userInfo.gender === '男' ? 'active' : ''}}" 
+                data-gender="男" 
+                bindtap="selectGender">
+            男
+          </view>
+          <view class="gender-option {{userInfo.gender === '女' ? 'active' : ''}}" 
+                data-gender="女" 
+                bindtap="selectGender">
+            女
+          </view>
+        </view>
+      </view>
+      <view class="form-item">
+        <text class="label">生日</text>
+        <picker 
+          mode="date" 
+          value="{{userInfo.birthday}}" 
+          start="1960-01-01" 
+          end="2010-12-31" 
+          bindchange="onBirthdayChange"
+        >
+          <view class="picker-content">
+            {{userInfo.birthday || '请选择生日'}}
+            <van-icon name="arrow" />
+          </view>
+        </picker>
+      </view>
+      <view class="form-item">
+        <text class="label">星座</text>
+        <text class="constellation">{{userInfo.constellation || '未知'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 详细信息编辑 -->
+  <view class="edit-section">
+    <view class="section-title">详细信息</view>
+    <view class="form-group">
+      <view class="form-item">
+        <text class="label">所在地</text>
+        <picker 
+          mode="region" 
+          value="{{region}}" 
+          bindchange="onRegionChange"
+        >
+          <view class="picker-content">
+            {{region[0]}} {{region[1]}} {{region[2]}}
+            <van-icon name="arrow" />
+          </view>
+        </picker>
+      </view>
+      <view class="form-item">
+        <text class="label">职业</text>
+        <input 
+          class="input" 
+          value="{{userInfo.occupation}}" 
+          placeholder="请输入职业" 
+          bindinput="onOccupationInput"
+        />
+      </view>
+      <view class="form-item">
+        <text class="label">身高</text>
+        <picker 
+          value="{{heightIndex}}" 
+          range="{{heightArray}}" 
+          bindchange="onHeightChange"
+        >
+          <view class="picker-content">
+            {{userInfo.height ? userInfo.height + 'cm' : '请选择身高'}}
+            <van-icon name="arrow" />
+          </view>
+        </picker>
+      </view>
+    </view>
+  </view>
+
+  <!-- 个性签名编辑 -->
+  <view class="edit-section">
+    <view class="section-title">个性签名</view>
+    <view class="form-group">
+      <textarea 
+        class="signature-input" 
+        value="{{userInfo.signature}}" 
+        placeholder="介绍一下自己吧（最多100字）" 
+        maxlength="100" 
+        bindinput="onSignatureInput"
+      />
+      <view class="signature-count">{{signatureCount}}/100</view>
+    </view>
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="save-btn-wrapper">
+    <button class="save-btn" bindtap="saveProfile">保存</button>
+  </view>
+</view>
+
+<!-- 未保存提示弹窗 -->
+<van-dialog
+  id="unsaved-dialog"
+  title="提示"
+  message="您有未保存的修改，确定要离开吗？"
+  show="{{showUnsavedDialog}}"
+  show-cancel-button
+  confirm-button-text="离开"
+  cancel-button-text="继续编辑"
+  bind:confirm="confirmLeave"
+  bind:cancel="cancelLeave"
+/>

@@ -1,0 +1,7 @@
+<view class="tabbar">
+  <button class="tab-item {{currentPage === 'index' ? 'active' : ''}}" bindtap="switchTab" data-url="/pages/index/index">首页</button>
+  <button class="tab-item {{currentPage === 'messages' ? 'active' : ''}}" bindtap="switchTab" data-url="/pages/messages/messages">消息</button>
+  <button class="tab-item {{currentPage === 'match' ? 'active' : ''}}" bindtap="switchTab" data-url="/pages/match/match">匹配</button>
+  <button class="tab-item {{currentPage === 'dynamic' ? 'active' : ''}}" bindtap="switchTab" data-url="/pages/dynamic/dynamic">动态</button>
+  <button class="tab-item {{currentPage === 'personal' ? 'active' : ''}}" bindtap="switchTab" data-url="/pages/personal/personal">个人中心</button>
+</view>

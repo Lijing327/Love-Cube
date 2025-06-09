@@ -1,0 +1,16 @@
+<view class="container">
+  <!-- 用户头像 -->
+  <view class="user-info">
+    <image class="avatar" src="{{avatarUrl || '/images/默认头像.jpg'}}" mode="circle" bindtap="chooseAvatar"></image>
+    <input class="nickname-input" placeholder="请输入昵称" bindinput="inputNickname" value="{{nickname}}" />
+  </view>
+
+  <!-- 获取微信信息 -->
+  <button class="btn" bindtap="chooseAvatar">修改头像</button>
+
+  <!-- 手机号输入 -->
+  <input class="input" placeholder="请输入手机号" bindinput="inputPhone" />
+
+  <!-- 提交注册 -->
+  <button class="btn submit" bindtap="submitRegister">提交注册</button>
+</view>

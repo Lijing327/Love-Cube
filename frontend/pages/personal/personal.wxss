@@ -1,0 +1,206 @@
+/* 页面整体布局 */
+.container {
+  min-height: 100vh;
+  background: #f7f8f9;
+  padding-bottom: 40rpx;
+}
+
+.header-bg {
+  height: 360rpx;
+  background: linear-gradient(180deg, #ff4d6a 0%, #ff6b81 100%);
+}
+
+.header-title {
+  color: #fff;
+  font-size: 36rpx;
+  text-align: center;
+  font-weight: 500;
+}
+
+.profile-card {
+  position: relative;
+  margin: -280rpx 30rpx 0;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 40rpx 30rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.05);
+}
+
+.profile-header {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 50rpx;
+}
+
+.avatar-wrapper {
+  margin-right: 24rpx;
+}
+
+.avatar {
+  border: 6rpx solid #fff;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.1);
+}
+
+.user-basic-info {
+  flex: 1;
+  padding-top: 10rpx;
+}
+
+.nickname-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+}
+
+.nickname {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.level-tags {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.level {
+  font-size: 22rpx;
+  color: #ff4d6a;
+  background: rgba(255, 77, 106, 0.1);
+  padding: 4rpx 12rpx;
+  border-radius: 24rpx;
+}
+
+.constellation {
+  font-size: 22rpx;
+  color: #ff9500;
+  background: rgba(255, 149, 0, 0.1);
+  padding: 4rpx 12rpx;
+  border-radius: 24rpx;
+}
+
+.signature {
+  font-size: 26rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+.statistics {
+  display: flex;
+  justify-content: space-around;
+  padding: 40rpx 0;
+  margin: 0 -30rpx;
+  border-top: 2rpx solid #f7f8f9;
+  border-bottom: 2rpx solid #f7f8f9;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-item .number {
+  font-size: 44rpx;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.2;
+}
+
+.stat-item .label {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+.profile-completion {
+  padding: 40rpx 0;
+  border-bottom: 2rpx solid #f7f8f9;
+}
+
+.completion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.completion-title {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.percentage {
+  font-size: 28rpx;
+  color: #ff4d6a;
+  font-weight: 600;
+}
+
+.progress-bar {
+  height: 6rpx;
+  background: #f7f8f9;
+  border-radius: 3rpx;
+  overflow: hidden;
+}
+
+.progress-inner {
+  height: 100%;
+  background: #ff4d6a;
+  border-radius: 3rpx;
+}
+
+.completion-tip {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 16rpx;
+}
+
+.info-list {
+  padding: 20rpx 0;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  font-size: 28rpx;
+}
+
+.info-label {
+  color: #666;
+}
+
+.info-value {
+  color: #333;
+}
+
+.action-buttons {
+  padding-top: 20rpx;
+}
+
+.action-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 2rpx solid #f7f8f9;
+}
+
+.button-text {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.arrow {
+  color: #ccc;
+  font-size: 24rpx;
+}
+
+.logout-btn {
+  margin: 60rpx 30rpx 0;
+  text-align: center;
+  font-size: 28rpx;
+  color: #666;
+}

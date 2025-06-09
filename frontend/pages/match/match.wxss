@@ -1,0 +1,295 @@
+/* 页面整体 */
+.container {
+  min-height: 100vh;
+  background: #f7f8f9;
+}
+
+/* 导航栏 */
+.nav-bar {
+  background: #fff;
+  padding-top: 88rpx;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.nav-bar-content {
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30rpx;
+}
+
+.nav-title {
+  font-size: 34rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+.action-btn {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 匹配区域 */
+.match-area {
+  margin-top: 176rpx;
+  padding: 30rpx;
+  height: calc(100vh - 176rpx);
+  display: flex;
+  flex-direction: column;
+}
+
+/* 卡片堆叠 */
+.card-stack {
+  position: relative;
+  width: 100%;
+  height: 800rpx;
+  margin-bottom: 40rpx;
+}
+
+.match-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border-radius: 24rpx;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
+}
+
+.card-image {
+  width: 100%;
+  height: 75%;
+  object-fit: cover;
+}
+
+.card-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30rpx;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+}
+
+.basic-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.name {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #fff;
+  margin-right: 16rpx;
+}
+
+.age {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.8);
+  margin-right: 16rpx;
+}
+
+.verified-icon {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+.detail-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.occupation {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.8);
+  margin-right: 24rpx;
+}
+
+.location {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.tag {
+  font-size: 24rpx;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6rpx 16rpx;
+  border-radius: 24rpx;
+}
+
+/* 操作按钮 */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40rpx;
+  padding: 20rpx 0;
+}
+
+.action-buttons .action-btn {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons .action-btn.dislike {
+  transform: rotate(45deg);
+}
+
+/* 筛选弹出层 */
+.filter-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 30rpx;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+
+.filter-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.filter-reset {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.filter-reset text {
+  margin-left: 8rpx;
+}
+
+.filter-section {
+  margin-bottom: 40rpx;
+}
+
+.filter-section-title {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.range-text {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.tag-item {
+  padding: 12rpx 24rpx;
+  border-radius: 32rpx;
+  font-size: 26rpx;
+  color: #666;
+  background: #f7f8f9;
+}
+
+.tag-item.selected {
+  color: #ff4d6a;
+  background: rgba(255, 77, 106, 0.1);
+}
+
+.filter-footer {
+  margin-top: auto;
+  padding: 30rpx 0;
+}
+
+/* 匹配成功弹窗 */
+.match-success {
+  padding: 60rpx 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.success-image {
+  width: 240rpx;
+  height: 240rpx;
+  margin-bottom: 30rpx;
+}
+
+.success-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+
+.success-desc {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 40rpx;
+}
+
+.success-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 400rpx;
+}
+
+.empty-icon {
+  width: 240rpx;
+  height: 240rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.empty-desc {
+  font-size: 28rpx;
+  color: #999;
+}

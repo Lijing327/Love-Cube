@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50rpx;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+
+.avatar {
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 50%;
+  margin-bottom: 20rpx;
+}
+
+.nickname-input {
+  font-size: 32rpx;
+  text-align: center;
+  width: 80%;
+  border-bottom: 2rpx solid #ddd;
+  padding: 10rpx;
+  margin-bottom: 30rpx;
+}
+
+.input {
+  width: 80%;
+  padding: 20rpx;
+  margin: 20rpx 0;
+  border: 1px solid #ddd;
+  border-radius: 10rpx;
+}
+
+.btn {
+  width: 80%;
+  padding: 20rpx;
+  margin-top: 20rpx;
+  background-color: #ff4d4f;
+  color: white;
+  text-align: center;
+  border-radius: 10rpx;
+  font-size: 32rpx;
+}
+
+.submit {
+  background-color: #07c160;
+}

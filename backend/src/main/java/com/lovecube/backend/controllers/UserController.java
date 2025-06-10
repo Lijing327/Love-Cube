@@ -18,6 +18,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import static com.lovecube.backend.utils.JwtUtil.generateToken;
@@ -144,13 +146,14 @@ public class UserController
         result.put("nickname", user.getUsername());
         result.put("gender", convertGender(user.getGender()));
         result.put("location", user.getLocation());
-        result.put("profilePhoto", user.getProfile_photo());
-        result.put("age", user.getAge());
+        result.put("profilePhoto", user.getProfilePhoto());
+        result.put("birthDate", user.getBirthDate());
+        if (user.getBirthDate() != null) {
+            result.put("age", calculateAge(user.getBirthDate()));
+        }
         result.put("occupation", user.getOccupation());
         result.put("bio", user.getBio());
         result.put("height", user.getHeight());
-        result.put("birthday", user.getBirth_date() != null ? 
-            new SimpleDateFormat("yyyy-MM-dd").format(user.getBirth_date()) : null);
 
         // 获取用户统计信息
         UserStatistics stats = userStatisticsRepository.findByUserId(user.getUserid());
@@ -177,12 +180,8 @@ public class UserController
     }
 
     private String convertGender(Integer gender) {
-        if (gender == null) return "未知";
-        switch (gender) {
-            case 1: return "男";
-            case 2: return "女";
-            default: return "其他";
-        }
+        if (gender == null) return null;
+        return gender == 1 ? "男" : "女";
     }
 
     private int calculateCompletionRate(User user) {
@@ -190,10 +189,9 @@ public class UserController
         int completedFields = 0;
 
         if (user.getUsername() != null && !user.getUsername().trim().isEmpty()) completedFields++;
-        if (user.getProfile_photo() != null && !user.getProfile_photo().trim().isEmpty()) completedFields++;
+        if (user.getProfilePhoto() != null && !user.getProfilePhoto().trim().isEmpty()) completedFields++;
         if (user.getGender() != null) completedFields++;
-        if (user.getAge() != null && user.getAge() > 0) completedFields++;
-        if (user.getBirth_date() != null) completedFields++;
+        if (user.getBirthDate() != null) completedFields++;
         if (user.getLocation() != null && !user.getLocation().trim().isEmpty()) completedFields++;
         if (user.getOccupation() != null && !user.getOccupation().trim().isEmpty()) completedFields++;
         if (user.getBio() != null && !user.getBio().trim().isEmpty()) completedFields++;
@@ -239,22 +237,8 @@ public class UserController
             if (updates.containsKey("gender")) {
                 user.setGender(convertGenderToInt((String) updates.get("gender")));
             }
-            if (updates.containsKey("birthday")) {
-                try {
-                    Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse((String) updates.get("birthday"));
-                    user.setBirth_date(birthDate);
-                    // 计算年龄
-                    Calendar birth = Calendar.getInstance();
-                    birth.setTime(birthDate);
-                    Calendar today = Calendar.getInstance();
-                    int age = today.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
-                    if (today.get(Calendar.DAY_OF_YEAR) < birth.get(Calendar.DAY_OF_YEAR)) {
-                        age--;
-                    }
-                    user.setAge(age);
-                } catch (ParseException e) {
-                    return ResponseEntity.badRequest().body(Map.of("message", "生日格式错误"));
-                }
+            if (updates.containsKey("birthDate")) {
+                user.setBirthDate(parseDate((String) updates.get("birthDate")));
             }
             if (updates.containsKey("location")) {
                 user.setLocation((String) updates.get("location"));
@@ -266,15 +250,12 @@ public class UserController
                 user.setBio((String) updates.get("bio"));
             }
             if (updates.containsKey("height")) {
-                Object heightVal = updates.get("height");
-                if (heightVal instanceof Integer) {
-                    user.setHeight((Integer) heightVal);
-                } else if (heightVal instanceof String) {
-                    user.setHeight(Integer.parseInt((String) heightVal));
-                }
+                user.setHeight(Integer.parseInt((String) updates.get("height")));
+            } else {
+                user.setHeight(0);
             }
             if (updates.containsKey("avatar")) {
-                user.setProfile_photo((String) updates.get("avatar"));
+                user.setProfilePhoto((String) updates.get("avatar"));
             }
 
             userRepository.save(user);
@@ -286,10 +267,52 @@ public class UserController
     }
 
     private Integer convertGenderToInt(String gender) {
-        switch (gender.trim()) {
-            case "男": return 1;
-            case "女": return 2;
-            default: return 0;
+        if (gender == null) return null;
+        return "男".equals(gender) ? 1 : 2;
+    }
+
+    private int calculateAge(LocalDateTime birthDate) {
+        if (birthDate == null) return 0;
+        return (int) ChronoUnit.YEARS.between(birthDate, LocalDateTime.now());
+    }
+
+    private LocalDateTime parseDate(String dateStr) {
+        try {
+            return LocalDateTime.parse(dateStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        } catch (Exception e) {
+            try {
+                // 尝试解析日期格式
+                return LocalDateTime.parse(dateStr + "T00:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            } catch (Exception ex) {
+                throw new IllegalArgumentException("Invalid date format");
+            }
         }
+    }
+
+    @GetMapping("/user/{id}/completion")
+    public ResponseEntity<?> getProfileCompletion(@PathVariable Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        int completedFields = 0;
+        int totalFields = 8;  // 总字段数
+
+        if (user.getUsername() != null && !user.getUsername().trim().isEmpty()) completedFields++;
+        if (user.getProfilePhoto() != null && !user.getProfilePhoto().trim().isEmpty()) completedFields++;
+        if (user.getGender() != null) completedFields++;
+        if (user.getBirthDate() != null) completedFields++;
+        if (user.getLocation() != null && !user.getLocation().trim().isEmpty()) completedFields++;
+        if (user.getOccupation() != null && !user.getOccupation().trim().isEmpty()) completedFields++;
+        if (user.getBio() != null && !user.getBio().trim().isEmpty()) completedFields++;
+        if (user.getHeight() != null && user.getHeight() > 0) completedFields++;
+
+        double completionRate = (double) completedFields / totalFields * 100;
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("completionRate", Math.round(completionRate));
+        result.put("completedFields", completedFields);
+        result.put("totalFields", totalFields);
+        
+        return ResponseEntity.ok(result);
     }
 }

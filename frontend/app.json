@@ -1,5 +1,7 @@
 {
   "pages": [
+    "pages/login/login",
+    "pages/welcome/welcome",
     "pages/index/index",
     "pages/message/message",
     "pages/match/match",

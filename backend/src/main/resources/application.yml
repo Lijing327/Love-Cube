@@ -4,12 +4,16 @@ server:
   servlet:
     context-path: /admin
 
+jwt:
+  secret: 9a4f2c8d3b7a1e6f45c8a0b3f267d8b1d4e6f3c8a9d2b5f8e3a9c6b5d4e1f7a2
+  expiration: 864000000  # 10 days in milliseconds
+
 spring:
   profiles:
-    active: dev   # 切换成 prod 可用于上线环境  切换成 dev 可用于本地环境  但是本地环境需要看本地ip
+    active: dev
     
   datasource:
-    url: jdbc:mysql://rm-2zereaqi1k536nd38zo.mysql.rds.aliyuncs.com:3306/lovecube?useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://rm-2zereaqi1k536nd38zo.mysql.rds.aliyuncs.com:3306/lovecube?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: xifg
     password: Lj962464!
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -20,54 +24,49 @@ spring:
       max-lifetime: 1800000
       connection-timeout: 30000
 
+  sql:
+    init:
+      mode: never
+
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
     show-sql: true
-    format_sql: true
+    properties:
+      hibernate:
+        format_sql: true
 
   data:
     redis:
       host: localhost
       port: 6379
-      timeout: 0ms
+      database: 0
+      timeout: 10000
       lettuce:
         pool:
-          max-active: 10
-          max-idle: 5
-          min-idle: 2
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1
 
   session:
-    store-type: redis
-    timeout: 1800s
+    store-type: none  # 暂时禁用 Redis session 存储
 
   cache:
-    type: redis
+    type: none  # 暂时禁用 Redis 缓存
 
   security:
     user:
       name: admin
       password: admin123
 
-  web:
-    cors:
-      allowed-origins: "*"
-      allowed-methods: GET,POST,PUT,DELETE,OPTIONS
-      allowed-headers: "*"
-      allow-credentials: true
-      exposed-headers: Authorization
-
-  elasticsearch:
-    uris: http://localhost:9200
-    username: elastic
-    password: changeme
-
 logging:
   level:
     root: info
-    org.hibernate.SQL: off
-    org.hibernate.type.descriptor.sql.BasicBinder: off
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    com.lovecube: debug
 
 springdoc:
   api-docs:

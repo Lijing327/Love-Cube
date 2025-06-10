@@ -1,7 +1,7 @@
 package com.lovecube.backend.controllers;
 
 import com.lovecube.backend.entity.Banner;
-import com.lovecube.backend.entity.UserProfile;
+import com.lovecube.backend.models.User;
 import com.lovecube.backend.dto.UserFilterDTO;
 import com.lovecube.backend.services.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/api")
+@RequestMapping("/api")
 public class HomeController {
 
     @Autowired
@@ -23,17 +23,17 @@ public class HomeController {
     }
 
     @GetMapping("/recommends")
-    public ResponseEntity<List<UserProfile>> getRecommends() {
+    public ResponseEntity<List<User>> getRecommends() {
         return ResponseEntity.ok(homeService.getRecommends());
     }
 
     @GetMapping("/newcomers")
-    public ResponseEntity<List<UserProfile>> getNewcomers() {
+    public ResponseEntity<List<User>> getNewcomers() {
         return ResponseEntity.ok(homeService.getNewcomers());
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<UserProfile>> searchUsers(
+    public ResponseEntity<List<User>> searchUsers(
             @RequestParam(required = false) String keyword,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -41,7 +41,7 @@ public class HomeController {
     }
 
     @PostMapping("/filter")
-    public ResponseEntity<List<UserProfile>> filterUsers(@RequestBody UserFilterDTO filterDTO) {
+    public ResponseEntity<List<User>> filterUsers(@RequestBody UserFilterDTO filterDTO) {
         return ResponseEntity.ok(homeService.filterUsers(filterDTO));
     }
 } 

@@ -34,6 +34,11 @@ public interface UserRepository extends JpaRepository<User, Long>
             @Param("location") String location
     );
 
+    @Query(value = "SELECT * FROM users ORDER BY RAND() LIMIT :limit", nativeQuery = true)
+    List<User> findRandomUsers(@Param("limit") int limit);
+
+    @Query(value = "SELECT * FROM users ORDER BY created_at DESC LIMIT :limit", nativeQuery = true)
+    List<User> findNewcomers(@Param("limit") int limit);
 }
 
 

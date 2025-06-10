@@ -21,7 +21,7 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long>
     List<ChatMessage> findChatHistory(@Param("userId") Long userId, @Param("receiverId") Long receiverId);
 
     // 查询所有有过聊天的用户
-    @Query("SELECT DISTINCT u.userid, u.username, u.profile_photo " +
+    @Query("SELECT DISTINCT u.userid, u.username, u.profilePhoto " +
             "FROM User u " +
             "WHERE u.userid IN ( " +
             "    SELECT c.senderId FROM ChatMessage c WHERE c.receiverId = :userId " +
@@ -33,8 +33,8 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long>
     // 查询最近一条聊天消息
     @Query("SELECT c FROM ChatMessage c WHERE (c.senderId = :userId AND c.receiverId = :partnerId) " +
             "OR (c.senderId = :partnerId AND c.receiverId = :userId) " +
-            "ORDER BY c.timestamp DESC LIMIT 1")
-    ChatMessage findLatestMessage(@Param("userId") Long userId, @Param("partnerId") Long partnerId);
+            "ORDER BY c.timestamp DESC")
+    List<ChatMessage> findLatestMessage(@Param("userId") Long userId, @Param("partnerId") Long partnerId);
 
 
     // 删除聊天记录

@@ -99,7 +99,7 @@ public class UploadController
             }
         }
         if (updates.containsKey("profilePhoto")) {
-            user.setProfile_photo((String) updates.get("profilePhoto"));
+            user.setProfilePhoto((String) updates.get("profilePhoto"));
         }
 
         userRepository.save(user);

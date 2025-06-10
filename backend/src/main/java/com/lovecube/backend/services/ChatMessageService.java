@@ -1,6 +1,5 @@
 package com.lovecube.backend.services;
 
-
 import com.lovecube.backend.dto.ChatPartnerDTO;
 import com.lovecube.backend.models.ChatMessage;
 import com.lovecube.backend.repository.ChatMessageRepository;
@@ -32,7 +31,6 @@ public class ChatMessageService {
     }
 
     // 获取聊天记录
-
     public List<ChatMessage> getChatHistory(Long userId, Long receiverId) {
         List<ChatMessage> messages = chatMessageRepository.findChatHistory(userId, receiverId);
         System.out.println("🔍 获取聊天记录 - 用户 " + userId + " 和 " + receiverId);
@@ -50,7 +48,8 @@ public class ChatMessageService {
                     String avatar = (String) obj[2];  // 头像 URL
 
                     // 获取最近一条消息
-                    ChatMessage latestMessage = chatMessageRepository.findLatestMessage(userId, partnerId);
+                    List<ChatMessage> latestMessages = chatMessageRepository.findLatestMessage(userId, partnerId);
+                    ChatMessage latestMessage = latestMessages.isEmpty() ? null : latestMessages.get(0);
 
                     String lastMessage = latestMessage != null ? latestMessage.getContent() : "暂无聊天记录";
                     String time = latestMessage != null ? formatTimestamp(latestMessage.getTimestamp()) : "";
@@ -65,6 +64,7 @@ public class ChatMessageService {
         SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");
         return sdf.format(new Date(timestamp));
     }
+
     // 删除聊天记录（彻底删除）
     public void deleteChat(Long userId, Long receiverId) {
         chatMessageRepository.deleteChat(userId, receiverId);

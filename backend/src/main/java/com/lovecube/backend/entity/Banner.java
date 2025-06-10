@@ -24,13 +24,13 @@ public class Banner {
     @Column
     private Integer sort;
 
-    @Column
+    @Column(name = "is_active")
     private Boolean isActive;
 
-    @Column
+    @Column(name = "create_time")
     private LocalDateTime createTime;
 
-    @Column
+    @Column(name = "update_time")
     private LocalDateTime updateTime;
 
     @PrePersist

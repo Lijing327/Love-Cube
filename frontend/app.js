@@ -23,7 +23,7 @@ App({
 
       if (!token || !userId) {
         console.warn("⚠️ 没有 token 或 userId，跳转到登录页");
-        wx.redirectTo({ url: "/pages/login/login" });
+        wx.reLaunch({ url: "/pages/login/login" });
       } else {
         console.log("✅ token 和 userId 存在，尝试验证用户状态...");
 
@@ -37,20 +37,19 @@ App({
             if (res.statusCode === 401) {
               console.error("❌ token 失效，跳转到登录页");
               wx.removeStorageSync("token");
-              wx.redirectTo({ url: "/pages/login/login" });
+              wx.reLaunch({ url: "/pages/login/login" });
             } else if (res.data.registered) {
               console.log("✅ 用户已注册，存储 userInfo 并跳转首页");
-
               wx.setStorageSync("userInfo", res.data.userInfo);
-              wx.redirectTo({ url: "/pages/welcome/welcome" });
+              wx.reLaunch({ url: "/pages/welcome/welcome" });
             } else {
               console.warn("⚠️ 用户未注册，跳转到注册页");
-              wx.redirectTo({ url: "/pages/register/register" });
+              wx.reLaunch({ url: "/pages/register/register" });
             }
           },
           fail(err) {
             console.error("❌ 请求失败:", err);
-            wx.redirectTo({ url: "/pages/login/login" });
+            wx.reLaunch({ url: "/pages/login/login" });
           }
         });
       }

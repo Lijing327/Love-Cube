@@ -10,7 +10,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/wechat")
-@CrossOrigin(origins = "*")
 public class LoginController {
 
     @Autowired

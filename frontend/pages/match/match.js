@@ -31,7 +31,8 @@ Page({
   },
 
   onLoad() {
-    this.loadMatchList();
+    // 先测试连接
+    this.testConnection();
   },
 
   onShow() {
@@ -41,24 +42,106 @@ Page({
     }
   },
 
+  // 测试服务连接
+  testConnection() {
+    wx.request({
+      url: `${config.baseUrl}/matches/test`,
+      method: 'GET',
+      success: (res) => {
+        if (res.statusCode === 200) {
+          console.log('匹配服务连接正常:', res.data);
+          this.loadMatchList();
+        } else {
+          console.error('服务连接异常:', res);
+          wx.showToast({
+            title: '服务暂时不可用',
+            icon: 'none',
+            duration: 2000
+          });
+        }
+      },
+      fail: (err) => {
+        console.error('服务连接失败:', err);
+        wx.showToast({
+          title: '无法连接到服务器',
+          icon: 'none',
+          duration: 2000
+        });
+      }
+    });
+  },
+
   // 加载匹配列表
   loadMatchList() {
+    const userId = wx.getStorageSync('userId');
+    if (!userId) {
+      wx.showToast({
+        title: '请先登录',
+        icon: 'none'
+      });
+      return;
+    }
+
+    // 显示加载中
+    const loadingTimer = setTimeout(() => {
+      wx.showLoading({
+        title: '加载中...',
+        mask: true
+      });
+    }, 300);
+
     wx.request({
-      url: config.baseUrl + '/match/list',
+      url: `${config.baseUrl}/matches/list`,
       method: 'GET',
+      data: {
+        userId: userId,
+        minAge: this.data.ageRange[0],
+        maxAge: this.data.ageRange[1],
+        gender: this.data.gender || null,
+        location: this.data.selectedRegion || null
+      },
       header: {
         Authorization: "Bearer " + wx.getStorageSync("token")
       },
+      complete: () => {
+        // 清除定时器并隐藏loading
+        clearTimeout(loadingTimer);
+        wx.hideLoading();
+      },
       success: (res) => {
-        if (res.statusCode === 200) {
+        console.log('匹配列表响应:', res);  // 添加日志
+        if (res.statusCode === 200 && res.data.success) {
+          const matchData = res.data.data || [];
           this.setData({
-            matchList: res.data,
-            showEmpty: res.data.length === 0,
+            matchList: matchData,
+            showEmpty: matchData.length === 0,
             currentIndex: 0,
             x: 0,
             rotate: 0
           });
+
+          if (matchData.length === 0) {
+            wx.showToast({
+              title: '暂无匹配',
+              icon: 'none'
+            });
+          }
+        } else {
+          console.error('获取匹配列表失败:', res);
+          wx.showToast({
+            title: res.data?.message || '获取匹配列表失败',
+            icon: 'none',
+            duration: 2000
+          });
         }
+      },
+      fail: (err) => {
+        console.error('请求失败:', err);
+        wx.showToast({
+          title: '网络错误',
+          icon: 'none',
+          duration: 2000
+        });
       }
     });
   },
@@ -359,5 +442,39 @@ Page({
     wx.navigateTo({
       url: `/pages/chat/chat?id=${userId}&type=single`
     });
-  }
+  },
+
+  // 处理图片加载错误
+  handleImageError(e) {
+    const type = e.currentTarget.dataset.type;
+    const index = e.currentTarget.dataset.index;
+    
+    console.warn('图片加载失败:', type, e);
+
+    switch(type) {
+      case 'user-avatar':
+        // 更新特定用户的头像为默认图片
+        if (typeof index !== 'undefined') {
+          const key = `matchList[${index}].profilePhoto`;
+          this.setData({
+            [key]: '/images/default-avatar.png'
+          });
+        }
+        break;
+      
+      case 'success-image':
+        // 使用本地备用成功图片
+        this.setData({
+          'successImageSrc': '/images/match-success-fallback.png'
+        });
+        break;
+      
+      case 'empty-image':
+        // 使用本地备用空状态图片
+        this.setData({
+          'emptyImageSrc': '/images/empty-fallback.png'
+        });
+        break;
+    }
+  },
 });

@@ -1,98 +1,215 @@
 <!-- 页面容器 -->
 <view class="container">
-  <!-- 顶部背景 -->
-  <view class="header-bg"></view>
+  <!-- 加载错误提示 -->
+  <view class="error-container" wx:if="{{loadError}}">
+    <van-icon name="warning-o" size="48" color="#ee0a24"/>
+    <text class="error-text">加载失败，请点击重试</text>
+    <van-button type="primary" size="small" bind:click="loadUserInfo">重新加载</van-button>
+    
+    <!-- 调试信息 -->
+    <view class="debug-info" wx:if="{{debugInfo}}">
+      <view class="debug-title">调试信息：</view>
+      <view>API地址: {{debugInfo.apiUrl}}</view>
+      <view>状态码: {{debugInfo.responseStatus}}</view>
+      <view>错误信息: {{debugInfo.error}}</view>
+      <view>开始时间: {{debugInfo.loadingStartTime}}</view>
+      <view>结束时间: {{debugInfo.loadingEndTime}}</view>
+    </view>
+  </view>
 
-  <!-- 个人信息卡片 -->
-  <view class="profile-card">
-    <!-- 头像和基本信息 -->
-    <view class="profile-header">
-      <view class="avatar-wrapper">
-        <van-image 
-          class="avatar" 
-          round 
-          width="120rpx" 
-          height="120rpx" 
-          src="{{userInfo.avatar}}"
-          fit="cover"
-        />
-        <view class="vip-badge" wx:if="{{userInfo.isVip}}">VIP</view>
-      </view>
-      <view class="user-basic-info">
-        <view class="nickname-row">
-          <text class="nickname">{{userInfo.nickname}}</text>
-          <view class="level-tags">
-            <text class="level">Lv.{{userInfo.level}}</text>
-            <text class="constellation">{{userInfo.constellation}}</text>
+  <!-- 正常内容 -->
+  <block wx:else>
+    <!-- 顶部背景 -->
+    <view class="header-bg"></view>
+
+    <!-- 个人信息卡片 -->
+    <view class="profile-card">
+      <!-- 头像和基本信息 -->
+      <view class="profile-header">
+        <view class="avatar-wrapper" bindtap="onChooseAvatar">
+          <van-image 
+            class="avatar" 
+            round 
+            width="120rpx" 
+            height="120rpx" 
+            src="{{avatarUrl}}"
+            fit="cover"
+            use-loading-slot
+            use-error-slot
+          >
+            <van-loading slot="loading" type="circular" size="20" vertical />
+            <van-icon slot="error" name="photo-o" size="30" />
+          </van-image>
+          <view class="edit-avatar">
+            <van-icon name="photograph" size="16" />
           </view>
+          <view class="vip-badge" wx:if="{{userInfo.isVip}}">VIP</view>
         </view>
-        <text class="signature">{{userInfo.bio}}</text>
+        <view class="user-basic-info">
+          <view class="nickname-row">
+            <text class="nickname">{{userInfo.nickname || '未设置昵称'}}</text>
+            <view class="level-tags">
+              <text class="level">Lv.{{userInfo.level || 1}}</text>
+              <text class="constellation" wx:if="{{userInfo.constellation}}">{{userInfo.constellation}}</text>
+            </view>
+          </view>
+          <text class="signature">{{userInfo.bio || '这个人很懒，什么都没写~'}}</text>
+        </view>
+      </view>
+
+      <!-- 统计数据 -->
+      <view class="statistics">
+        <view class="stat-item" bindtap="navigateToVisitors">
+          <text class="number">{{userInfo.statistics.todayVisitors || 0}}</text>
+          <text class="label">今日访客</text>
+        </view>
+        <view class="stat-item" bindtap="navigateToLikes">
+          <text class="number">{{userInfo.statistics.newLikes || 0}}</text>
+          <text class="label">收到喜欢</text>
+        </view>
+        <view class="stat-item" bindtap="navigateToMatches">
+          <text class="number">{{userInfo.statistics.newMatches || 0}}</text>
+          <text class="label">新增匹配</text>
+        </view>
+      </view>
+
+      <!-- 资料完整度 -->
+      <view class="profile-completion" bindtap="editProfile">
+        <view class="completion-header">
+          <text class="completion-title">资料完整度</text>
+          <text class="percentage">{{userInfo.completionRate || 0}}%</text>
+        </view>
+        <view class="progress-bar">
+          <view class="progress-inner" style="width: {{userInfo.completionRate || 0}}%"></view>
+        </view>
+        <text class="completion-tip">完善资料可以获得更多匹配机会哦~</text>
+      </view>
+
+      <!-- 功能菜单 -->
+      <view class="menu-list">
+        <view class="menu-item" bindtap="editProfile">
+          <view class="menu-item-left">
+            <van-icon name="edit" color="#1989fa" size="22" />
+            <text class="menu-text">编辑资料</text>
+          </view>
+          <van-icon name="arrow" />
+        </view>
+        
+        <view class="menu-item" bindtap="viewVip">
+          <view class="menu-item-left">
+            <van-icon name="gem-o" color="#ff9900" size="22" />
+            <text class="menu-text">会员中心</text>
+          </view>
+          <van-icon name="arrow" />
+        </view>
+
+        <view class="menu-item" bindtap="navigateToSettings">
+          <view class="menu-item-left">
+            <van-icon name="setting-o" color="#666666" size="22" />
+            <text class="menu-text">设置</text>
+          </view>
+          <van-icon name="arrow" />
+        </view>
+
+        <view class="menu-item" bindtap="showAbout">
+          <view class="menu-item-left">
+            <van-icon name="info-o" color="#666666" size="22" />
+            <text class="menu-text">关于我们</text>
+          </view>
+          <van-icon name="arrow" />
+        </view>
       </view>
     </view>
 
-    <!-- 统计数据 -->
-    <view class="statistics">
-      <view class="stat-item">
-        <text class="number">{{statistics.todayVisitors}}</text>
-        <text class="label">今日访客</text>
-      </view>
-      <view class="stat-item">
-        <text class="number">{{statistics.newLikes}}</text>
-        <text class="label">收到喜欢</text>
-      </view>
-      <view class="stat-item">
-        <text class="number">{{statistics.newMatches}}</text>
-        <text class="label">新增匹配</text>
-      </view>
+    <!-- 退出登录按钮 -->
+    <view class="logout-btn" bindtap="logout">
+      <text>退出登录</text>
     </view>
-
-    <!-- 资料完整度 -->
-    <view class="profile-completion">
-      <view class="completion-header">
-        <text class="completion-title">资料完整度</text>
-        <text class="percentage">{{userInfo.completionRate}}%</text>
-      </view>
-      <view class="progress-bar">
-        <view class="progress-inner" style="width: {{userInfo.completionRate}}%"></view>
-      </view>
-      <text class="completion-tip">完善资料可以获得更多匹配机会哦~</text>
-    </view>
-
-    <!-- 基本信息列表 -->
-    <view class="info-list">
-      <view class="info-item">
-        <text class="info-label">性别</text>
-        <text class="info-value">{{userInfo.gender}}</text>
-      </view>
-      <view class="info-item">
-        <text class="info-label">年龄</text>
-        <text class="info-value">{{userInfo.age}}岁</text>
-      </view>
-      <view class="info-item">
-        <text class="info-label">所在地</text>
-        <text class="info-value">{{userInfo.location}}</text>
-      </view>
-      <view class="info-item">
-        <text class="info-label">职业</text>
-        <text class="info-value">{{userInfo.occupation || '未设置'}}</text>
-      </view>
-    </view>
-
-    <!-- 功能按钮 -->
-    <view class="action-buttons">
-      <view class="action-button" bindtap="editProfile">
-        <text class="button-text">编辑资料</text>
-        <van-icon name="arrow" />
-      </view>
-      <view class="action-button" bindtap="viewVip">
-        <text class="button-text">VIP会员</text>
-        <van-icon name="arrow" />
-      </view>
-    </view>
-  </view>
-
-  <!-- 退出登录按钮 -->
-  <view class="logout-btn" bindtap="logout">
-    <text>退出登录</text>
-  </view>
+  </block>
 </view>
+
+<!-- 编辑资料弹窗 -->
+<van-popup
+  show="{{ showEditModal }}"
+  round
+  position="bottom"
+  custom-style="min-height: 60%"
+  bind:close="onCloseEditModal"
+>
+  <view class="edit-profile-popup">
+    <view class="popup-header">
+      <text class="popup-title">编辑资料</text>
+      <van-icon name="cross" bindtap="onCloseEditModal" />
+    </view>
+    <scroll-view scroll-y class="edit-form">
+      <van-cell-group>
+        <van-field
+          value="{{ userInfo.nickname }}"
+          label="昵称"
+          placeholder="请输入昵称"
+          bind:change="onNicknameChange"
+        />
+        <van-field
+          value="{{ userInfo.bio }}"
+          label="个性签名"
+          type="textarea"
+          placeholder="介绍一下自己吧"
+          autosize
+          bind:change="onBioChange"
+        />
+        <van-cell title="性别">
+          <van-radio-group value="{{ userInfo.gender }}" bind:change="onGenderChange" direction="horizontal">
+            <van-radio name="male">男</van-radio>
+            <van-radio name="female">女</van-radio>
+          </van-radio-group>
+        </van-cell>
+        <van-field
+          value="{{ userInfo.birthday }}"
+          label="生日"
+          placeholder="请选择生日"
+          readonly
+          bindtap="showDatePicker"
+        />
+        <van-field
+          value="{{ userInfo.location }}"
+          label="所在地"
+          placeholder="请选择所在地"
+          readonly
+          bindtap="showLocationPicker"
+        />
+        <van-field
+          value="{{ userInfo.occupation }}"
+          label="职业"
+          placeholder="请输入职业"
+          bind:change="onOccupationChange"
+        />
+      </van-cell-group>
+    </scroll-view>
+    <view class="popup-footer">
+      <van-button type="primary" block bind:click="saveProfile">保存</van-button>
+    </view>
+  </view>
+</van-popup>
+
+<!-- 日期选择器 -->
+<van-calendar
+  show="{{ showDatePicker }}"
+  bind:close="onCloseDatePicker"
+  bind:confirm="onSelectDate"
+  min-date="{{ minDate }}"
+  max-date="{{ maxDate }}"
+/>
+
+<!-- 地区选择器 -->
+<van-popup
+  show="{{ showLocationPicker }}"
+  position="bottom"
+  bind:close="onCloseLocationPicker"
+>
+  <van-area
+    area-list="{{ areaList }}"
+    value="{{ userInfo.locationCode }}"
+    bind:confirm="onSelectLocation"
+    bind:cancel="onCloseLocationPicker"
+  />
+</van-popup>

@@ -1,24 +1,39 @@
 import Dialog from '@vant/weapp/dialog/dialog';
 import config from "../../utils/config";
+import areaList from "../../utils/area-data";
+import { getToken } from "../../utils/auth";
 
 Page({
   data: {
     userInfo: null,
-    statistics: null,
-    completionRate: 0,
-    isLoading: false
+    avatarUrl: '',
+    showEditModal: false,
+    showDatePicker: false,
+    showLocationPicker: false,
+    minDate: new Date(1960, 0, 1).getTime(),
+    maxDate: new Date().getTime(),
+    areaList: areaList,
+    tempUserInfo: {}, // 用于临时存储编辑的用户信息
+    isLoading: false,
+    loadError: false,
+    debugInfo: {} // 用于调试的信息
   },
 
   onLoad() {
-    this.getUserInfo();
+    console.log('个人页面 onLoad');
+    this.loadUserInfo();
   },
 
   onShow() {
+    console.log('个人页面 onShow');
     // 检查登录状态并刷新数据
-    const token = wx.getStorageSync('token');
+    const token = getToken();
+    console.log('当前token:', token);
+    
     if (token) {
-      this.getUserInfo();
+      this.loadUserInfo();
     } else {
+      console.log('未检测到token，准备跳转到登录页');
       wx.showToast({
         title: '请先登录',
         icon: 'none',
@@ -49,50 +64,68 @@ Page({
     }
   },
 
-  getUserInfo() {
-    const token = wx.getStorageSync('token');
+  loadUserInfo() {
+    const token = getToken();
     if (!token) {
-      wx.showToast({
-        title: '请先登录',
-        icon: 'none',
-        success: () => {
-          setTimeout(() => {
-            wx.redirectTo({
-              url: '/pages/login/login'
-            });
-          }, 1500);
-        }
+      console.log('loadUserInfo: 未检测到token');
+      this.setData({ 
+        loadError: true,
+        debugInfo: { error: 'No token found' }
       });
       return;
     }
 
+    console.log('开始加载用户信息');
+    console.log('API地址:', `${config.baseUrl}/users/me`);
+    console.log('Token:', token);
+
     // 设置loading状态
-    this.setData({ isLoading: true });
+    this.setData({ 
+      isLoading: true,
+      loadError: false,
+      debugInfo: {
+        loadingStartTime: new Date().toISOString(),
+        apiUrl: `${config.baseUrl}/users/me`
+      }
+    });
+    
     wx.showLoading({
       title: '加载中...',
       mask: true
     });
 
     wx.request({
-      url: config.baseUrl + '/users/me',
-      method: 'GET',
+      url: `${config.baseUrl}/users/me`,
       header: {
-        'Authorization': 'Bearer ' + token
+        'Authorization': `Bearer ${token}`
       },
       success: (res) => {
-        if (res.statusCode === 200) {
-          const { statistics, completionRate, ...userInfo } = res.data;
+        console.log('获取用户信息响应:', res);
+        
+        this.setData({
+          debugInfo: {
+            ...this.data.debugInfo,
+            responseStatus: res.statusCode,
+            responseData: res.data
+          }
+        });
+
+        if (res.statusCode === 200 && res.data) {
           this.setData({
-            userInfo,
-            statistics,
-            completionRate
+            userInfo: res.data,
+            avatarUrl: this.handleImageUrl(res.data.avatar),
+            tempUserInfo: { ...res.data },
+            loadError: false
           });
+          console.log('用户信息加载成功:', res.data);
         } else if (res.statusCode === 401) {
-          // 清除无效token
+          console.log('token已过期');
           wx.removeStorageSync('token');
+          this.setData({ loadError: true });
           wx.showToast({
             title: '登录已过期，请重新登录',
             icon: 'none',
+            duration: 1500,
             success: () => {
               setTimeout(() => {
                 wx.redirectTo({
@@ -102,24 +135,256 @@ Page({
             }
           });
         } else {
+          console.log('加载失败:', res);
+          this.setData({ 
+            loadError: true,
+            debugInfo: {
+              ...this.data.debugInfo,
+              error: res.data?.message || '未知错误'
+            }
+          });
           wx.showToast({
             title: res.data?.message || '获取信息失败',
-            icon: 'error'
+            icon: 'error',
+            duration: 2000
           });
         }
       },
       fail: (err) => {
-        console.error('获取用户信息失败:', err);
+        console.error('请求失败:', err);
+        this.setData({ 
+          loadError: true,
+          debugInfo: {
+            ...this.data.debugInfo,
+            error: err.errMsg || '网络错误'
+          }
+        });
         wx.showToast({
-          title: '网络错误',
-          icon: 'error'
+          title: '网络错误，请检查网络连接',
+          icon: 'error',
+          duration: 2000
         });
       },
       complete: () => {
-        // 清除loading状态
+        console.log('请求完成');
         if (this.data.isLoading) {
           wx.hideLoading();
-          this.setData({ isLoading: false });
+          this.setData({ 
+            isLoading: false,
+            debugInfo: {
+              ...this.data.debugInfo,
+              loadingEndTime: new Date().toISOString()
+            }
+          });
+        }
+      }
+    });
+  },
+
+  handleImageUrl(url) {
+    if (!url) return config.images.defaultAvatar;
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    return `${config.images.baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
+  },
+
+  editProfile() {
+    this.setData({
+      showEditModal: true,
+      tempUserInfo: { ...this.data.userInfo }
+    });
+  },
+
+  onCloseEditModal() {
+    this.setData({
+      showEditModal: false
+    });
+  },
+
+  onNicknameChange(e) {
+    this.setData({
+      'tempUserInfo.nickname': e.detail
+    });
+  },
+
+  onBioChange(e) {
+    this.setData({
+      'tempUserInfo.bio': e.detail
+    });
+  },
+
+  onGenderChange(e) {
+    this.setData({
+      'tempUserInfo.gender': e.detail
+    });
+  },
+
+  onOccupationChange(e) {
+    this.setData({
+      'tempUserInfo.occupation': e.detail
+    });
+  },
+
+  showDatePicker() {
+    this.setData({
+      showDatePicker: true
+    });
+  },
+
+  onCloseDatePicker() {
+    this.setData({
+      showDatePicker: false
+    });
+  },
+
+  onSelectDate(e) {
+    const date = new Date(e.detail);
+    const birthday = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    this.setData({
+      'tempUserInfo.birthday': birthday,
+      showDatePicker: false
+    });
+  },
+
+  showLocationPicker() {
+    this.setData({
+      showLocationPicker: true
+    });
+  },
+
+  onCloseLocationPicker() {
+    this.setData({
+      showLocationPicker: false
+    });
+  },
+
+  onSelectLocation(e) {
+    const { values } = e.detail;
+    const location = values.map(item => item.name).join(' ');
+    this.setData({
+      'tempUserInfo.location': location,
+      'tempUserInfo.locationCode': values[values.length - 1].code,
+      showLocationPicker: false
+    });
+  },
+
+  onChooseAvatar(e) {
+    const { avatarUrl } = e.detail || e;
+    
+    wx.uploadFile({
+      url: `${config.baseUrl}/upload/avatar`,
+      filePath: avatarUrl,
+      name: 'file',
+      header: {
+        'Authorization': `Bearer ${wx.getStorageSync('token')}`
+      },
+      success: (res) => {
+        const data = JSON.parse(res.data);
+        if (data.url) {
+          this.setData({
+            'userInfo.avatar': data.url,
+            avatarUrl: this.handleImageUrl(data.url)
+          });
+          wx.showToast({
+            title: '头像更新成功',
+            icon: 'success'
+          });
+        }
+      },
+      fail: () => {
+        wx.showToast({
+          title: '上传失败',
+          icon: 'error'
+        });
+      }
+    });
+  },
+
+  saveProfile() {
+    const token = wx.getStorageSync('token');
+    wx.request({
+      url: `${config.baseUrl}/users/profile`,
+      method: 'PUT',
+      header: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      data: this.data.tempUserInfo,
+      success: (res) => {
+        if (res.statusCode === 200) {
+          this.setData({
+            userInfo: this.data.tempUserInfo,
+            showEditModal: false
+          });
+          wx.showToast({
+            title: '保存成功',
+            icon: 'success'
+          });
+        } else {
+          wx.showToast({
+            title: '保存失败',
+            icon: 'error'
+          });
+        }
+      },
+      fail: () => {
+        wx.showToast({
+          title: '保存失败',
+          icon: 'error'
+        });
+      }
+    });
+  },
+
+  navigateToVisitors() {
+    wx.navigateTo({
+      url: '/pages/visitors/visitors'
+    });
+  },
+
+  navigateToLikes() {
+    wx.navigateTo({
+      url: '/pages/likes/likes'
+    });
+  },
+
+  navigateToMatches() {
+    wx.navigateTo({
+      url: '/pages/matches/matches'
+    });
+  },
+
+  navigateToSettings() {
+    wx.navigateTo({
+      url: '/pages/settings/settings'
+    });
+  },
+
+  viewVip() {
+    wx.navigateTo({
+      url: '/pages/vip/vip'
+    });
+  },
+
+  showAbout() {
+    wx.showModal({
+      title: '关于我们',
+      content: '恋爱魔方 v' + config.version + '\n让每个人都能找到心仪的另一半',
+      showCancel: false
+    });
+  },
+
+  logout() {
+    wx.showModal({
+      title: '提示',
+      content: '确定要退出登录吗？',
+      success: (res) => {
+        if (res.confirm) {
+          wx.clearStorageSync();
+          wx.reLaunch({
+            url: '/pages/login/login'
+          });
         }
       }
     });
@@ -166,76 +431,6 @@ Page({
   onEditProfile() {
     wx.navigateTo({
       url: '/pages/profile/profile'
-    });
-  },
-
-  // 查看VIP
-  viewVip() {
-    wx.navigateTo({
-      url: '/pages/vip/vip'
-    });
-  },
-
-  // 退出登录
-  onLogout() {
-    wx.showModal({
-      title: '提示',
-      content: '确定要退出登录吗？',
-      success: (res) => {
-        if (res.confirm) {
-          const token = wx.getStorageSync('token');
-          if (token) {
-            // 设置loading状态
-            this.setData({ isLoading: true });
-            wx.showLoading({
-              title: '退出中...',
-              mask: true
-            });
-
-            wx.request({
-              url: config.baseUrl + '/users/logout',
-              method: 'POST',
-              header: {
-                'Authorization': 'Bearer ' + token
-              },
-              success: () => {
-                // 清除本地存储
-                wx.removeStorageSync('token');
-                wx.removeStorageSync('userInfo');
-                
-                wx.showToast({
-                  title: '已退出登录',
-                  icon: 'success',
-                  success: () => {
-                    setTimeout(() => {
-                      wx.redirectTo({
-                        url: '/pages/login/login'
-                      });
-                    }, 1500);
-                  }
-                });
-              },
-              fail: () => {
-                wx.showToast({
-                  title: '退出失败',
-                  icon: 'error'
-                });
-              },
-              complete: () => {
-                // 清除loading状态
-                if (this.data.isLoading) {
-                  wx.hideLoading();
-                  this.setData({ isLoading: false });
-                }
-              }
-            });
-          } else {
-            wx.redirectTo({
-              url: '/pages/login/login'
-            });
-          }
-        }
-      }
     });
   },
 

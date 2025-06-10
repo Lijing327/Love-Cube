@@ -23,6 +23,7 @@ spring:
       idle-timeout: 30000
       max-lifetime: 1800000
       connection-timeout: 30000
+      connection-test-query: SELECT 1
 
   sql:
     init:
@@ -31,11 +32,12 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
 
   data:
     redis:
@@ -63,10 +65,14 @@ spring:
 
 logging:
   level:
-    root: info
-    org.hibernate.SQL: debug
-    org.hibernate.type.descriptor.sql.BasicBinder: trace
-    com.lovecube: debug
+    root: warn
+    com.lovecube: info
+    org.springframework.web: warn
+  file:
+    name: logs/love-cube.log
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
 
 springdoc:
   api-docs:

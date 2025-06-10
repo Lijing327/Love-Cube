@@ -136,6 +136,6 @@ CREATE TABLE `users`  (
 -- ----------------------------
 INSERT INTO `users` VALUES (2, 21, '热爱旅行，喜欢摄影', '2003-01-15 00:00:00.000000', '2025-03-12 11:36:02.000000', 'zhangwei@example.com', 1, '北京', '程序员', 'wx_001', 'hashed_password', '18812345678', 'wxfile://tmp_8ba548485b07d94193c9f11afc444787.jpg', '2025-03-12 11:36:02.000000', '张伟');
 INSERT INTO `users` VALUES (3, 25, '健身达人，喜欢尝试新事物', '1999-05-20 00:00:00.000000', '2025-03-12 11:36:02.000000', 'lina@example.com', 2, '上海', '医生', 'wx_002', 'hashed_password', '18887654321', '/images/avatar2.png', '2025-03-12 11:36:02.000000', '李娜');
-INSERT INTO `users` VALUES (4, 28, NULL, NULL, NULL, NULL, 1, '上海', NULL, 'oD_yL7Wkbg4v_Cmp5aaEMXEqPNzc', NULL, '5555555555', 'http://192.168.1.5:8090/admin/uploads/avatar/a28b8bc3-d7c1-43f4-9790-9455556331d0.jpg', NULL, '用户3636');
+INSERT INTO `users` VALUES (4, 28, NULL, NULL, NULL, NULL, 1, '上海', NULL, 'oD_yL7Wkbg4v_Cmp5aaEMXEqPNzc', NULL, '5555555555', 'http://192.168.1.158:8090/admin/uploads/avatar/a28b8bc3-d7c1-43f4-9790-9455556331d0.jpg', NULL, '用户3636');
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -12,7 +12,7 @@ const config = {
   
   // 默认配置
   defaults: {
-    avatar: '/images/default-avatar.png', // 使用本地默认头像
+    avatar: '/static/images/default-avatar.png',
     pageSize: 10,
     wsReconnectInterval: 3000, // WebSocket重连间隔（毫秒）
     wsHeartbeatInterval: 30000, // WebSocket心跳间隔（毫秒）
@@ -23,8 +23,8 @@ const config = {
   // 图片处理配置
   images: {
     baseUrl: 'http://192.168.1.158:8090/admin',
-    defaultAvatar: '/images/default-avatar.png', // 默认头像
-    avatarPlaceholder: '/images/avatar-placeholder.png', // 头像加载失败时的占位图
+    defaultAvatar: '/static/images/default-avatar.png', // 默认头像
+    avatarPlaceholder: '/static/images/avatar-placeholder.png', // 头像加载失败时的占位图
     uploadPath: '/uploads/avatar/' // 头像上传路径
   },
   

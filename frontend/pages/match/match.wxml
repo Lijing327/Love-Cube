@@ -148,26 +148,30 @@
   </van-popup>
 
   <!-- 匹配成功弹窗 -->
-  <van-popup
-    show="{{showMatchSuccess}}"
-    round
-    custom-style="width: 80%"
-  >
-    <view class="match-success">
-      <image class="success-image" src="/images/match-success.png" mode="aspectFit" />
-      <text class="success-title">配对成功</text>
-      <text class="success-desc">你们已经配对成功，快去聊天吧！</text>
+  <view class="match-success-popup" wx:if="{{showMatchSuccess}}">
+    <view class="match-success-content">
+      <image 
+        class="success-image" 
+        src="/images/match-success.png" 
+        binderror="handleImageError" 
+        data-type="success-image"
+      />
+      <text class="success-text">匹配成功！</text>
       <view class="success-actions">
-        <van-button plain round type="default" bind:click="closeMatchSuccess">继续匹配</van-button>
-        <van-button round type="primary" color="#ff4d6a" bind:click="goToChat">立即聊天</van-button>
+        <button class="chat-btn" bindtap="goToChat">开始聊天</button>
+        <button class="close-btn" bindtap="closeMatchSuccess">关闭</button>
       </view>
     </view>
-  </van-popup>
+  </view>
 
   <!-- 空状态 -->
   <view class="empty-state" wx:if="{{showEmpty}}">
-    <image class="empty-icon" src="/images/empty-match.png" mode="aspectFit" />
-    <text class="empty-text">暂无更多推荐</text>
-    <text class="empty-desc">调整筛选条件，可以遇见更多有趣的人</text>
+    <image 
+      src="/images/empty-matches.png" 
+      mode="aspectFit"
+      binderror="handleImageError"
+      data-type="empty-image"
+    />
+    <text>暂无更多匹配</text>
   </view>
 </view>

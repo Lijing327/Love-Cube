@@ -1,0 +1,75 @@
+<view class="container">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="nav-bar-content">
+      <view class="back-btn" bindtap="onBack">
+        <van-icon name="arrow-left" size="40rpx" color="#333" />
+      </view>
+      <text class="nav-title">个人资料</text>
+      <view class="placeholder-block"></view>
+    </view>
+  </view>
+
+  <!-- 用户信息卡片 -->
+  <view class="profile-card">
+    <!-- 头像和基本信息 -->
+    <view class="profile-header">
+      <van-image 
+        class="avatar" 
+        round 
+        width="160rpx" 
+        height="160rpx" 
+        src="{{userInfo.avatar || '/images/default-avatar.png'}}" 
+      />
+      <view class="user-info">
+        <view class="name-row">
+          <text class="nickname">{{userInfo.nickname}}</text>
+          <view class="tags">
+            <van-tag type="primary" wx:if="{{userInfo.isVip}}">VIP</van-tag>
+            <van-tag color="#FFB800">Lv.{{userInfo.level || 1}}</van-tag>
+          </view>
+        </view>
+        <view class="basic-info">
+          <text>{{userInfo.age}}岁</text>
+          <text class="dot">·</text>
+          <text>{{userInfo.constellation}}</text>
+          <text class="dot">·</text>
+          <text>{{userInfo.location}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 个性签名 -->
+    <view class="signature-section" wx:if="{{userInfo.signature}}">
+      <text class="signature">{{userInfo.signature}}</text>
+    </view>
+
+    <!-- 详细信息 -->
+    <view class="info-section">
+      <view class="info-item">
+        <text class="label">性别</text>
+        <text class="value">{{userInfo.gender}}</text>
+      </view>
+      <view class="info-item">
+        <text class="label">身高</text>
+        <text class="value">{{userInfo.height ? userInfo.height + 'cm' : '未设置'}}</text>
+      </view>
+      <view class="info-item">
+        <text class="label">职业</text>
+        <text class="value">{{userInfo.occupation || '未设置'}}</text>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-buttons">
+      <button class="action-btn like-btn" bindtap="onLike">
+        <van-icon name="like-o" size="40rpx" />
+        <text>喜欢</text>
+      </button>
+      <button class="action-btn chat-btn" bindtap="onChat">
+        <van-icon name="chat-o" size="40rpx" />
+        <text>聊天</text>
+      </button>
+    </view>
+  </view>
+</view> 

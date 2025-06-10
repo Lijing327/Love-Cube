@@ -315,4 +315,37 @@ public class UserController
         
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getUserProfile(@PathVariable Long id) {
+        Optional<User> userOpt = userRepository.findById(id);
+        if (!userOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("message", "用户不存在"));
+        }
+
+        User user = userOpt.get();
+        Map<String, Object> result = new HashMap<>();
+        result.put("userId", user.getUserid());
+        result.put("username", user.getUsername());
+        result.put("gender", convertGender(user.getGender()));
+        result.put("location", user.getLocation());
+        result.put("profilePhoto", user.getProfilePhoto());
+        result.put("birthDate", user.getBirthDate());
+        if (user.getBirthDate() != null) {
+            result.put("age", calculateAge(user.getBirthDate()));
+        }
+        result.put("occupation", user.getOccupation());
+        result.put("bio", user.getBio());
+        result.put("height", user.getHeight());
+
+        // 获取用户统计信息
+        UserStatistics stats = userStatisticsRepository.findByUserId(user.getUserid());
+        if (stats != null) {
+            result.put("statistics", stats);
+        }
+
+        result.put("completionRate", calculateCompletionRate(user));
+        return ResponseEntity.ok(result);
+    }
 }

@@ -14,7 +14,8 @@
     "pages/gift/detail",
     "pages/gift/send",
     "pages/chat/create-group",
-    "pages/contact/add-friend"
+    "pages/contact/add-friend",
+    "pages/user-profile/user-profile"
   ],
   "window": {
     "backgroundTextStyle": "light",

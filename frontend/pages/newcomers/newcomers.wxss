@@ -1,1 +1,132 @@
 /* pages/newcomers/newcomers.wxss */
+.container {
+  min-height: 100vh;
+  background: #f7f8f9;
+}
+
+/* 顶部导航 */
+.nav-bar {
+  background: #fff;
+  padding-top: 88rpx; /* 状态栏高度 */
+  border-bottom: 2rpx solid #f7f8f9;
+}
+
+.nav-bar-content {
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30rpx;
+}
+
+.back-btn {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder-block {
+  width: 60rpx;
+  height: 60rpx;
+}
+
+.nav-title {
+  font-size: 34rpx;
+  font-weight: 500;
+  color: #333;
+  flex: 1;
+  text-align: center;
+}
+
+/* 用户列表 */
+.user-list {
+  padding: 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.user-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  display: flex;
+  gap: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.user-avatar {
+  flex-shrink: 0;
+}
+
+.user-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.name-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.nickname {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+.age {
+  font-size: 24rpx;
+  color: #ff4d6a;
+  background: rgba(255, 77, 106, 0.1);
+  padding: 4rpx 12rpx;
+  border-radius: 24rpx;
+}
+
+.location {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.tag {
+  font-size: 24rpx;
+  color: #666;
+  background: #f5f6f7;
+  padding: 4rpx 16rpx;
+  border-radius: 24rpx;
+}
+
+.loading {
+  padding: 40rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.loading-text {
+  font-size: 26rpx;
+  color: #999;
+}
+
+.empty {
+  padding: 120rpx 0;
+}
+
+.load-more {
+  text-align: center;
+  padding: 30rpx 0;
+  color: #666;
+  font-size: 28rpx;
+}

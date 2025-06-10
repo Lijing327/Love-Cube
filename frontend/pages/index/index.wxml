@@ -44,7 +44,7 @@
           wx:for="{{recommends}}" 
           wx:key="id"
           bindtap="viewProfile"
-          data-id="{{item.id}}">
+          data-id="{{item.userId}}">
           <image class="recommend-avatar" src="{{item.avatar}}" mode="aspectFill" />
           <view class="recommend-info">
             <text class="recommend-name">{{item.nickname}}</text>
@@ -60,16 +60,16 @@
   <view class="section">
     <view class="section-header">
       <text class="section-title">新人推荐</text>
-      <navigator url="/pages/newcomers/newcomers" class="more-btn">
+      <view class="more-btn" bindtap="viewMoreNewcomers">
         更多<van-icon name="arrow" />
-      </navigator>
+      </view>
     </view>
     <view class="newcomer-grid">
       <view class="newcomer-item" 
         wx:for="{{newcomers}}" 
         wx:key="id"
         bindtap="viewProfile"
-        data-id="{{item.id}}">
+        data-id="{{item.userId}}">
         <image class="newcomer-avatar" src="{{item.avatar}}" mode="aspectFill" />
         <view class="newcomer-info">
           <view class="newcomer-basic">

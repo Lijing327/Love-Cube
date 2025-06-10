@@ -1,6 +1,5 @@
 package com.lovecube.backend.repository;
 
-
 import com.lovecube.backend.dto.ChatPartnerDTO;
 import com.lovecube.backend.models.ChatMessage;
 import jakarta.transaction.Transactional;
@@ -15,6 +14,12 @@ import java.util.List;
 @Repository
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long>
 {
+    @Query("SELECT m FROM ChatMessage m WHERE " +
+           "(m.senderId = :userId1 AND m.receiverId = :userId2) OR " +
+           "(m.senderId = :userId2 AND m.receiverId = :userId1) " +
+           "ORDER BY m.timestamp ASC")
+    List<ChatMessage> findByUserPair(@Param("userId1") Long userId1, @Param("userId2") Long userId2);
+
     List<ChatMessage> findByReceiverIdAndIsReadFalse(Long receiverId);
     @Query("SELECT c FROM ChatMessage c WHERE (c.senderId = :userId AND c.receiverId = :receiverId) " +
             "OR (c.senderId = :receiverId AND c.receiverId = :userId) ORDER BY c.timestamp ASC")
@@ -31,11 +36,16 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long>
     List<Object[]> findDistinctChatPartners(@Param("userId") Long userId);
 
     // 查询最近一条聊天消息
-    @Query("SELECT c FROM ChatMessage c WHERE (c.senderId = :userId AND c.receiverId = :partnerId) " +
-            "OR (c.senderId = :partnerId AND c.receiverId = :userId) " +
-            "ORDER BY c.timestamp DESC")
-    List<ChatMessage> findLatestMessage(@Param("userId") Long userId, @Param("partnerId") Long partnerId);
+    @Query("SELECT m FROM ChatMessage m WHERE " +
+           "m.type = 'chat' AND " +
+           "((m.senderId = :userId1 AND m.receiverId = :userId2) OR " +
+           "(m.senderId = :userId2 AND m.receiverId = :userId1)) " +
+           "ORDER BY m.timestamp DESC LIMIT 1")
+    ChatMessage findLatestChatMessage(@Param("userId1") Long userId1, @Param("userId2") Long userId2);
 
+    @Query("SELECT COUNT(m) FROM ChatMessage m WHERE " +
+           "m.receiverId = :userId AND m.isRead = false AND m.type = 'chat'")
+    int countUnreadMessages(@Param("userId") Long userId);
 
     // 删除聊天记录
     @Modifying

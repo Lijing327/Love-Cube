@@ -1,0 +1,172 @@
+.container {
+  min-height: 100vh;
+  background: #f7f8f9;
+}
+
+/* 顶部导航 */
+.nav-bar {
+  background: #fff;
+  padding-top: 88rpx; /* 状态栏高度 */
+  border-bottom: 2rpx solid #f7f8f9;
+}
+
+.nav-bar-content {
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30rpx;
+}
+
+.back-btn {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder-block {
+  width: 60rpx;
+  height: 60rpx;
+}
+
+.nav-title {
+  font-size: 34rpx;
+  font-weight: 500;
+  color: #333;
+  flex: 1;
+  text-align: center;
+}
+
+/* 个人资料卡片 */
+.profile-card {
+  margin: 30rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 头像和基本信息 */
+.profile-header {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 40rpx;
+}
+
+.avatar {
+  margin-right: 30rpx;
+  border: 6rpx solid #fff;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.1);
+}
+
+.user-info {
+  flex: 1;
+  padding-top: 10rpx;
+}
+
+.name-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.nickname {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+  margin-right: 20rpx;
+}
+
+.tags {
+  display: flex;
+  gap: 12rpx;
+}
+
+.basic-info {
+  font-size: 26rpx;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+.dot {
+  margin: 0 12rpx;
+  color: #999;
+}
+
+/* 个性签名 */
+.signature-section {
+  margin: 30rpx 0;
+  padding: 20rpx;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+}
+
+.signature {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* 详细信息 */
+.info-section {
+  margin-top: 30rpx;
+  border-top: 2rpx solid #f7f8f9;
+  padding-top: 30rpx;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  width: 120rpx;
+  font-size: 28rpx;
+  color: #999;
+}
+
+.value {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+}
+
+/* 操作按钮 */
+.action-buttons {
+  margin-top: 40rpx;
+  display: flex;
+  gap: 20rpx;
+}
+
+.action-btn {
+  flex: 1;
+  height: 88rpx;
+  border-radius: 44rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  border: none;
+}
+
+.action-btn text {
+  margin-left: 12rpx;
+}
+
+.like-btn {
+  background: rgba(255, 77, 106, 0.1);
+  color: #ff4d6a;
+}
+
+.chat-btn {
+  background: #ff4d6a;
+  color: #fff;
+} 

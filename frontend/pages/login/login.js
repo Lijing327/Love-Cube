@@ -1,6 +1,5 @@
-import config from "../utils/config";
-import { setUserId, setToken } from "../utils/auth";
-import { getUserId } from "../utils/auth";
+import config from "../../utils/config";
+import { setUserId, setToken, getUserId } from "../../utils/auth";
 
 Page({
   data: {
@@ -48,11 +47,15 @@ Page({
 
             if (res.statusCode === 200 && res.data.userId) {
               // 存储用户信息
-              setUserId(res.data.userId);
-              console.log("✅ userId 存储成功:", res.data.userId);
+              const userId = res.data.userId.toString(); // 确保是字符串
+              setUserId(userId);
+              wx.setStorageSync('userId', userId); // 双重保险
+              console.log("✅ userId 存储成功:", userId);
 
               if (res.data.token) {
-                setToken(res.data.token);
+                const token = res.data.token;
+                setToken(token);
+                wx.setStorageSync('token', token); // 双重保险
                 console.log("✅ Token 存储成功");
 
                 wx.showToast({
@@ -122,7 +125,7 @@ Page({
         wx.setStorageSync("userInfo", res.userInfo);
         console.log("✅ User info 存储成功:", wx.getStorageSync("userInfo"));
 
-        const userId = getUserId();
+        const userId = getUserId() || wx.getStorageSync('userId'); // 双重检查
         if (!userId) {
           console.warn("⚠️ userId 为空，尝试重新登录获取 userId");
           wx.reLaunch({ url: "/pages/login/login" });

@@ -1,2 +1,57 @@
 <!--pages/newcomers/newcomers.wxml-->
-<text>pages/newcomers/newcomers.wxml</text>
+<view class="container">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="nav-bar-content">
+      <view class="back-btn" bindtap="onBack">
+        <van-icon name="arrow-left" size="40rpx" color="#333" />
+      </view>
+      <text class="nav-title">新人推荐</text>
+      <view class="placeholder-block"></view>
+    </view>
+  </view>
+
+  <!-- 用户列表 -->
+  <view class="user-list" wx:if="{{users.length > 0}}">
+    <view class="user-card" 
+          wx:for="{{users}}" 
+          wx:key="id" 
+          bindtap="viewProfile" 
+          data-id="{{item.id}}">
+      <van-image
+        class="user-avatar"
+        width="200rpx"
+        height="200rpx"
+        radius="12rpx"
+        src="{{item.avatar}}"
+        lazy-load
+      />
+      <view class="user-info">
+        <view class="name-row">
+          <text class="nickname">{{item.nickname}}</text>
+          <text class="age">{{item.age}}岁</text>
+        </view>
+        <view class="location">{{item.location}}</view>
+        <view class="tags" wx:if="{{item.tags && item.tags.length > 0}}">
+          <text class="tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <van-loading type="spinner" color="#ff4d6a" />
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && users.length === 0}}">
+    <van-empty description="暂无新人" />
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="load-more" wx:if="{{hasMore && !loading && users.length > 0}}">
+    <text bindtap="loadMore">加载更多</text>
+  </view>
+</view>

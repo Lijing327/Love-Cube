@@ -1,6 +1,6 @@
 const config = {
   baseUrl: "http://192.168.1.158:8090/admin/api",
-  wsBaseUrl: "ws://192.168.1.158:8090/admin/chat",
+  wsBaseUrl: "ws://192.168.1.158:8090/admin",
   version: '1.0.0',
   
   // 上传相关配置
@@ -12,8 +12,20 @@ const config = {
   
   // 默认配置
   defaults: {
-    avatar: 'https://lovecube.oss-cn-beijing.aliyuncs.com/default/avatar.png',
-    pageSize: 10
+    avatar: '/images/default-avatar.png', // 使用本地默认头像
+    pageSize: 10,
+    wsReconnectInterval: 3000, // WebSocket重连间隔（毫秒）
+    wsHeartbeatInterval: 30000, // WebSocket心跳间隔（毫秒）
+    wsMaxReconnectAttempts: 5, // 最大重连次数
+    wsPath: '/ws/chat' // WebSocket 路径
+  },
+
+  // 图片处理配置
+  images: {
+    baseUrl: 'http://192.168.1.158:8090/admin',
+    defaultAvatar: '/images/default-avatar.png', // 默认头像
+    avatarPlaceholder: '/images/avatar-placeholder.png', // 头像加载失败时的占位图
+    uploadPath: '/uploads/avatar/' // 头像上传路径
   },
   
   // 缓存相关配置

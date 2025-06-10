@@ -65,8 +65,18 @@ Page({
       },
       success: (res) => {
         if (res.statusCode === 200) {
+          console.log('Recommends raw data:', res.data);
+          const formattedData = res.data.map(user => ({
+            id: user.userid,
+            userId: user.userid,
+            avatar: user.profilePhoto || user.avatar || '/images/default-avatar.png',
+            nickname: user.username || '未设置昵称',
+            age: user.age || '未知',
+            tag: user.tag || user.occupation || '暂无标签'
+          }));
+          console.log('Recommends formatted data:', formattedData);
           this.setData({
-            recommends: res.data
+            recommends: formattedData
           });
         }
       }
@@ -82,8 +92,18 @@ Page({
       },
       success: (res) => {
         if (res.statusCode === 200) {
+          console.log('Newcomers raw data:', res.data);
+          const formattedData = res.data.map(user => ({
+            id: user.userid,
+            userId: user.userid,
+            avatar: user.profilePhoto || user.avatar || '/images/default-avatar.png',
+            nickname: user.username || '未设置昵称',
+            age: user.age || '未知',
+            city: user.city || user.location || '未知'
+          }));
+          console.log('Newcomers formatted data:', formattedData);
           this.setData({
-            newcomers: res.data
+            newcomers: formattedData
           });
         }
       }
@@ -195,8 +215,17 @@ Page({
       },
       success: (res) => {
         if (res.statusCode === 200) {
+          const formattedData = res.data.map(user => ({
+            id: user.userid,
+            userId: user.userid,
+            avatar: user.profilePhoto || user.avatar || '/images/default-avatar.png',
+            nickname: user.username || '未设置昵称',
+            age: user.age || '未知',
+            tag: user.tag || user.occupation || '暂无标签'
+          }));
+          
           this.setData({
-            recommends: res.data,
+            recommends: formattedData,
             showFilterPopup: false
           });
         }
@@ -212,9 +241,28 @@ Page({
   // 查看用户资料
   viewProfile(e) {
     const userId = e.currentTarget.dataset.id;
-    wx.navigateTo({
-      url: `/pages/profile/profile?id=${userId}`
-    });
+    console.log('View profile event:', e);
+    console.log('Current target:', e.currentTarget);
+    console.log('Dataset:', e.currentTarget.dataset);
+    console.log('Viewing profile for user:', userId);
+    if (userId) {
+      wx.navigateTo({
+        url: `/pages/user-profile/user-profile?id=${userId}`,
+        fail: function(err) {
+          console.error('Navigation failed:', err);
+          wx.showToast({
+            title: '页面跳转失败',
+            icon: 'none'
+          });
+        }
+      });
+    } else {
+      console.error('No userId provided for navigation');
+      wx.showToast({
+        title: '用户ID不存在',
+        icon: 'none'
+      });
+    }
   },
 
   // 导航点击
@@ -234,5 +282,12 @@ Page({
         wx.navigateTo({ url: '/pages/more/more' });
         break;
     }
+  },
+
+  // 查看更多新人
+  viewMoreNewcomers() {
+    wx.navigateTo({
+      url: '/pages/newcomers/newcomers'
+    });
   }
 });

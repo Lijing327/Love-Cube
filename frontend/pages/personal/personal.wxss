@@ -1,8 +1,9 @@
 /* 页面整体布局 */
 .container {
   min-height: 100vh;
-  background-color: #f7f8fa;
+  background-color: #f8f9fb;
   position: relative;
+  padding-top: 120rpx;
 }
 
 /* 顶部背景 */
@@ -11,8 +12,8 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 220rpx;
-  background: linear-gradient(to right, #1989fa, #39b9f9);
+  height: 360rpx;
+  background: linear-gradient(135deg, #ff6b81, #ff4757);
   z-index: 1;
 }
 
@@ -20,18 +21,19 @@
   color: #fff;
   font-size: 36rpx;
   text-align: center;
-  font-weight: 500;
+  font-weight: 600;
+  padding-top: 60rpx;
 }
 
 /* 个人信息卡片 */
 .profile-card {
   position: relative;
   z-index: 2;
-  margin: 40rpx 30rpx;
+  margin: 60rpx 30rpx;
   background: #fff;
-  border-radius: 20rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-  padding: 30rpx;
+  border-radius: 24rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+  padding: 40rpx 30rpx;
 }
 
 /* 头像和基本信息 */
@@ -48,35 +50,38 @@
 
 .avatar {
   border: 4rpx solid #fff;
-  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4rpx 12rpx rgba(255, 71, 87, 0.2);
 }
 
 .edit-avatar {
   position: absolute;
   right: -6rpx;
   bottom: -6rpx;
-  width: 40rpx;
-  height: 40rpx;
-  background: #1989fa;
+  width: 44rpx;
+  height: 44rpx;
+  background: #ff4757;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 3rpx solid #fff;
 }
 
 .edit-avatar .van-icon {
   color: #fff;
+  font-size: 24rpx;
 }
 
 .vip-badge {
   position: absolute;
   top: -10rpx;
   right: -10rpx;
-  background: #ff9900;
+  background: linear-gradient(135deg, #ffd700, #ffaa00);
   color: #fff;
   font-size: 20rpx;
   padding: 4rpx 12rpx;
   border-radius: 12rpx;
+  font-weight: 500;
 }
 
 .user-basic-info {
@@ -87,40 +92,42 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10rpx;
+  margin-bottom: 12rpx;
 }
 
 .nickname {
   font-size: 36rpx;
-  font-weight: bold;
-  color: #333;
+  font-weight: 600;
+  color: #2c3e50;
 }
 
 .level-tags {
   display: flex;
   align-items: center;
+  gap: 8rpx;
 }
 
 .level {
-  font-size: 24rpx;
-  color: #1989fa;
-  background: rgba(25, 137, 250, 0.1);
-  padding: 4rpx 12rpx;
+  font-size: 22rpx;
+  color: #ff4757;
+  background: rgba(255, 71, 87, 0.1);
+  padding: 4rpx 16rpx;
   border-radius: 8rpx;
-  margin-right: 12rpx;
+  font-weight: 500;
 }
 
 .constellation {
-  font-size: 24rpx;
-  color: #ff9900;
-  background: rgba(255, 153, 0, 0.1);
-  padding: 4rpx 12rpx;
+  font-size: 22rpx;
+  color: #ffaa00;
+  background: rgba(255, 170, 0, 0.1);
+  padding: 4rpx 16rpx;
   border-radius: 8rpx;
+  font-weight: 500;
 }
 
 .signature {
   font-size: 28rpx;
-  color: #666;
+  color: #7f8c8d;
   line-height: 1.4;
 }
 
@@ -129,33 +136,44 @@
   display: flex;
   justify-content: space-around;
   padding: 30rpx 0;
-  border-top: 2rpx solid #f5f5f5;
-  border-bottom: 2rpx solid #f5f5f5;
+  border-top: 2rpx solid #f1f2f6;
+  border-bottom: 2rpx solid #f1f2f6;
   margin: 30rpx 0;
 }
 
 .stat-item {
   text-align: center;
+  position: relative;
+}
+
+.stat-item:not(:last-child):after {
+  content: '';
+  position: absolute;
+  right: -50%;
+  top: 20%;
+  height: 60%;
+  width: 2rpx;
+  background: #f1f2f6;
 }
 
 .number {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #333;
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #2c3e50;
   display: block;
   margin-bottom: 8rpx;
 }
 
 .label {
   font-size: 24rpx;
-  color: #999;
+  color: #95a5a6;
 }
 
 /* 资料完整度 */
 .profile-completion {
-  background: #f8f8f8;
-  padding: 20rpx;
-  border-radius: 12rpx;
+  background: #f8f9fb;
+  padding: 24rpx;
+  border-radius: 16rpx;
   margin-bottom: 30rpx;
 }
 
@@ -168,17 +186,19 @@
 
 .completion-title {
   font-size: 28rpx;
-  color: #333;
+  color: #2c3e50;
+  font-weight: 500;
 }
 
 .percentage {
   font-size: 28rpx;
-  color: #1989fa;
+  color: #ff4757;
+  font-weight: 500;
 }
 
 .progress-bar {
   height: 8rpx;
-  background: #eee;
+  background: #e8e8e8;
   border-radius: 4rpx;
   overflow: hidden;
   margin-bottom: 12rpx;
@@ -186,13 +206,13 @@
 
 .progress-inner {
   height: 100%;
-  background: linear-gradient(to right, #1989fa, #39b9f9);
+  background: linear-gradient(to right, #ff4757, #ff6b81);
   transition: width 0.3s ease;
 }
 
 .completion-tip {
   font-size: 24rpx;
-  color: #999;
+  color: #95a5a6;
 }
 
 /* 功能菜单 */
@@ -204,8 +224,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 30rpx 0;
-  border-bottom: 2rpx solid #f5f5f5;
+  padding: 32rpx 0;
+  border-bottom: 2rpx solid #f1f2f6;
 }
 
 .menu-item:last-child {
@@ -219,22 +239,27 @@
 
 .menu-text {
   font-size: 30rpx;
-  color: #333;
+  color: #2c3e50;
   margin-left: 20rpx;
 }
 
 /* 退出登录按钮 */
 .logout-btn {
-  margin: 60rpx 30rpx;
+  margin: 80rpx 30rpx;
   padding: 24rpx 0;
   text-align: center;
   background: #fff;
-  border-radius: 12rpx;
-  color: #ff4444;
+  border-radius: 16rpx;
+  color: #ff4757;
   font-size: 32rpx;
+  font-weight: 500;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
 }
 
-
+.logout-btn:active {
+  opacity: 0.9;
+  transform: scale(0.98);
+}
 
 .error-container {
   display: flex;

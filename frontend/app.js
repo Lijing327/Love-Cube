@@ -2,57 +2,74 @@ import config from "./pages/utils/config";
 
 App({
   globalData: {
-    skipLogin: false // 设置为 true 表示跳过登录，false 表示需要登录
+    skipLogin: false,
+    userInfo: null,
+    isLoggedIn: false
   },
   onLaunch() {
     console.log("🚀 小程序启动...");
+    this.checkLoginStatus();
+  },
 
-    if (this.globalData.skipLogin) {
-      wx.navigateTo({
-        url: "/pages/welcome/welcome",
-        success: () => console.log("✅ 直接跳转到首页成功！"),
-        fail: (err) => console.error("❌ 跳转到首页失败：", err)
-      });
-    } else {
-      // 执行正常的登录逻辑
-      const token = wx.getStorageSync("token") || "";
-      const userId = wx.getStorageSync("userId") || "";
+  checkLoginStatus() {
+    const token = wx.getStorageSync("token");
+    const userId = wx.getStorageSync("userId");
+    const userInfo = wx.getStorageSync("userInfo");
 
-      console.log("🔍 获取到的 token:", token ? token : "❌ 没有 token");
-      console.log("🔍 获取到的 userId:", userId ? userId : "❌ 没有 userId");
+    console.log("🔍 检查登录状态...");
+    console.log("Token:", token ? "存在" : "不存在");
+    console.log("UserId:", userId ? "存在" : "不存在");
 
-      if (!token || !userId) {
-        console.warn("⚠️ 没有 token 或 userId，跳转到登录页");
-        wx.reLaunch({ url: "/pages/login/login" });
-      } else {
-        console.log("✅ token 和 userId 存在，尝试验证用户状态...");
-
-        wx.request({
-          url: `${config.baseUrl}/users/checkUserStatus`,
-          method: "GET",
-          header: { Authorization: token ? `Bearer ${token}` : "" }, // ✅ 避免 `Bearer null`
-          success(res) {
-            console.log("🔄 服务器返回:", res.data);
-
-            if (res.statusCode === 401) {
-              console.error("❌ token 失效，跳转到登录页");
-              wx.removeStorageSync("token");
-              wx.reLaunch({ url: "/pages/login/login" });
-            } else if (res.data.registered) {
-              console.log("✅ 用户已注册，存储 userInfo 并跳转首页");
-              wx.setStorageSync("userInfo", res.data.userInfo);
-              wx.reLaunch({ url: "/pages/welcome/welcome" });
-            } else {
-              console.warn("⚠️ 用户未注册，跳转到注册页");
-              wx.reLaunch({ url: "/pages/register/register" });
-            }
-          },
-          fail(err) {
-            console.error("❌ 请求失败:", err);
-            wx.reLaunch({ url: "/pages/login/login" });
-          }
-        });
-      }
+    // 如果没有基本的登录信息，直接跳转到登录页
+    if (!token || !userId) {
+      console.log("❌ 缺少登录信息，需要重新登录");
+      this.redirectToLogin();
+      return;
     }
+
+    // 验证服务器端登录状态
+    wx.request({
+      url: `${config.baseUrl}/users/checkUserStatus`,
+      method: "GET",
+      header: { 
+        Authorization: `Bearer ${token}`
+      },
+      success: (res) => {
+        if (res.statusCode === 200 && res.data.success) {
+          console.log("✅ 登录状态有效");
+          this.globalData.isLoggedIn = true;
+          this.globalData.userInfo = res.data.userInfo || userInfo;
+          wx.setStorageSync("userInfo", this.globalData.userInfo);
+        } else {
+          console.log("❌ 登录状态无效，需要重新登录");
+          this.redirectToLogin();
+        }
+      },
+      fail: (err) => {
+        console.error("❌ 验证登录状态失败:", err);
+        // 网络错误时，如果本地有用户信息，暂时认为是登录的
+        if (userInfo) {
+          console.log("⚠️ 使用本地登录信息");
+          this.globalData.isLoggedIn = true;
+          this.globalData.userInfo = userInfo;
+        } else {
+          this.redirectToLogin();
+        }
+      }
+    });
+  },
+
+  redirectToLogin() {
+    // 清除登录信息
+    wx.removeStorageSync("token");
+    wx.removeStorageSync("userId");
+    wx.removeStorageSync("userInfo");
+    this.globalData.isLoggedIn = false;
+    this.globalData.userInfo = null;
+
+    // 跳转到登录页
+    wx.reLaunch({
+      url: "/pages/login/login"
+    });
   }
 });

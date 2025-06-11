@@ -7,16 +7,15 @@
 /* 导航栏 */
 .nav-bar {
   background: #fff;
-  padding-top: 88rpx;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
 }
 
 .nav-bar-content {
-  height: 88rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -27,6 +26,27 @@
   font-size: 34rpx;
   font-weight: 500;
   color: #333;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 30rpx;
+}
+
+.filter-btn {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #f8f8f8;
+  margin-right: 24rpx;
 }
 
 .action-btn {
@@ -39,9 +59,9 @@
 
 /* 匹配区域 */
 .match-area {
-  margin-top: 176rpx;
+  margin-top: calc(88rpx + var(--status-bar-height));
   padding: 30rpx;
-  height: calc(100vh - 176rpx);
+  height: calc(100vh - 88rpx - var(--status-bar-height));
   display: flex;
   flex-direction: column;
 }
@@ -160,6 +180,7 @@
 .action-buttons .action-btn.dislike {
   transform: rotate(45deg);
 }
+
 
 /* 筛选弹出层 */
 .filter-container {

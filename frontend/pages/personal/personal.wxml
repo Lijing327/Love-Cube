@@ -1,21 +1,6 @@
 <!-- 页面容器 -->
 <view class="container">
-  <!-- 加载错误提示 -->
-  <view class="error-container" wx:if="{{loadError}}">
-    <van-icon name="warning-o" size="48" color="#ee0a24"/>
-    <text class="error-text">加载失败，请点击重试</text>
-    <van-button type="primary" size="small" bind:click="loadUserInfo">重新加载</van-button>
-    
-    <!-- 调试信息 -->
-    <view class="debug-info" wx:if="{{debugInfo}}">
-      <view class="debug-title">调试信息：</view>
-      <view>API地址: {{debugInfo.apiUrl}}</view>
-      <view>状态码: {{debugInfo.responseStatus}}</view>
-      <view>错误信息: {{debugInfo.error}}</view>
-      <view>开始时间: {{debugInfo.loadingStartTime}}</view>
-      <view>结束时间: {{debugInfo.loadingEndTime}}</view>
-    </view>
-  </view>
+
 
   <!-- 正常内容 -->
   <block wx:else>

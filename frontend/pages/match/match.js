@@ -27,22 +27,33 @@ Page({
     ],
     matchedUserId: null,
     touchStartX: 0,
-    touchStartY: 0
+    touchStartY: 0,
+    navBarHeight: 0,
+    menuButtonHeight: 0,
+    menuButtonTop: 0,
+    statusBarHeight: 0
   },
 
   onLoad() {
-    // 直接加载匹配列表
+    const systemInfo = wx.getSystemInfoSync();
+    const menuButtonInfo = wx.getMenuButtonBoundingClientRect();
+    
+    this.setData({
+      statusBarHeight: systemInfo.statusBarHeight,
+      navBarHeight: (menuButtonInfo.top - systemInfo.statusBarHeight) * 2 + menuButtonInfo.height,
+      menuButtonHeight: menuButtonInfo.height,
+      menuButtonTop: menuButtonInfo.top
+    });
+
     this.loadMatchList();
   },
 
   onShow() {
-    // 每次显示页面时刷新匹配列表
     if (this.data.matchList.length === 0) {
       this.loadMatchList();
     }
   },
 
-  // 加载匹配列表
   loadMatchList() {
     const userId = parseInt(wx.getStorageSync('userId'));
     if (!userId) {
@@ -58,7 +69,6 @@ Page({
       mask: true
     });
 
-    // 只包含必需的参数
     const rawParams = {
       userId: userId,
       minAge: this.data.ageRange[0],
@@ -101,7 +111,6 @@ Page({
           }
         } else {
           console.error('获取匹配列表失败:', res);
-          // 检查是否是token过期
           if (res.statusCode === 401) {
             wx.removeStorageSync('token');
             wx.showToast({
@@ -109,7 +118,6 @@ Page({
               icon: 'none',
               duration: 2000
             });
-            // 跳转到登录页
             wx.navigateTo({
               url: '/pages/login/login'
             });
@@ -136,7 +144,6 @@ Page({
     });
   },
 
-  // 触摸开始
   onTouchStart(e) {
     const touch = e.touches[0];
     this.setData({
@@ -145,7 +152,6 @@ Page({
     });
   },
 
-  // 触摸移动
   onTouchMove(e) {
     const touch = e.touches[0];
     const moveX = touch.clientX - this.data.touchStartX;
@@ -158,18 +164,15 @@ Page({
     });
   },
 
-  // 触摸结束
   onTouchEnd(e) {
     const moveX = this.data.x;
     if (Math.abs(moveX) > 100) {
-      // 滑动距离足够大，触发喜欢/不喜欢
       if (moveX > 0) {
         this.onLike();
       } else {
         this.onDislike();
       }
     } else {
-      // 滑动距离不够，回到原位
       this.setData({
         x: 0,
         rotate: 0
@@ -177,7 +180,6 @@ Page({
     }
   },
 
-  // 不喜欢
   onDislike() {
     const { currentIndex, matchList } = this.data;
     if (currentIndex >= matchList.length) return;
@@ -197,7 +199,6 @@ Page({
     });
   },
 
-  // 喜欢
   onLike() {
     const { currentIndex, matchList } = this.data;
     if (currentIndex >= matchList.length) return;
@@ -212,7 +213,6 @@ Page({
       success: (res) => {
         if (res.statusCode === 200) {
           if (res.data.isMatch) {
-            // 匹配成功
             this.setData({
               showMatchSuccess: true,
               matchedUserId: userId
@@ -224,7 +224,6 @@ Page({
     });
   },
 
-  // 超级喜欢
   onSuperLike() {
     const { currentIndex, matchList } = this.data;
     if (currentIndex >= matchList.length) return;
@@ -239,7 +238,6 @@ Page({
       success: (res) => {
         if (res.statusCode === 200) {
           if (res.data.isMatch) {
-            // 匹配成功
             this.setData({
               showMatchSuccess: true,
               matchedUserId: userId
@@ -251,7 +249,6 @@ Page({
     });
   },
 
-  // 切换到下一张卡片
   nextCard(direction) {
     const animation = wx.createAnimation({
       duration: 300,
@@ -298,21 +295,18 @@ Page({
     }, 300);
   },
 
-  // 显示筛选
   showFilter() {
     this.setData({
       showFilterPopup: true
     });
   },
 
-  // 关闭筛选
   onCloseFilter() {
     this.setData({
       showFilterPopup: false
     });
   },
 
-  // 重置筛选
   resetFilter() {
     this.setData({
       ageRange: [18, 35],
@@ -327,42 +321,36 @@ Page({
     });
   },
 
-  // 年龄范围改变
   onAgeChange(e) {
     this.setData({
       ageRange: e.detail
     });
   },
 
-  // 距离范围改变
   onDistanceChange(e) {
     this.setData({
       distanceRange: e.detail
     });
   },
 
-  // 性别选择改变
   onGenderChange(e) {
     this.setData({
       gender: e.detail
     });
   },
 
-  // 显示地区选择器
   showRegionPicker() {
     this.setData({
       showRegionPicker: true
     });
   },
 
-  // 关闭地区选择器
   closeRegionPicker() {
     this.setData({
       showRegionPicker: false
     });
   },
 
-  // 确认地区选择
   onRegionConfirm(e) {
     const { values } = e.detail;
     this.setData({
@@ -372,7 +360,6 @@ Page({
     });
   },
 
-  // 切换标签选择
   toggleTag(e) {
     const { id } = e.currentTarget.dataset;
     const tags = this.data.filterTags.map(tag => {
@@ -384,7 +371,6 @@ Page({
     this.setData({ filterTags: tags });
   },
 
-  // 应用筛选条件
   applyFilter() {
     const filters = {
       ageRange: this.data.ageRange,
@@ -416,14 +402,12 @@ Page({
     });
   },
 
-  // 关闭匹配成功弹窗
   closeMatchSuccess() {
     this.setData({
       showMatchSuccess: false
     });
   },
 
-  // 进入聊天
   goToChat() {
     const userId = this.data.matchedUserId;
     this.setData({
@@ -434,7 +418,6 @@ Page({
     });
   },
 
-  // 处理图片加载错误
   handleImageError(e) {
     const type = e.currentTarget.dataset.type;
     const index = e.currentTarget.dataset.index;
@@ -443,7 +426,6 @@ Page({
 
     switch(type) {
       case 'user-avatar':
-        // 更新特定用户的头像为默认图片
         if (typeof index !== 'undefined') {
           const key = `matchList[${index}].profilePhoto`;
           this.setData({
@@ -453,14 +435,12 @@ Page({
         break;
       
       case 'success-image':
-        // 使用本地备用成功图片
         this.setData({
           'successImageSrc': '/images/match-success-fallback.png'
         });
         break;
       
       case 'empty-image':
-        // 使用本地备用空状态图片
         this.setData({
           'emptyImageSrc': '/images/empty-fallback.png'
         });

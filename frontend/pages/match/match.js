@@ -31,8 +31,8 @@ Page({
   },
 
   onLoad() {
-    // 先测试连接
-    this.testConnection();
+    // 直接加载匹配列表
+    this.loadMatchList();
   },
 
   onShow() {
@@ -42,38 +42,9 @@ Page({
     }
   },
 
-  // 测试服务连接
-  testConnection() {
-    wx.request({
-      url: `${config.baseUrl}/matches/test`,
-      method: 'GET',
-      success: (res) => {
-        if (res.statusCode === 200) {
-          console.log('匹配服务连接正常:', res.data);
-          this.loadMatchList();
-        } else {
-          console.error('服务连接异常:', res);
-          wx.showToast({
-            title: '服务暂时不可用',
-            icon: 'none',
-            duration: 2000
-          });
-        }
-      },
-      fail: (err) => {
-        console.error('服务连接失败:', err);
-        wx.showToast({
-          title: '无法连接到服务器',
-          icon: 'none',
-          duration: 2000
-        });
-      }
-    });
-  },
-
   // 加载匹配列表
   loadMatchList() {
-    const userId = wx.getStorageSync('userId');
+    const userId = parseInt(wx.getStorageSync('userId'));
     if (!userId) {
       wx.showToast({
         title: '请先登录',
@@ -82,34 +53,36 @@ Page({
       return;
     }
 
-    // 显示加载中
-    const loadingTimer = setTimeout(() => {
-      wx.showLoading({
-        title: '加载中...',
-        mask: true
-      });
-    }, 300);
+    wx.showLoading({
+      title: '加载中...',
+      mask: true
+    });
+
+    // 只包含必需的参数
+    const rawParams = {
+      userId: userId,
+      minAge: this.data.ageRange[0],
+      maxAge: this.data.ageRange[1],
+      gender: this.data.gender ? parseInt(this.data.gender) : undefined,
+      location: this.data.selectedRegion || undefined
+    };
+    
+    const params = {};
+    Object.keys(rawParams).forEach(key => {
+      if (rawParams[key] !== undefined) {
+        params[key] = rawParams[key];
+      }
+    });
 
     wx.request({
       url: `${config.baseUrl}/matches/list`,
       method: 'GET',
-      data: {
-        userId: userId,
-        minAge: this.data.ageRange[0],
-        maxAge: this.data.ageRange[1],
-        gender: this.data.gender || null,
-        location: this.data.selectedRegion || null
-      },
+      data: params,
       header: {
         Authorization: "Bearer " + wx.getStorageSync("token")
       },
-      complete: () => {
-        // 清除定时器并隐藏loading
-        clearTimeout(loadingTimer);
-        wx.hideLoading();
-      },
       success: (res) => {
-        console.log('匹配列表响应:', res);  // 添加日志
+        console.log('匹配列表响应:', res);
         if (res.statusCode === 200 && res.data.success) {
           const matchData = res.data.data || [];
           this.setData({
@@ -128,6 +101,20 @@ Page({
           }
         } else {
           console.error('获取匹配列表失败:', res);
+          // 检查是否是token过期
+          if (res.statusCode === 401) {
+            wx.removeStorageSync('token');
+            wx.showToast({
+              title: '登录已过期，请重新登录',
+              icon: 'none',
+              duration: 2000
+            });
+            // 跳转到登录页
+            wx.navigateTo({
+              url: '/pages/login/login'
+            });
+            return;
+          }
           wx.showToast({
             title: res.data?.message || '获取匹配列表失败',
             icon: 'none',
@@ -138,10 +125,13 @@ Page({
       fail: (err) => {
         console.error('请求失败:', err);
         wx.showToast({
-          title: '网络错误',
+          title: '网络错误，请检查网络连接',
           icon: 'none',
           duration: 2000
         });
+      },
+      complete: () => {
+        wx.hideLoading();
       }
     });
   },
@@ -194,7 +184,7 @@ Page({
 
     const userId = matchList[currentIndex].id;
     wx.request({
-      url: config.baseUrl + `/match/${userId}/dislike`,
+      url: config.baseUrl + `/matches/${userId}/dislike`,
       method: 'POST',
       header: {
         Authorization: "Bearer " + wx.getStorageSync("token")
@@ -214,7 +204,7 @@ Page({
 
     const userId = matchList[currentIndex].id;
     wx.request({
-      url: config.baseUrl + `/match/${userId}/like`,
+      url: config.baseUrl + `/matches/${userId}/like`,
       method: 'POST',
       header: {
         Authorization: "Bearer " + wx.getStorageSync("token")
@@ -241,7 +231,7 @@ Page({
 
     const userId = matchList[currentIndex].id;
     wx.request({
-      url: config.baseUrl + `/match/${userId}/superlike`,
+      url: config.baseUrl + `/matches/${userId}/superlike`,
       method: 'POST',
       header: {
         Authorization: "Bearer " + wx.getStorageSync("token")
@@ -407,7 +397,7 @@ Page({
     };
 
     wx.request({
-      url: config.baseUrl + '/match/filter',
+      url: config.baseUrl + '/matches/filter',
       method: 'POST',
       data: filters,
       header: {

@@ -27,59 +27,36 @@ public class MatchService
     private MatchRecordRepository matchRecordRepository;
 
     @Transactional
-    public List<User> findMatchUsers(Long userId, Integer minAge, Integer maxAge, Integer gender, String location) {
-        logger.info("开始查找匹配用户 - userId: {}, minAge: {}, maxAge: {}, gender: {}, location: {}", 
-                   userId, minAge, maxAge, gender, location);
+    public List<User> findMatches(Long userId, Integer minAge, Integer maxAge, Integer gender, String location) {
+        logger.info("开始查找匹配 - userId: {}, minAge: {}, maxAge: {}, gender: {}, location: {}", 
+            userId, minAge, maxAge, gender, location);
 
         // 参数验证
-        if (userId == null) {
-            logger.error("用户ID为空");
-            throw new IllegalArgumentException("用户ID不能为空");
+        if (userId == null || userId <= 0) {
+            throw new IllegalArgumentException("无效的用户ID");
+        }
+
+        if (minAge != null && maxAge != null && minAge > maxAge) {
+            throw new IllegalArgumentException("最小年龄不能大于最大年龄");
         }
 
         // 获取当前用户
-        Optional<User> currentUserOpt = userRepository.findById(userId);
-        if (!currentUserOpt.isPresent()) {
-            logger.error("用户不存在 - userId: {}", userId);
-            throw new IllegalArgumentException("用户不存在");
-        }
-        User currentUser = currentUserOpt.get();
-        logger.info("当前用户信息 - username: {}, age: {}, gender: {}", 
-                   currentUser.getUsername(), currentUser.getAge(), currentUser.getGender());
-
-        // 设置默认值
-        minAge = minAge == null ? 18 : minAge;
-        maxAge = maxAge == null ? 100 : maxAge;
+        User currentUser = userRepository.findById(userId)
+            .orElseThrow(() -> new IllegalArgumentException("用户不存在"));
 
         // 构建查询条件
-        List<User> potentialMatches = new ArrayList<>();
-        try {
-            if (gender != null && location != null) {
-                potentialMatches = userRepository.findByAgeBetweenAndGenderAndLocation(minAge, maxAge, gender, location);
-                logger.info("使用完整条件查询 - 找到 {} 个用户", potentialMatches.size());
-            } else if (gender != null) {
-                potentialMatches = userRepository.findByAgeBetweenAndGender(minAge, maxAge, gender);
-                logger.info("使用年龄和性别查询 - 找到 {} 个用户", potentialMatches.size());
-            } else if (location != null) {
-                potentialMatches = userRepository.findByAgeBetweenAndLocation(minAge, maxAge, location);
-                logger.info("使用年龄和地区查询 - 找到 {} 个用户", potentialMatches.size());
-            } else {
-                potentialMatches = userRepository.findByAgeBetween(minAge, maxAge);
-                logger.info("仅使用年龄查询 - 找到 {} 个用户", potentialMatches.size());
-            }
-        } catch (Exception e) {
-            logger.error("数据库查询出错", e);
-            throw new RuntimeException("查询用户失败: " + e.getMessage());
-        }
+        List<User> potentialMatches = userRepository.findAll().stream()
+            .filter(user -> !user.getUserid().equals(userId))
+            .filter(user -> minAge == null || user.getAge() >= minAge)
+            .filter(user -> maxAge == null || user.getAge() <= maxAge)
+            .filter(user -> gender == null || user.getGender().equals(gender))
+            .filter(user -> location == null || user.getLocation().contains(location))
+            .collect(Collectors.toList());
 
-        // 过滤掉当前用户
-        potentialMatches = potentialMatches.stream()
-                .filter(user -> !user.getUserid().equals(userId))
-                .collect(Collectors.toList());
-        logger.info("过滤掉当前用户后 - 剩余 {} 个用户", potentialMatches.size());
+        logger.info("初步筛选 - 找到 {} 个潜在匹配", potentialMatches.size());
 
-        // 获取已经匹配过的用户ID列表
-        List<Long> matchedUserIds;
+        // 获取已匹配用户列表
+        final List<Long> matchedUserIds;
         try {
             matchedUserIds = matchRecordRepository.findByUserId(userId)
                     .stream()
@@ -128,23 +105,24 @@ public class MatchService
         
         // 年龄差异评分（年龄差越小分数越高）
         int ageDiff = Math.abs(user1.getAge() - user2.getAge());
-        score += Math.max(0, 1 - (ageDiff / 10.0)); // 每差10岁扣1分
-
+        score += Math.max(0, 10 - ageDiff) * 2; // 最高20分
+        
         // 地理位置评分
         if (user1.getLocation() != null && user2.getLocation() != null) {
             if (user1.getLocation().equals(user2.getLocation())) {
-                score += 1.0; // 同城加1分
+                score += 30; // 同一地区加30分
+            } else if (user1.getLocation().length() >= 2 && user2.getLocation().length() >= 2 &&
+                     user1.getLocation().substring(0, 2).equals(user2.getLocation().substring(0, 2))) {
+                score += 15; // 同一省份加15分
             }
         }
-
+        
         // 职业评分
-        if (user1.getOccupation() != null && user2.getOccupation() != null) {
-            if (user1.getOccupation().equals(user2.getOccupation())) {
-                score += 0.5; // 同行业加0.5分
-            }
+        if (user1.getOccupation() != null && user2.getOccupation() != null &&
+            user1.getOccupation().equals(user2.getOccupation())) {
+            score += 15; // 相同职业加15分
         }
-
-        // 标准化分数到0-1之间
-        return Math.min(1.0, score / 2.5);
+        
+        return score;
     }
 }

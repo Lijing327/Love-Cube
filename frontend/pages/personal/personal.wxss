@@ -234,40 +234,7 @@
   font-size: 32rpx;
 }
 
-/* 编辑资料弹窗 */
-.edit-profile-popup {
-  padding: 30rpx;
-}
 
-.popup-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30rpx;
-}
-
-.popup-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.edit-form {
-  max-height: 60vh;
-}
-
-.popup-footer {
-  padding: 30rpx 0;
-}
-
-/* van-field 样式覆盖 */
-.van-field__label {
-  color: #333 !important;
-}
-
-.van-radio__label {
-  color: #333 !important;
-}
 
 .error-container {
   display: flex;

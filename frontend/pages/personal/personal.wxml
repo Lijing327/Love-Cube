@@ -128,77 +128,7 @@
   </block>
 </view>
 
-<!-- 编辑资料弹窗 -->
-<van-popup
-  show="{{ showEditModal }}"
-  round
-  position="bottom"
-  custom-style="min-height: 60%"
-  bind:close="onCloseEditModal"
->
-  <view class="edit-profile-popup">
-    <view class="popup-header">
-      <text class="popup-title">编辑资料</text>
-      <van-icon name="cross" bindtap="onCloseEditModal" />
-    </view>
-    <scroll-view scroll-y class="edit-form">
-      <van-cell-group>
-        <van-field
-          value="{{ userInfo.nickname }}"
-          label="昵称"
-          placeholder="请输入昵称"
-          bind:change="onNicknameChange"
-        />
-        <van-field
-          value="{{ userInfo.bio }}"
-          label="个性签名"
-          type="textarea"
-          placeholder="介绍一下自己吧"
-          autosize
-          bind:change="onBioChange"
-        />
-        <van-cell title="性别">
-          <van-radio-group value="{{ userInfo.gender }}" bind:change="onGenderChange" direction="horizontal">
-            <van-radio name="male">男</van-radio>
-            <van-radio name="female">女</van-radio>
-          </van-radio-group>
-        </van-cell>
-        <van-field
-          value="{{ userInfo.birthday }}"
-          label="生日"
-          placeholder="请选择生日"
-          readonly
-          bindtap="showDatePicker"
-        />
-        <van-field
-          value="{{ userInfo.location }}"
-          label="所在地"
-          placeholder="请选择所在地"
-          readonly
-          bindtap="showLocationPicker"
-        />
-        <van-field
-          value="{{ userInfo.occupation }}"
-          label="职业"
-          placeholder="请输入职业"
-          bind:change="onOccupationChange"
-        />
-      </van-cell-group>
-    </scroll-view>
-    <view class="popup-footer">
-      <van-button type="primary" block bind:click="saveProfile">保存</van-button>
-    </view>
-  </view>
-</van-popup>
 
-<!-- 日期选择器 -->
-<van-calendar
-  show="{{ showDatePicker }}"
-  bind:close="onCloseDatePicker"
-  bind:confirm="onSelectDate"
-  min-date="{{ minDate }}"
-  max-date="{{ maxDate }}"
-/>
 
 <!-- 地区选择器 -->
 <van-popup

@@ -1,7 +1,7 @@
-import Dialog from '@vant/weapp/dialog/dialog';
-import config from "../../utils/config";
-import areaList from "../../utils/area-data";
-import { getToken } from "../../utils/auth";
+const Dialog = require('@vant/weapp/dialog/dialog');
+const config = require("../../utils/config");
+const areaList = require("../../utils/area-data");
+const { getToken } = require("../../utils/auth");
 
 Page({
   data: {
@@ -190,9 +190,8 @@ Page({
   },
 
   editProfile() {
-    this.setData({
-      showEditModal: true,
-      tempUserInfo: { ...this.data.userInfo }
+    wx.navigateTo({
+      url: '/pages/profile/profile'
     });
   },
 

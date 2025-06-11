@@ -1,6 +1,13 @@
 <!-- 页面容器 -->
 <view class="container">
-
+  <!-- 未登录状态 -->
+  <block wx:if="{{!userInfo}}">
+    <view class="login-required">
+      <image src="/images/login-required.png" mode="aspectFit" />
+      <text>请先登录</text>
+      <van-button type="primary" color="#ff4d6a" bind:click="goToLogin">去登录</van-button>
+    </view>
+  </block>
 
   <!-- 正常内容 -->
   <block wx:else>

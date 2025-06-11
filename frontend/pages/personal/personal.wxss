@@ -295,3 +295,26 @@
   color: #333;
   margin-bottom: 16rpx;
 }
+
+/* 未登录状态 */
+.login-required {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40rpx;
+  background: #fff;
+}
+
+.login-required image {
+  width: 240rpx;
+  height: 240rpx;
+  margin-bottom: 40rpx;
+}
+
+.login-required text {
+  font-size: 32rpx;
+  color: #999;
+  margin-bottom: 40rpx;
+}

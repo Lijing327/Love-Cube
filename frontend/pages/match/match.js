@@ -31,6 +31,7 @@ Page({
     navBarHeight: 0,
     menuButtonHeight: 0,
     menuButtonTop: 0,
+    menuBottom: 0,
     statusBarHeight: 0
   },
 
@@ -40,9 +41,9 @@ Page({
     
     this.setData({
       statusBarHeight: systemInfo.statusBarHeight,
-      navBarHeight: (menuButtonInfo.top - systemInfo.statusBarHeight) * 2 + menuButtonInfo.height,
-      menuButtonHeight: menuButtonInfo.height,
-      menuButtonTop: menuButtonInfo.top
+      navBarHeight: menuButtonInfo.height,
+      menuButtonTop: menuButtonInfo.top,
+      menuBottom: menuButtonInfo.bottom
     });
 
     this.loadMatchList();

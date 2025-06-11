@@ -21,31 +21,12 @@ Page({
 
   onLoad() {
     console.log('个人页面 onLoad');
-    this.loadUserInfo();
+    this.checkLoginStatus();
   },
 
   onShow() {
     console.log('个人页面 onShow');
-    // 检查登录状态并刷新数据
-    const token = getToken();
-    console.log('当前token:', token);
-    
-    if (token) {
-      this.loadUserInfo();
-    } else {
-      console.log('未检测到token，准备跳转到登录页');
-      wx.showToast({
-        title: '请先登录',
-        icon: 'none',
-        success: () => {
-          setTimeout(() => {
-            wx.redirectTo({
-              url: '/pages/login/login'
-            });
-          }, 1500);
-        }
-      });
-    }
+    this.checkLoginStatus();
   },
 
   onHide() {
@@ -438,6 +419,29 @@ Page({
     Dialog.alert({
       title: '关于我们',
       message: '心愿魔方致力于为用户提供优质的社交服务。\n客服电话：400-123-4567\n版本号：1.0.0',
+    });
+  },
+
+  // 检查登录状态
+  checkLoginStatus() {
+    const token = getToken();
+    console.log('当前token:', token);
+    
+    if (token) {
+      this.loadUserInfo();
+    } else {
+      console.log('未检测到token');
+      this.setData({
+        userInfo: null,
+        avatarUrl: ''
+      });
+    }
+  },
+
+  // 跳转到登录页
+  goToLogin() {
+    wx.navigateTo({
+      url: '/pages/login/login'
     });
   }
 });

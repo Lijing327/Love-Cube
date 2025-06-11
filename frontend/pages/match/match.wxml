@@ -1,6 +1,6 @@
 <view class="container">
   <!-- 顶部导航栏 -->
-  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px;">
+  <view class="nav-bar" style="padding-top: {{menuBottom}}px;">
     <view class="nav-bar-content">
       <text class="nav-title">心动速配</text>
       <view class="filter-btn" bindtap="showFilter">
@@ -53,89 +53,92 @@
   <van-popup
     show="{{showFilterPopup}}"
     position="right"
-    custom-style="width: 80%; height: 100%"
+    custom-style="width: 85%; height: 100%"
     bind:close="onCloseFilter"
+    safe-area-inset-top
+    round
   >
     <view class="filter-container">
-      <view class="filter-header">
-        <text class="filter-title">筛选条件</text>
-        <view class="filter-reset" bindtap="resetFilter">
-          <van-icon name="replay" size="28rpx" />
-          <text>重置</text>
-        </view>
-      </view>
+
       
-      <view class="filter-section">
-        <text class="filter-section-title">年龄范围</text>
-        <van-slider
-          value="{{ageRange}}"
-          range
-          min="18"
-          max="60"
-          bind:change="onAgeChange"
-        />
-        <view class="range-text">
-          <text>{{ageRange[0]}}岁</text>
-          <text>{{ageRange[1]}}岁</text>
-        </view>
-      </view>
-
-      <view class="filter-section">
-        <text class="filter-section-title">距离范围</text>
-        <van-slider
-          value="{{distanceRange}}"
-          min="0"
-          max="100"
-          bind:change="onDistanceChange"
-        />
-        <view class="range-text">
-          <text>{{distanceRange}}km以内</text>
-        </view>
-      </view>
-
-      <view class="filter-section">
-        <text class="filter-section-title">性别</text>
-        <van-radio-group value="{{gender}}" bind:change="onGenderChange">
-          <van-radio name="female">女生</van-radio>
-          <van-radio name="male">男生</van-radio>
-        </van-radio-group>
-      </view>
-
-      <view class="filter-section">
-        <text class="filter-section-title">地区</text>
-        <van-cell title="选择地区" 
-          is-link 
-          value="{{selectedRegion}}"
-          bind:click="showRegionPicker"
-        />
-      </view>
-
-      <view class="filter-section">
-        <text class="filter-section-title">更多筛选</text>
-        <view class="tag-list">
-          <view class="tag-item {{item.selected ? 'selected' : ''}}" 
-            wx:for="{{filterTags}}" 
-            wx:key="id"
-            bindtap="toggleTag"
-            data-id="{{item.id}}">
-            {{item.text}}
+      <view class="filter-content" style="margin-top: {{menuBottom}}px;">
+        <view class="filter-section">
+          <text class="filter-section-title">年龄范围</text>
+          <van-slider
+            value="{{ageRange}}"
+            range
+            min="18"
+            max="60"
+            bind:change="onAgeChange"
+          />
+          <view class="range-text">
+            <text>{{ageRange[0]}}岁</text>
+            <text>{{ageRange[1]}}岁</text>
           </view>
         </view>
-      </view>
 
-      <view class="filter-footer">
-        <van-button block type="primary" color="#ff4d6a" bind:click="applyFilter">
-          确认
-        </van-button>
+        <view class="filter-section">
+          <text class="filter-section-title">距离范围</text>
+          <van-slider
+            value="{{distanceRange}}"
+            min="0"
+            max="100"
+            bind:change="onDistanceChange"
+          />
+          <view class="range-text">
+            <text>{{distanceRange}}km以内</text>
+          </view>
+        </view>
+
+        <view class="filter-section">
+          <text class="filter-section-title">性别</text>
+          <van-radio-group value="{{gender}}" bind:change="onGenderChange" direction="horizontal">
+            <van-radio name="female" custom-class="radio-item">女生</van-radio>
+            <van-radio name="male" custom-class="radio-item">男生</van-radio>
+          </van-radio-group>
+        </view>
+
+        <view class="filter-section">
+          <text class="filter-section-title">地区</text>
+          <van-cell 
+            title="选择地区" 
+            is-link 
+            value="{{selectedRegion || '请选择'}}"
+            bind:click="showRegionPicker"
+            border="{{false}}"
+          />
+        </view>
+
+        <view class="filter-section">
+          <text class="filter-section-title">更多筛选</text>
+          <view class="tag-list">
+            <view 
+              class="tag-item {{item.selected ? 'selected' : ''}}" 
+              wx:for="{{filterTags}}" 
+              wx:key="id"
+              bindtap="toggleTag"
+              data-id="{{item.id}}"
+            >
+              {{item.text}}
+            </view>
+          </view>
+        </view>
+
+        <view class="filter-footer">
+          <van-button block type="primary" color="#ff4d6a" bind:click="applyFilter">
+            确认
+          </van-button>
+        </view>
       </view>
     </view>
   </van-popup>
 
-  <!-- 地区选择器 -->
+  <!-- 地区选择器弹出层 -->
   <van-popup
     show="{{showRegionPicker}}"
     position="bottom"
     bind:close="closeRegionPicker"
+    round
   >
     <van-area 
       area-list="{{areaList}}"

@@ -210,3 +210,51 @@
 2025-06-11 17:06:46 INFO  c.l.backend.services.MatchService - 已匹配用户数量: 17
 2025-06-11 17:06:46 INFO  c.l.backend.services.MatchService - 过滤掉已匹配用户后 - 最终匹配用户数量: 0
 2025-06-11 17:06:46 INFO  c.l.b.controllers.MatchController - 成功获取匹配列表 - 匹配数量: 0
+2025-06-11 17:12:15 INFO  c.l.b.controllers.MatchController - 开始获取匹配列表 - userId: 4, minAge: 18, maxAge: 35, gender: null, location: null
+2025-06-11 17:12:15 INFO  c.l.backend.services.MatchService - 开始查找匹配 - userId: 4, minAge: 18, maxAge: 35, gender: null, location: null
+2025-06-11 17:12:15 INFO  c.l.backend.services.MatchService - 初步筛选 - 找到 2 个潜在匹配
+2025-06-11 17:12:15 INFO  c.l.backend.services.MatchService - 已匹配用户数量: 17
+2025-06-11 17:12:15 INFO  c.l.backend.services.MatchService - 过滤掉已匹配用户后 - 最终匹配用户数量: 0
+2025-06-11 17:12:15 INFO  c.l.b.controllers.MatchController - 成功获取匹配列表 - 匹配数量: 0
+2025-06-11 17:12:15 INFO  c.l.b.controllers.MatchController - 开始获取匹配列表 - userId: 4, minAge: 18, maxAge: 35, gender: null, location: null
+2025-06-11 17:12:15 INFO  c.l.backend.services.MatchService - 开始查找匹配 - userId: 4, minAge: 18, maxAge: 35, gender: null, location: null
+2025-06-11 17:12:15 INFO  c.l.backend.services.MatchService - 初步筛选 - 找到 2 个潜在匹配
+2025-06-11 17:12:15 INFO  c.l.backend.services.MatchService - 已匹配用户数量: 17
+2025-06-11 17:12:15 INFO  c.l.backend.services.MatchService - 过滤掉已匹配用户后 - 最终匹配用户数量: 0
+2025-06-11 17:12:15 INFO  c.l.b.controllers.MatchController - 成功获取匹配列表 - 匹配数量: 0
+2025-06-11 17:18:01 INFO  c.l.b.controllers.MatchController - 开始获取匹配列表 - userId: 4, minAge: 18, maxAge: 35, gender: null, location: null
+2025-06-11 17:18:01 INFO  c.l.backend.services.MatchService - 开始查找匹配 - userId: 4, minAge: 18, maxAge: 35, gender: null, location: null
+2025-06-11 17:18:01 INFO  c.l.backend.services.MatchService - 初步筛选 - 找到 2 个潜在匹配
+2025-06-11 17:18:01 INFO  c.l.backend.services.MatchService - 已匹配用户数量: 17
+2025-06-11 17:18:01 INFO  c.l.backend.services.MatchService - 过滤掉已匹配用户后 - 最终匹配用户数量: 0
+2025-06-11 17:18:01 INFO  c.l.b.controllers.MatchController - 成功获取匹配列表 - 匹配数量: 0
+2025-06-11 17:18:01 INFO  c.l.b.controllers.MatchController - 开始获取匹配列表 - userId: 4, minAge: 18, maxAge: 35, gender: null, location: null
+2025-06-11 17:18:01 INFO  c.l.backend.services.MatchService - 开始查找匹配 - userId: 4, minAge: 18, maxAge: 35, gender: null, location: null
+2025-06-11 17:18:01 INFO  c.l.backend.services.MatchService - 初步筛选 - 找到 2 个潜在匹配
+2025-06-11 17:18:01 INFO  c.l.backend.services.MatchService - 已匹配用户数量: 17
+2025-06-11 17:18:01 INFO  c.l.backend.services.MatchService - 过滤掉已匹配用户后 - 最终匹配用户数量: 0
+2025-06-11 17:18:01 INFO  c.l.b.controllers.MatchController - 成功获取匹配列表 - 匹配数量: 0
+2025-06-11 17:21:30 INFO  c.l.b.controllers.MatchController - 开始获取匹配列表 - userId: 4, minAge: 18, maxAge: 35, gender: null, location: null
+2025-06-11 17:21:30 INFO  c.l.backend.services.MatchService - 开始查找匹配 - userId: 4, minAge: 18, maxAge: 35, gender: null, location: null
+2025-06-11 17:21:30 INFO  c.l.backend.services.MatchService - 初步筛选 - 找到 2 个潜在匹配
+2025-06-11 17:21:30 INFO  c.l.backend.services.MatchService - 已匹配用户数量: 17
+2025-06-11 17:21:30 INFO  c.l.backend.services.MatchService - 过滤掉已匹配用户后 - 最终匹配用户数量: 0
+2025-06-11 17:21:30 INFO  c.l.b.controllers.MatchController - 成功获取匹配列表 - 匹配数量: 0
+2025-06-11 17:21:30 INFO  c.l.b.controllers.MatchController - 开始获取匹配列表 - userId: 4, minAge: 18, maxAge: 35, gender: null, location: null
+2025-06-11 17:21:30 INFO  c.l.backend.services.MatchService - 开始查找匹配 - userId: 4, minAge: 18, maxAge: 35, gender: null, location: null
+2025-06-11 17:21:30 INFO  c.l.backend.services.MatchService - 初步筛选 - 找到 2 个潜在匹配
+2025-06-11 17:21:30 INFO  c.l.backend.services.MatchService - 已匹配用户数量: 17
+2025-06-11 17:21:30 INFO  c.l.backend.services.MatchService - 过滤掉已匹配用户后 - 最终匹配用户数量: 0
+2025-06-11 17:21:30 INFO  c.l.b.controllers.MatchController - 成功获取匹配列表 - 匹配数量: 0
+2025-06-11 17:22:01 INFO  c.l.b.controllers.MatchController - 开始获取匹配列表 - userId: 4, minAge: 18, maxAge: 35, gender: null, location: null
+2025-06-11 17:22:01 INFO  c.l.b.controllers.MatchController - 开始获取匹配列表 - userId: 4, minAge: 18, maxAge: 35, gender: null, location: null
+2025-06-11 17:22:01 INFO  c.l.backend.services.MatchService - 开始查找匹配 - userId: 4, minAge: 18, maxAge: 35, gender: null, location: null
+2025-06-11 17:22:01 INFO  c.l.backend.services.MatchService - 开始查找匹配 - userId: 4, minAge: 18, maxAge: 35, gender: null, location: null
+2025-06-11 17:22:01 INFO  c.l.backend.services.MatchService - 初步筛选 - 找到 2 个潜在匹配
+2025-06-11 17:22:01 INFO  c.l.backend.services.MatchService - 初步筛选 - 找到 2 个潜在匹配
+2025-06-11 17:22:01 INFO  c.l.backend.services.MatchService - 已匹配用户数量: 17
+2025-06-11 17:22:01 INFO  c.l.backend.services.MatchService - 过滤掉已匹配用户后 - 最终匹配用户数量: 0
+2025-06-11 17:22:01 INFO  c.l.backend.services.MatchService - 已匹配用户数量: 17
+2025-06-11 17:22:01 INFO  c.l.backend.services.MatchService - 过滤掉已匹配用户后 - 最终匹配用户数量: 0
+2025-06-11 17:22:01 INFO  c.l.b.controllers.MatchController - 成功获取匹配列表 - 匹配数量: 0
+2025-06-11 17:22:01 INFO  c.l.b.controllers.MatchController - 成功获取匹配列表 - 匹配数量: 0

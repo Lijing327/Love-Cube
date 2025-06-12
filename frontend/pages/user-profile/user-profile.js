@@ -40,7 +40,7 @@ Page({
     });
 
     wx.request({
-      url: `${config.baseUrl}/users/user/${userId}`,
+      url: `${config.baseUrl}/users/${userId}`,
       method: 'GET',
       header: {
         'Authorization': 'Bearer ' + wx.getStorageSync('token')

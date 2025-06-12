@@ -2096,3 +2096,5 @@ Caused by: java.lang.ClassNotFoundException: com.lovecube.backend.dto.ChatPartne
 2025-06-12 16:00:35 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
 2025-06-12 16:00:37 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
 2025-06-12 16:00:38 INFO  c.l.backend.BackendApplication - Started BackendApplication in 4.89 seconds (process running for 5.397)
+2025-06-12 16:04:16 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 16:04:16 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null

@@ -1,13 +1,14 @@
 <view class="container">
   <!-- 顶部搜索栏 -->
   <view class="search-bar">
+    <view class="filter-btn" bindtap="showFilter">
+      <van-icon name="filter-o" size="40rpx" color="#ff4d6a" />
+    </view>
     <view class="search-input" bindtap="onTapSearch">
       <van-icon name="search" size="36rpx" color="#999" />
       <text class="placeholder">搜索心仪的Ta</text>
     </view>
-    <view class="filter-btn" bindtap="showFilter">
-      <van-icon name="filter-o" size="40rpx" color="#ff4d6a" />
-    </view>
+
   </view>
 
   <!-- 轮播图 -->

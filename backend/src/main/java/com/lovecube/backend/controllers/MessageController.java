@@ -66,11 +66,11 @@ public class MessageController {
                     
                     Map<String, Object> chatItem = new HashMap<>();
                     chatItem.put("id", partnerId);
-                    chatItem.put("name", username != null ? username : "未知用户");
+                    chatItem.put("nickname", username != null ? username : "未知用户");
                     chatItem.put("avatar", avatar != null ? avatar : "/images/default-avatar.png");
                     chatItem.put("lastMessage", latestMessage != null ? latestMessage.getContent() : "暂无消息");
                     chatItem.put("lastTime", latestMessage != null ? latestMessage.getTimestamp() : System.currentTimeMillis());
-                    chatItem.put("unreadCount", getUnreadMessageCount(userId, partnerId));
+                    chatItem.put("unread", getUnreadMessageCount(userId, partnerId));
                     
                     return chatItem;
                 })

@@ -60,16 +60,35 @@ Page({
         Authorization: "Bearer " + wx.getStorageSync("token")
       },
       success: (res) => {
+        console.log('📩 聊天列表响应:', res);
         if (res.statusCode === 200) {
+          console.log('📩 聊天列表数据:', res.data);
+          
           const chatList = res.data.map(item => ({
             ...item,
             lastTime: this.formatTime(item.lastTime)
           }));
+          
+          console.log('📩 处理后的聊天列表:', chatList);
+          
           this.setData({
             chatList,
             showEmpty: chatList.length === 0
           });
+        } else {
+          console.error('❌ 获取聊天列表失败:', res);
+          wx.showToast({
+            title: '获取聊天列表失败',
+            icon: 'none'
+          });
         }
+      },
+      fail: (err) => {
+        console.error('❌ 聊天列表请求失败:', err);
+        wx.showToast({
+          title: '网络错误',
+          icon: 'none'
+        });
       }
     });
   },
@@ -166,10 +185,21 @@ Page({
 
   // 进入聊天
   enterChat(e) {
-    const { id, type } = e.currentTarget.dataset;
-    wx.navigateTo({
-      url: `/pages/chat/chat?id=${id}&type=${type}`
-    });
+    const chatItem = e.currentTarget.dataset;
+    const chatData = this.data.chatList.find(item => item.id === chatItem.id);
+    
+    if (chatData) {
+      wx.navigateTo({
+        url: `/pages/chat/chat?targetId=${chatData.id}&username=${encodeURIComponent(chatData.nickname || '未知用户')}&profile_photo=${encodeURIComponent(chatData.avatar || '')}`,
+        fail: (err) => {
+          console.error('导航到聊天页面失败:', err);
+          wx.showToast({
+            title: '打开聊天失败',
+            icon: 'none'
+          });
+        }
+      });
+    }
   },
 
   // 处理互动

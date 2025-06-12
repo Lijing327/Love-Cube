@@ -5591,3 +5591,17 @@ Caused by: java.sql.SQLIntegrityConstraintViolationException: Column 'receiver_i
 2025-06-12 16:39:14 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
 2025-06-12 16:39:15 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
 2025-06-12 16:39:17 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:00:37 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 21384 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
+2025-06-12 17:00:37 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
+2025-06-12 17:00:38 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
+2025-06-12 17:00:39 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-12 17:00:41 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-12 17:00:42 INFO  c.l.backend.BackendApplication - Started BackendApplication in 5.14 seconds (process running for 5.593)
+2025-06-12 17:03:24 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:03:29 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:03:32 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:03:46 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:03:49 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:03:52 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:06:17 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:06:17 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接

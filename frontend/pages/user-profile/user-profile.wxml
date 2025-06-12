@@ -44,6 +44,33 @@
       <text class="signature">{{userInfo.signature}}</text>
     </view>
 
+    <!-- 生活照片 -->
+    <view class="photos-section" wx:if="{{userInfo.photos && userInfo.photos.length > 0}}">
+      <view class="section-title">生活照片</view>
+      <scroll-view class="photos-scroll" scroll-x>
+        <view class="photos-container">
+          <view class="photo-item" 
+                wx:for="{{userInfo.photos}}" 
+                wx:key="index"
+                bindtap="previewPhoto"
+                data-index="{{index}}">
+            <van-image
+              width="240rpx"
+              height="320rpx"
+              fit="cover"
+              src="{{item}}"
+              radius="12rpx"
+              use-loading-slot
+              use-error-slot
+            >
+              <van-loading slot="loading" type="spinner" size="20" vertical />
+              <van-icon slot="error" name="photo-fail" size="36rpx" />
+            </van-image>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
     <!-- 详细信息 -->
     <view class="info-section">
       <view class="info-item">

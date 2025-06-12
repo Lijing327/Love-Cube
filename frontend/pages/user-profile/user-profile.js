@@ -126,5 +126,18 @@ Page({
         });
       }
     });
+  },
+
+  // 预览照片
+  previewPhoto(e) {
+    const { index } = e.currentTarget.dataset;
+    const { photos } = this.data.userInfo;
+    
+    if (!photos || photos.length === 0) return;
+    
+    wx.previewImage({
+      current: photos[index],
+      urls: photos
+    });
   }
 }); 

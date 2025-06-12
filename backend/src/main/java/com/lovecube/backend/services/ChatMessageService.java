@@ -39,7 +39,7 @@ public class ChatMessageService {
     }
 
     // 获取未读消息数量
-    public int getUnreadMessageCount(Long userId) {
+    public Long getUnreadMessageCount(Long userId) {
         return chatMessageRepository.countUnreadMessages(userId);
     }
 
@@ -64,9 +64,9 @@ public class ChatMessageService {
 
                     String lastMessage = latestMessage != null ? latestMessage.getContent() : "暂无聊天记录";
                     String time = latestMessage != null ? formatTimestamp(latestMessage.getTimestamp()) : "";
-                    int unreadCount = chatMessageRepository.countUnreadMessages(userId);
+                    Long unreadCount = chatMessageRepository.countUnreadMessages(userId);
 
-                    return new ChatPartnerDTO(partnerId, username, avatar, lastMessage, time, unreadCount);
+                    return new ChatPartnerDTO(partnerId, username, avatar, lastMessage, time, unreadCount.intValue());
                 })
                 .collect(Collectors.toList());
     }

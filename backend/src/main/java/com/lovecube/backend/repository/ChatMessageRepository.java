@@ -45,7 +45,7 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long>
 
     @Query("SELECT COUNT(m) FROM ChatMessage m WHERE " +
            "m.receiverId = :userId AND m.isRead = false AND m.type = 'chat'")
-    int countUnreadMessages(@Param("userId") Long userId);
+    Long countUnreadMessages(@Param("userId") Long userId);
 
     // 删除聊天记录
     @Modifying
@@ -53,4 +53,9 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long>
     @Query("DELETE FROM ChatMessage c WHERE (c.senderId = :userId AND c.receiverId = :receiverId) " +
             "OR (c.senderId = :receiverId AND c.receiverId = :userId)")
     void deleteChat(@Param("userId") Long userId, @Param("receiverId") Long receiverId);
+
+    @Query("SELECT cm FROM ChatMessage cm WHERE " +
+           "cm.receiverId = :userId AND cm.isRead = false " +
+           "ORDER BY cm.timestamp DESC")
+    List<ChatMessage> findUnreadMessages(@Param("userId") Long userId);
 }

@@ -1,5 +1,6 @@
 package com.lovecube.backend.websockets;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lovecube.backend.models.ChatMessage;
 import com.lovecube.backend.services.ChatMessageService;
@@ -37,22 +38,83 @@ public class ChatWebSocket extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) {
         try {
-            ChatMessage chatMessage = objectMapper.readValue(message.getPayload(), ChatMessage.class);
-            chatMessage.setTimestamp(System.currentTimeMillis());
+            JsonNode jsonNode = objectMapper.readTree(message.getPayload());
+            String messageType = jsonNode.get("type").asText();
             
-            // 保存消息
-            chatMessageService.saveMessage(chatMessage);
-            
-            // 发送给接收者
-            WebSocketSession receiverSession = userSessions.get(chatMessage.getReceiverId());
-            if (receiverSession != null && receiverSession.isOpen()) {
-                receiverSession.sendMessage(new TextMessage(objectMapper.writeValueAsString(chatMessage)));
-                logger.info("消息已发送给用户 {}", chatMessage.getReceiverId());
-            } else {
-                logger.info("用户 {} 不在线，消息已存储", chatMessage.getReceiverId());
+            // 处理心跳消息
+            if ("ping".equals(messageType)) {
+                // 回复心跳
+                session.sendMessage(new TextMessage("{\"type\":\"pong\",\"timestamp\":" + System.currentTimeMillis() + "}"));
+                return;
             }
-        } catch (IOException e) {
-            logger.error("处理消息时发生错误", e);
+            
+            // 处理聊天消息
+            if ("chat".equals(messageType)) {
+                Long senderId = jsonNode.get("senderId").asLong();
+                Long receiverId = jsonNode.get("receiverId").asLong();
+                String content = jsonNode.get("content").asText();
+                
+                // 验证必要字段
+                if (senderId == null || receiverId == null || content == null || content.trim().isEmpty()) {
+                    logger.error("消息字段不完整: senderId={}, receiverId={}, content={}", senderId, receiverId, content);
+                    return;
+                }
+                
+                // 创建聊天消息对象
+                ChatMessage chatMessage = new ChatMessage();
+                chatMessage.setSenderId(senderId);
+                chatMessage.setReceiverId(receiverId);
+                chatMessage.setContent(content);
+                chatMessage.setType("chat");
+                chatMessage.setTimestamp(System.currentTimeMillis());
+                chatMessage.setRead(false);
+                
+                // 保存消息
+                ChatMessage savedMessage = chatMessageService.saveMessage(chatMessage);
+                logger.info("消息已保存: ID={}, 发送者={}, 接收者={}", savedMessage.getId(), senderId, receiverId);
+                
+                // 准备要发送的消息（只发送给接收者）
+                String responseMessage = objectMapper.writeValueAsString(Map.of(
+                    "id", savedMessage.getId(),
+                    "type", "chat",
+                    "senderId", senderId,
+                    "receiverId", receiverId,
+                    "content", content,
+                    "timestamp", savedMessage.getTimestamp(),
+                    "isRead", false
+                ));
+                
+                // 只发送给接收者（如果在线）
+                WebSocketSession receiverSession = userSessions.get(receiverId);
+                if (receiverSession != null && receiverSession.isOpen()) {
+                    receiverSession.sendMessage(new TextMessage(responseMessage));
+                    logger.info("消息已发送给接收者用户 {}", receiverId);
+                } else {
+                    logger.info("接收者用户 {} 不在线，消息已存储", receiverId);
+                }
+                
+                // 向发送者发送成功确认（不包含消息内容，避免重复显示）
+                String confirmMessage = objectMapper.writeValueAsString(Map.of(
+                    "type", "sent_confirm",
+                    "messageId", savedMessage.getId(),
+                    "timestamp", savedMessage.getTimestamp(),
+                    "status", "success"
+                ));
+                
+                if (session.isOpen()) {
+                    session.sendMessage(new TextMessage(confirmMessage));
+                    logger.info("发送确认已发送给发送者用户 {}", senderId);
+                }
+            }
+            
+        } catch (Exception e) {
+            logger.error("处理消息时发生错误: {}", message.getPayload(), e);
+            try {
+                // 发送错误响应
+                session.sendMessage(new TextMessage("{\"type\":\"error\",\"message\":\"消息处理失败\"}"));
+            } catch (IOException ex) {
+                logger.error("发送错误响应失败", ex);
+            }
         }
     }
 
@@ -71,7 +133,7 @@ public class ChatWebSocket extends TextWebSocketHandler {
         try {
             return Long.parseLong(parts[parts.length - 1]);
         } catch (NumberFormatException e) {
-            logger.error("无法从会话中提取用户ID", e);
+            logger.error("无法从会话中提取用户ID: {}", path, e);
             return null;
         }
     }

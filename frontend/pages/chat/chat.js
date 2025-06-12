@@ -101,6 +101,9 @@ Page({
     const username = decodeURIComponent(options.username || '');
     const profilePhoto = decodeURIComponent(options.profile_photo || '');
     
+    console.log("🔍 存储的用户ID:", userId, "类型:", typeof userId);
+    console.log("🔍 接收者ID:", receiverId, "类型:", typeof receiverId);
+    
     if (!userId || !receiverId) {
       wx.showToast({
         title: '用户信息不完整',
@@ -114,9 +117,16 @@ Page({
     const userInfo = wx.getStorageSync('userInfo');
     const userAvatar = userInfo?.avatar || config.images.defaultAvatar;
 
+    // 确保用户ID为数字类型（与后端保持一致）
+    const numericUserId = parseInt(userId);
+    const numericReceiverId = parseInt(receiverId);
+    
+    console.log("🔍 转换后的用户ID:", numericUserId, "类型:", typeof numericUserId);
+    console.log("🔍 转换后的接收者ID:", numericReceiverId, "类型:", typeof numericReceiverId);
+
     this.setData({
-      userId: userId,
-      receiverId: receiverId,
+      userId: numericUserId,
+      receiverId: numericReceiverId,
       username: username || "未知用户",
       avatar: handleImageUrl(profilePhoto),
       userAvatar: handleImageUrl(userAvatar)
@@ -139,17 +149,22 @@ Page({
         console.log("✅ 聊天记录加载成功: ", res.data);
         
         if (res.statusCode === 200 && Array.isArray(res.data)) {
-          const formattedMessages = res.data.map(msg => ({
-            id: msg.id,
-            content: msg.content,
-            type: msg.type || 'chat',
-            timestamp: msg.timestamp,
-            formattedTime: formatTime(msg.timestamp), // 添加格式化后的时间
-            isSelf: msg.senderId === this.data.userId,
-            avatar: msg.senderId === this.data.userId ? 
-              this.data.userAvatar : 
-              this.data.avatar
-          }));
+          const formattedMessages = res.data.map(msg => {
+            const isSelfMessage = parseInt(msg.senderId) === parseInt(this.data.userId);
+            console.log("🔍 历史消息 - 发送者ID:", msg.senderId, "当前用户ID:", this.data.userId, "是否为自己:", isSelfMessage);
+            
+            return {
+              id: msg.id,
+              content: msg.content,
+              type: msg.type || 'chat',
+              timestamp: msg.timestamp,
+              formattedTime: formatTime(msg.timestamp), // 添加格式化后的时间
+              isSelf: isSelfMessage,
+              avatar: isSelfMessage ? 
+                this.data.userAvatar : 
+                this.data.avatar
+            };
+          });
           this.setData({ chatMessages: formattedMessages });
         } else {
           console.log("没有聊天记录或返回格式不正确");
@@ -228,8 +243,9 @@ Page({
     // WebSocket 接收消息
     socketTask.onMessage((res) => {
       try {
+        console.log("📩 收到原始消息数据:", res.data);
         const msg = JSON.parse(res.data);
-        console.log("📩 收到消息:", msg);
+        console.log("📩 解析后的消息:", msg);
 
         // 处理心跳响应
         if (msg.type === 'pong') {
@@ -237,12 +253,28 @@ Page({
           return;
         }
 
-        // 处理普通消息
+        // 处理错误消息
+        if (msg.type === 'error') {
+          console.error("❌ 服务器错误:", msg.message);
+          wx.showToast({
+            title: msg.message || '服务器错误',
+            icon: 'none'
+          });
+          return;
+        }
+
+        // 处理普通聊天消息
         if (msg.type === 'chat') {
           this.handleChatMessage(msg);
+        } else if (msg.type === 'sent_confirm') {
+          // 处理发送确认，更新本地消息的服务器ID
+          console.log("✅ 消息发送确认:", msg);
+          this.handleSentConfirm(msg);
+        } else {
+          console.warn("⚠️ 未知消息类型:", msg.type);
         }
       } catch (err) {
-        console.error("消息解析错误:", err);
+        console.error("❌ 消息解析错误:", err, "原始数据:", res.data);
       }
     });
 
@@ -265,18 +297,36 @@ Page({
 
   // 处理聊天消息
   handleChatMessage(msg) {
+    console.log("🔍 处理接收到的消息:", msg);
+    console.log("🔍 当前用户ID:", this.data.userId, "类型:", typeof this.data.userId);
+    console.log("🔍 消息发送者ID:", msg.senderId, "类型:", typeof msg.senderId);
+    
+    // 验证消息数据
+    if (!msg || !msg.content) {
+      console.error("❌ 接收到的消息数据不完整:", msg);
+      return;
+    }
+    
+    // 确保类型一致的比较
+    const isSelfMessage = parseInt(msg.senderId) === parseInt(this.data.userId);
+    console.log("🔍 是否为自己的消息:", isSelfMessage);
+    
     const messages = [...this.data.chatMessages];
-    messages.push({
+    const newMessage = {
       id: msg.id || Date.now(),
-      content: msg.content,
-      type: msg.type,
-      timestamp: msg.timestamp,
-      formattedTime: formatTime(msg.timestamp), // 添加格式化后的时间
-      isSelf: msg.senderId === this.data.userId,
-      avatar: msg.senderId === this.data.userId ? 
+      content: msg.content, // 确保使用消息内容
+      type: msg.type || 'chat',
+      timestamp: msg.timestamp || Date.now(),
+      formattedTime: formatTime(msg.timestamp || Date.now()),
+      isSelf: isSelfMessage,
+      avatar: isSelfMessage ? 
         this.data.userAvatar : 
         this.data.avatar
-    });
+    };
+    
+    console.log("📝 添加接收的消息到列表:", newMessage);
+    messages.push(newMessage);
+    
     this.setData({ 
       chatMessages: messages 
     }, () => {
@@ -398,6 +448,8 @@ Page({
 
   // WebSocket 发送消息方法
   _sendWebSocketMessage(message) {
+    console.log("🚀 准备发送消息:", message);
+    
     this.data.socketTask.send({
       data: JSON.stringify(message),
       success: () => {
@@ -406,17 +458,23 @@ Page({
         // 只有聊天消息才添加到消息列表
         if (message.type === 'chat') {
           const messages = [...this.data.chatMessages];
-          messages.push({
-            id: message.timestamp,
-            content: message.content,
+          const newMessage = {
+            id: Date.now(), // 使用当前时间戳作为临时ID
+            content: message.content, // 确保使用消息内容
             type: message.type,
             timestamp: message.timestamp,
-            formattedTime: formatTime(message.timestamp), // 添加格式化后的时间
+            formattedTime: formatTime(message.timestamp),
             isSelf: true
-          });
+          };
+          
+          console.log("📝 添加发送的消息到列表:", newMessage);
+          messages.push(newMessage);
+          
           this.setData({
             chatMessages: messages,
             inputText: ""
+          }, () => {
+            this.scrollToBottom();
           });
         }
       },
@@ -515,4 +573,22 @@ Page({
 
   // 添加到 Page 中供模板使用
   isSameDay: isSameDay,
+
+  // 处理发送确认
+  handleSentConfirm(confirmMsg) {
+    console.log("📝 处理发送确认:", confirmMsg);
+    
+    // 可以在这里更新消息的服务器ID，或者标记消息为已发送成功
+    if (confirmMsg.status === 'success') {
+      // 消息发送成功，可以在这里做一些UI更新
+      console.log("✅ 消息发送成功，服务器ID:", confirmMsg.messageId);
+    } else {
+      // 消息发送失败处理
+      console.error("❌ 消息发送失败");
+      wx.showToast({
+        title: '消息发送失败',
+        icon: 'none'
+      });
+    }
+  },
 });

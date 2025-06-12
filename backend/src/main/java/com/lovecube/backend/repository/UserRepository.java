@@ -55,6 +55,12 @@ public interface UserRepository extends JpaRepository<User, Long>
 
     @Query(value = "SELECT * FROM users ORDER BY created_at DESC LIMIT :limit", nativeQuery = true)
     List<User> findNewcomers(@Param("limit") int limit);
+
+    // 根据性别和用户ID查询（排除指定用户）
+    List<User> findByGenderAndUseridNot(Integer gender, Long userId);
+    
+    // 查询所有用户（排除指定用户）
+    List<User> findByUseridNot(Long userId);
 }
 
 

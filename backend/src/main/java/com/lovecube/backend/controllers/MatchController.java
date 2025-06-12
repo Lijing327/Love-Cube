@@ -24,45 +24,77 @@ public class MatchController {
     @Autowired
     private MatchService matchService;
 
-    @GetMapping("/test")
-    public ResponseEntity<?> test() {
-        logger.info("测试接口被调用");
-        Map<String, Object> response = new HashMap<>();
-        response.put("success", true);
-        response.put("message", "测试成功");
-        return ResponseEntity.ok(response);
-    }
-    @GetMapping("/test-log")
-    public String logTest() {
-        System.out.println(">>> test-log 被访问");
-        return "ok";
-    }
+
     @GetMapping("/list")
-    public ResponseEntity<?> getMatchUsers(
-            @RequestParam(required = true) Long userId,
-            @RequestParam(required = false, defaultValue = "18") Integer minAge,
-            @RequestParam(required = false, defaultValue = "35") Integer maxAge,
-            @RequestParam(required = false) Integer gender,
-            @RequestParam(required = false) String location) {
+    public ResponseEntity<?> getUserList(
+            @RequestHeader("Authorization") String token,
+            @RequestParam(required = false) Integer gender) {
         try {
-            logger.info("开始获取匹配列表 - userId: {}, minAge: {}, maxAge: {}, gender: {}, location: {}", 
-                userId, minAge, maxAge, gender, location);
-            
-            List<User> matches = matchService.findMatches(userId, minAge, maxAge, gender, location);
-            
+            logger.info("获取全部用户列表 - gender: {}", gender);
+
+            Long currentUserId = matchService.getCurrentUserId(token);
+            if (currentUserId == null) {
+                return ResponseEntity.badRequest().body("无效的用户Token");
+            }
+
+            List<User> users = matchService.getAllUsers(currentUserId, gender);
+
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
-            response.put("data", matches);
-            
-            logger.info("成功获取匹配列表 - 匹配数量: {}", matches.size());
+            response.put("data", users);
             return ResponseEntity.ok(response);
-            
+
         } catch (Exception e) {
-            logger.error("获取匹配列表失败", e);
+            logger.error("获取用户列表失败", e);
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("success", false);
-            errorResponse.put("message", "获取匹配列表失败: " + e.getMessage());
+            errorResponse.put("message", "获取用户列表失败: " + e.getMessage());
             return ResponseEntity.status(500).body(errorResponse);
         }
     }
+
+    @PostMapping("/filter")
+    public ResponseEntity<?> filterMatches(
+            @RequestHeader("Authorization") String token,
+            @RequestBody Map<String, Object> filters) {
+        try {
+            logger.info("筛选匹配用户 - filters: {}", filters);
+
+            Long currentUserId = matchService.getCurrentUserId(token);
+            if (currentUserId == null) {
+                return ResponseEntity.badRequest().body("无效的用户Token");
+            }
+
+            // 解析筛选条件
+            Integer minAge = null;
+            Integer maxAge = null;
+            if (filters.containsKey("ageRange") && filters.get("ageRange") instanceof List) {
+                List<Integer> ageRange = (List<Integer>) filters.get("ageRange");
+                if (ageRange.size() == 2) {
+                    minAge = ageRange.get(0);
+                    maxAge = ageRange.get(1);
+                }
+            }
+
+            Integer gender = filters.get("gender") != null ? 
+                Integer.parseInt(filters.get("gender").toString()) : null;
+            String location = (String) filters.get("region");
+
+            List<User> filteredUsers = matchService.findMatches(
+                currentUserId, minAge, maxAge, gender, location);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("data", filteredUsers);
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            logger.error("筛选用户失败", e);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("success", false);
+            errorResponse.put("message", "筛选用户失败: " + e.getMessage());
+            return ResponseEntity.status(500).body(errorResponse);
+        }
+    }
+
 }

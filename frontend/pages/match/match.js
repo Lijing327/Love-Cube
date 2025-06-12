@@ -58,33 +58,17 @@ Page({
   loadMatchList() {
     const userId = parseInt(wx.getStorageSync('userId'));
     if (!userId) {
-      wx.showToast({
-        title: '请先登录',
-        icon: 'none'
-      });
+      wx.showToast({ title: '请先登录', icon: 'none' });
       return;
     }
-
-    wx.showLoading({
-      title: '加载中...',
-      mask: true
-    });
-
-    const rawParams = {
-      userId: userId,
-      minAge: this.data.ageRange[0],
-      maxAge: this.data.ageRange[1],
-      gender: this.data.gender ? parseInt(this.data.gender) : undefined,
-      location: this.data.selectedRegion || undefined
-    };
-    
+  
+    wx.showLoading({ title: '加载中...', mask: true });
+  
     const params = {};
-    Object.keys(rawParams).forEach(key => {
-      if (rawParams[key] !== undefined) {
-        params[key] = rawParams[key];
-      }
-    });
-
+    if (this.data.gender) {
+      params.gender = parseInt(this.data.gender);
+    }
+  
     wx.request({
       url: `${config.baseUrl}/matches/list`,
       method: 'GET',
@@ -93,57 +77,27 @@ Page({
         Authorization: "Bearer " + wx.getStorageSync("token")
       },
       success: (res) => {
-        console.log('匹配列表响应:', res);
         if (res.statusCode === 200 && res.data.success) {
-          const matchData = res.data.data || [];
           this.setData({
-            matchList: matchData,
-            showEmpty: matchData.length === 0,
+            matchList: res.data.data || [],
+            showEmpty: res.data.data.length === 0,
             currentIndex: 0,
             x: 0,
             rotate: 0
           });
-
-          if (matchData.length === 0) {
-            wx.showToast({
-              title: '暂无匹配',
-              icon: 'none'
-            });
-          }
         } else {
-          console.error('获取匹配列表失败:', res);
-          if (res.statusCode === 401) {
-            wx.removeStorageSync('token');
-            wx.showToast({
-              title: '登录已过期，请重新登录',
-              icon: 'none',
-              duration: 2000
-            });
-            wx.navigateTo({
-              url: '/pages/login/login'
-            });
-            return;
-          }
-          wx.showToast({
-            title: res.data?.message || '获取匹配列表失败',
-            icon: 'none',
-            duration: 2000
-          });
+          wx.showToast({ title: res.data.message || '加载失败', icon: 'none' });
         }
       },
-      fail: (err) => {
-        console.error('请求失败:', err);
-        wx.showToast({
-          title: '网络错误，请检查网络连接',
-          icon: 'none',
-          duration: 2000
-        });
+      fail: () => {
+        wx.showToast({ title: '网络错误', icon: 'none' });
       },
       complete: () => {
         wx.hideLoading();
       }
     });
   },
+  
 
   onTouchStart(e) {
     const touch = e.touches[0];
@@ -376,29 +330,46 @@ Page({
     const filters = {
       ageRange: this.data.ageRange,
       distance: this.data.distanceRange,
-      gender: this.data.gender,
+      gender: this.data.gender ? parseInt(this.data.gender) : null,
       region: this.data.selectedRegionCode,
       tags: this.data.filterTags
         .filter(tag => tag.selected)
         .map(tag => tag.text)
     };
 
+    wx.showLoading({ title: '加载中...', mask: true });
+
     wx.request({
-      url: config.baseUrl + '/matches/filter',
+      url: `${config.baseUrl}/matches/filter`,
       method: 'POST',
       data: filters,
       header: {
         Authorization: "Bearer " + wx.getStorageSync("token")
       },
       success: (res) => {
-        if (res.statusCode === 200) {
+        if (res.statusCode === 200 && res.data.success) {
+          const matchList = res.data.data || [];
           this.setData({
-            matchList: res.data,
-            showEmpty: res.data.length === 0,
+            matchList: matchList,
+            showEmpty: matchList.length === 0,
             currentIndex: 0,
             showFilterPopup: false
           });
+        } else {
+          wx.showToast({ 
+            title: res.data.message || '筛选失败', 
+            icon: 'none' 
+          });
         }
+      },
+      fail: () => {
+        wx.showToast({ 
+          title: '网络错误', 
+          icon: 'none' 
+        });
+      },
+      complete: () => {
+        wx.hideLoading();
       }
     });
   },

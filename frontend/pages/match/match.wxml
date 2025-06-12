@@ -9,43 +9,45 @@
     </view>
   </view>
 
-  <!-- 匹配卡片区域 -->
+  <!-- 用户列表区域 -->
   <view class="match-area">
-    <!-- 卡片堆叠效果 -->
-    <view class="card-stack">
-      <view class="match-card {{index === currentIndex ? 'active' : ''}}"
-        wx:for="{{matchList}}"
-        wx:key="id"
-        style="transform: translateX({{index === currentIndex ? x : 0}}rpx) rotate({{index === currentIndex ? rotate : 0}}deg); z-index: {{matchList.length - index}};">
-        <image class="card-image" src="{{item.photos[0]}}" mode="aspectFill" />
-        <view class="card-info">
+    <view class="user-grid">
+      <view class="user-card" wx:for="{{matchList}}" wx:key="userid">
+        <image class="user-image" src="{{item.profilePhoto || '/images/default-avatar.png'}}" mode="aspectFill" />
+        <view class="user-info">
           <view class="basic-info">
-            <text class="name">{{item.nickname}}</text>
+            <text class="name">{{item.username}}</text>
             <text class="age">{{item.age}}岁</text>
-            <image wx:if="{{item.verified}}" class="verified-icon" src="/images/verified.png" mode="aspectFit" />
           </view>
           <view class="detail-info">
-            <text class="occupation">{{item.occupation}}</text>
-            <text class="location">{{item.city}}</text>
+            <text class="occupation">{{item.occupation || '暂无职业'}}</text>
+            <text class="location">{{item.location || '暂无地区'}}</text>
           </view>
-          <view class="tags">
-            <text class="tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+        </view>
+        <!-- 操作按钮 -->
+        <view class="action-buttons">
+          <view class="action-btn dislike" bindtap="onDislike" data-userid="{{item.userid}}">
+            <van-icon name="close" size="40rpx" color="#ff4d6a" />
+          </view>
+          <view class="action-btn like" bindtap="onLike" data-userid="{{item.userid}}">
+            <van-icon name="like" size="40rpx" color="#ff4d6a" />
+          </view>
+          <view class="action-btn super-like" bindtap="onSuperLike" data-userid="{{item.userid}}">
+            <van-icon name="star" size="40rpx" color="#ff4d6a" />
           </view>
         </view>
       </view>
     </view>
 
-    <!-- 操作按钮 -->
-    <view class="action-buttons">
-      <view class="action-btn dislike" bindtap="onDislike">
-        <van-icon name="close" size="60rpx" color="#ff4d6a" />
-      </view>
-      <view class="action-btn like" bindtap="onLike">
-        <van-icon name="like" size="60rpx" color="#ff4d6a" />
-      </view>
-      <view class="action-btn super-like" bindtap="onSuperLike">
-        <van-icon name="star" size="60rpx" color="#ff4d6a" />
-      </view>
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{matchList.length === 0}}">
+      <image 
+        src="/images/empty-matches.png" 
+        mode="aspectFit"
+        binderror="handleImageError"
+        data-type="empty-image"
+      />
+      <text>暂无更多用户</text>
     </view>
   </view>
 
@@ -59,93 +61,23 @@
     round
   >
     <view class="filter-container">
-
-      
       <view class="filter-content" style="margin-top: {{menuBottom}}px;">
         <view class="filter-section">
-          <text class="filter-section-title">年龄范围</text>
-          <van-slider
-            value="{{ageRange}}"
-            range
-            min="18"
-            max="60"
-            bind:change="onAgeChange"
-          />
-          <view class="range-text">
-            <text>{{ageRange[0]}}岁</text>
-            <text>{{ageRange[1]}}岁</text>
-          </view>
-        </view>
-
-        <view class="filter-section">
-          <text class="filter-section-title">距离范围</text>
-          <van-slider
-            value="{{distanceRange}}"
-            min="0"
-            max="100"
-            bind:change="onDistanceChange"
-          />
-          <view class="range-text">
-            <text>{{distanceRange}}km以内</text>
-          </view>
-        </view>
-
-        <view class="filter-section">
           <text class="filter-section-title">性别</text>
-          <van-radio-group value="{{gender}}" bind:change="onGenderChange" direction="horizontal">
-            <van-radio name="female" custom-class="radio-item">女生</van-radio>
-            <van-radio name="male" custom-class="radio-item">男生</van-radio>
+          <van-radio-group value="{{gender}}" bind:change="onGenderChange">
+            <van-radio name="1">男生</van-radio>
+            <van-radio name="2">女生</van-radio>
+            <van-radio name="">全部</van-radio>
           </van-radio-group>
         </view>
 
-        <view class="filter-section">
-          <text class="filter-section-title">地区</text>
-          <van-cell 
-            title="选择地区" 
-            is-link 
-            value="{{selectedRegion || '请选择'}}"
-            bind:click="showRegionPicker"
-            border="{{false}}"
-          />
-        </view>
-
-        <view class="filter-section">
-          <text class="filter-section-title">更多筛选</text>
-          <view class="tag-list">
-            <view 
-              class="tag-item {{item.selected ? 'selected' : ''}}" 
-              wx:for="{{filterTags}}" 
-              wx:key="id"
-              bindtap="toggleTag"
-              data-id="{{item.id}}"
-            >
-              {{item.text}}
-            </view>
-          </view>
-        </view>
-
-        <view class="filter-footer">
-          <van-button block type="primary" color="#ff4d6a" bind:click="applyFilter">
-            确认
-          </van-button>
+        <!-- 操作按钮 -->
+        <view class="filter-actions">
+          <van-button type="default" block plain bind:tap="resetFilter">重置</van-button>
+          <van-button type="primary" block bind:tap="applyFilter">确认</van-button>
         </view>
       </view>
     </view>
-  </van-popup>
-
-  <!-- 地区选择器弹出层 -->
-  <van-popup
-    show="{{showRegionPicker}}"
-    position="bottom"
-    bind:close="closeRegionPicker"
-    round
-  >
-    <van-area 
-      area-list="{{areaList}}"
-      value="{{selectedRegionCode}}"
-      bind:confirm="onRegionConfirm"
-      bind:cancel="closeRegionPicker"
-    />
   </van-popup>
 
   <!-- 匹配成功弹窗 -->
@@ -163,16 +95,5 @@
         <button class="close-btn" bindtap="closeMatchSuccess">关闭</button>
       </view>
     </view>
-  </view>
-
-  <!-- 空状态 -->
-  <view class="empty-state" wx:if="{{showEmpty}}">
-    <image 
-      src="/images/empty-matches.png" 
-      mode="aspectFit"
-      binderror="handleImageError"
-      data-type="empty-image"
-    />
-    <text>暂无更多匹配</text>
   </view>
 </view>

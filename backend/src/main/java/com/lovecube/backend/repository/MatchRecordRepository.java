@@ -14,4 +14,5 @@ public interface MatchRecordRepository extends JpaRepository<MatchRecord, Long>
 {
     List<MatchRecord> findByUserId(Long userId);
 
+    List<MatchRecord> findByUserIdAndMatchedUserId(Long userId, Long matchedUserId);
 }

@@ -4,6 +4,7 @@ import com.lovecube.backend.models.MatchRecord;
 import com.lovecube.backend.models.User;
 import com.lovecube.backend.repository.MatchRecordRepository;
 import com.lovecube.backend.repository.UserRepository;
+import com.lovecube.backend.utils.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,11 +70,6 @@ public class MatchService
             throw new RuntimeException("获取匹配记录失败: " + e.getMessage());
         }
 
-        // 过滤掉已经匹配过的用户
-        potentialMatches = potentialMatches.stream()
-                .filter(user -> !matchedUserIds.contains(user.getUserid()))
-                .collect(Collectors.toList());
-        logger.info("过滤掉已匹配用户后 - 最终匹配用户数量: {}", potentialMatches.size());
 
         // 计算匹配分数并创建匹配记录
         List<MatchRecord> newMatchRecords = new ArrayList<>();
@@ -124,5 +121,77 @@ public class MatchService
         }
         
         return score;
+    }
+
+    /**
+     * 获取当前用户ID
+     */
+    public Long getCurrentUserId(String token) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        String openid = JwtUtil.getOpenIdFromToken(token);
+        if (openid != null) {
+            User user = userRepository.findByOpenid(openid);
+            return user != null ? user.getUserid() : null;
+        }
+        return null;
+    }
+
+    /**
+     * 获取所有用户列表（除了当前用户）
+     */
+    public List<User> getAllUsers(Long currentUserId, Integer gender) {
+        if (gender != null) {
+            return userRepository.findByGenderAndUseridNot(gender, currentUserId);
+        }
+        return userRepository.findByUseridNot(currentUserId);
+    }
+
+    /**
+     * 创建匹配记录
+     */
+    @Transactional
+    public void createMatch(Long userId, Long targetUserId) {
+        MatchRecord match = new MatchRecord();
+        match.setUserId(userId);
+        match.setMatchedUserId(targetUserId);
+        match.setMatchScore(calculateMatchScore(
+            userRepository.findById(userId).orElseThrow(),
+            userRepository.findById(targetUserId).orElseThrow()
+        ));
+        matchRecordRepository.save(match);
+    }
+
+    /**
+     * 检查两个用户之间是否已经匹配
+     */
+    public boolean checkMatchExists(Long userId, Long targetUserId) {
+        return !matchRecordRepository.findByUserIdAndMatchedUserId(userId, targetUserId).isEmpty();
+    }
+
+    /**
+     * 获取匹配统计信息
+     */
+    public Map<String, Object> getMatchStats(Long userId) {
+        List<MatchRecord> matches = matchRecordRepository.findByUserId(userId);
+        
+        Map<String, Object> stats = new HashMap<>();
+        stats.put("totalMatches", matches.size());
+        
+        // 按匹配分数分组统计
+        Map<String, Long> scoreDistribution = matches.stream()
+            .collect(Collectors.groupingBy(
+                match -> {
+                    double score = match.getMatchScore();
+                    if (score >= 80) return "高匹配度";
+                    else if (score >= 60) return "中等匹配度";
+                    else return "低匹配度";
+                },
+                Collectors.counting()
+            ));
+        stats.put("scoreDistribution", scoreDistribution);
+        
+        return stats;
     }
 }

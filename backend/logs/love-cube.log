@@ -258,3 +258,169 @@
 2025-06-11 17:22:01 INFO  c.l.backend.services.MatchService - 过滤掉已匹配用户后 - 最终匹配用户数量: 0
 2025-06-11 17:22:01 INFO  c.l.b.controllers.MatchController - 成功获取匹配列表 - 匹配数量: 0
 2025-06-11 17:22:01 INFO  c.l.b.controllers.MatchController - 成功获取匹配列表 - 匹配数量: 0
+2025-06-12 10:16:16 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 21312 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
+2025-06-12 10:16:16 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
+2025-06-12 10:16:17 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
+2025-06-12 10:16:18 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-12 10:16:20 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-12 10:16:21 INFO  c.l.backend.BackendApplication - Started BackendApplication in 4.85 seconds (process running for 5.377)
+2025-06-12 10:16:37 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 10:16:37 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 10:18:41 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 27540 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
+2025-06-12 10:18:41 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
+2025-06-12 10:18:42 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
+2025-06-12 10:18:43 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-12 10:18:45 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-12 10:18:46 INFO  c.l.backend.BackendApplication - Started BackendApplication in 4.52 seconds (process running for 5.004)
+2025-06-12 10:18:51 INFO  c.l.b.controllers.MatchController - 筛选匹配用户 - filters: {ageRange=[18, 35], distance=50, gender=1, region=, tags=[]}
+2025-06-12 10:18:52 INFO  c.l.backend.services.MatchService - 开始查找匹配 - userId: 4, minAge: 18, maxAge: 35, gender: 1, location: 
+2025-06-12 10:18:52 INFO  c.l.backend.services.MatchService - 初步筛选 - 找到 11 个潜在匹配
+2025-06-12 10:18:52 INFO  c.l.backend.services.MatchService - 已匹配用户数量: 37
+2025-06-12 10:18:52 INFO  c.l.backend.services.MatchService - 过滤掉已匹配用户后 - 最终匹配用户数量: 0
+2025-06-12 10:18:57 INFO  c.l.b.controllers.MatchController - 筛选匹配用户 - filters: {ageRange=[18, 35], distance=50, gender=2, region=, tags=[]}
+2025-06-12 10:18:57 INFO  c.l.backend.services.MatchService - 开始查找匹配 - userId: 4, minAge: 18, maxAge: 35, gender: 2, location: 
+2025-06-12 10:18:57 INFO  c.l.backend.services.MatchService - 初步筛选 - 找到 11 个潜在匹配
+2025-06-12 10:18:57 INFO  c.l.backend.services.MatchService - 已匹配用户数量: 37
+2025-06-12 10:18:57 INFO  c.l.backend.services.MatchService - 过滤掉已匹配用户后 - 最终匹配用户数量: 0
+2025-06-12 10:19:12 INFO  c.l.b.controllers.MatchController - 筛选匹配用户 - filters: {ageRange=[18, 35], distance=50, gender=, region=, tags=[]}
+2025-06-12 10:19:12 ERROR c.l.b.controllers.MatchController - 筛选用户失败
+java.lang.NumberFormatException: For input string: ""
+	at java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:67)
+	at java.base/java.lang.Integer.parseInt(Integer.java:678)
+	at java.base/java.lang.Integer.parseInt(Integer.java:786)
+	at com.lovecube.backend.controllers.MatchController.filterMatches(MatchController.java:80)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:259)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:192)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:920)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:830)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+2025-06-12 10:19:37 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 10:19:37 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 10:20:20 INFO  c.l.b.controllers.MatchController - 筛选匹配用户 - filters: {ageRange=[18, 35], distance=50, gender=1, region=, tags=[]}
+2025-06-12 10:20:20 INFO  c.l.backend.services.MatchService - 开始查找匹配 - userId: 4, minAge: 18, maxAge: 35, gender: 1, location: 
+2025-06-12 10:20:20 INFO  c.l.backend.services.MatchService - 初步筛选 - 找到 11 个潜在匹配
+2025-06-12 10:20:20 INFO  c.l.backend.services.MatchService - 已匹配用户数量: 37
+2025-06-12 10:20:20 INFO  c.l.backend.services.MatchService - 过滤掉已匹配用户后 - 最终匹配用户数量: 0
+2025-06-12 10:23:43 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 31092 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
+2025-06-12 10:23:43 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
+2025-06-12 10:23:44 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
+2025-06-12 10:23:45 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-12 10:23:47 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-12 10:23:47 INFO  c.l.backend.BackendApplication - Started BackendApplication in 4.562 seconds (process running for 4.997)
+2025-06-12 10:25:29 INFO  c.l.b.controllers.MatchController - 筛选匹配用户 - filters: {ageRange=[18, 35], distance=50, gender=1, region=, tags=[]}
+2025-06-12 10:25:30 INFO  c.l.backend.services.MatchService - 开始查找匹配 - userId: 4, minAge: 18, maxAge: 35, gender: 1, location: 
+2025-06-12 10:25:30 INFO  c.l.backend.services.MatchService - 初步筛选 - 找到 11 个潜在匹配
+2025-06-12 10:25:30 INFO  c.l.backend.services.MatchService - 已匹配用户数量: 37
+2025-06-12 10:25:30 INFO  c.l.backend.services.MatchService - 成功保存 11 条匹配记录
+2025-06-12 10:26:04 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 10:26:05 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 10:26:08 INFO  c.l.b.controllers.MatchController - 筛选匹配用户 - filters: {ageRange=[18, 35], distance=50, gender=2, region=, tags=[]}
+2025-06-12 10:26:09 INFO  c.l.backend.services.MatchService - 开始查找匹配 - userId: 4, minAge: 18, maxAge: 35, gender: 2, location: 
+2025-06-12 10:26:09 INFO  c.l.backend.services.MatchService - 初步筛选 - 找到 11 个潜在匹配
+2025-06-12 10:26:09 INFO  c.l.backend.services.MatchService - 已匹配用户数量: 48
+2025-06-12 10:26:09 INFO  c.l.backend.services.MatchService - 成功保存 11 条匹配记录
+2025-06-12 10:26:18 INFO  c.l.b.controllers.MatchController - 筛选匹配用户 - filters: {ageRange=[18, 35], distance=50, gender=2, region=, tags=[]}
+2025-06-12 10:26:18 INFO  c.l.backend.services.MatchService - 开始查找匹配 - userId: 4, minAge: 18, maxAge: 35, gender: 2, location: 
+2025-06-12 10:26:18 INFO  c.l.backend.services.MatchService - 初步筛选 - 找到 11 个潜在匹配
+2025-06-12 10:26:18 INFO  c.l.backend.services.MatchService - 已匹配用户数量: 59
+2025-06-12 10:26:18 INFO  c.l.backend.services.MatchService - 成功保存 11 条匹配记录
+2025-06-12 10:26:31 INFO  c.l.b.controllers.MatchController - 筛选匹配用户 - filters: {ageRange=[18, 35], distance=50, gender=2, region=, tags=[]}
+2025-06-12 10:26:31 INFO  c.l.backend.services.MatchService - 开始查找匹配 - userId: 4, minAge: 18, maxAge: 35, gender: 2, location: 
+2025-06-12 10:26:31 INFO  c.l.backend.services.MatchService - 初步筛选 - 找到 11 个潜在匹配
+2025-06-12 10:26:31 INFO  c.l.backend.services.MatchService - 已匹配用户数量: 70
+2025-06-12 10:26:31 INFO  c.l.backend.services.MatchService - 成功保存 11 条匹配记录
+2025-06-12 10:28:08 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 10:28:08 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 10:28:25 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 10:28:25 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 10:29:28 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 10:29:28 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null

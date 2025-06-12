@@ -11,7 +11,8 @@ Page({
       constellation: '',
       occupation: '',
       height: '',
-      signature: ''
+      signature: '',
+      photos: [] // 个人生活照片数组
     },
     region: ['北京市', '北京市', '东城区'],
     heightArray: Array.from({length: 81}, (_, i) => 140 + i), // 140cm - 220cm
@@ -19,7 +20,9 @@ Page({
     signatureCount: 0,
     showUnsavedDialog: false,
     isDataModified: false, // 标记数据是否被修改
-    originalData: null // 保存原始数据
+    originalData: null, // 保存原始数据
+    maxPhotos: 9, // 最大照片数量
+    isUploadingPhoto: false
   },
 
   onLoad() {
@@ -72,7 +75,8 @@ Page({
             constellation: data.constellation || '未知',
             occupation: data.occupation || '',
             height: data.height || '',
-            signature: data.signature || ''
+            signature: data.signature || '',
+            photos: data.photos || []
           };
           
           this.setData({
@@ -146,47 +150,99 @@ Page({
 
   // 选择头像
   chooseImage() {
-    wx.chooseImage({
+    if (this.data.isUploadingPhoto) {
+      wx.showToast({
+        title: '正在上传中...',
+        icon: 'none'
+      });
+      return;
+    }
+
+    wx.chooseMedia({
       count: 1,
-      sizeType: ['compressed'],
+      mediaType: ['image'],
       sourceType: ['album', 'camera'],
+      sizeType: ['compressed'],
       success: (res) => {
-        const tempFilePath = res.tempFilePaths[0];
+        const tempFilePath = res.tempFiles[0].tempFilePath;
         
-        wx.showLoading({
-          title: '上传中...'
+        // 预览选择的图片
+        this.setData({
+          'userInfo.avatar': tempFilePath,
+          isUploadingPhoto: true
         });
 
-        // 上传图片
-        wx.uploadFile({
-          url: config.baseUrl + '/upload/avatar',
-          filePath: tempFilePath,
-          name: 'file',
-          header: {
-            Authorization: "Bearer " + wx.getStorageSync("token")
-          },
-          success: (uploadRes) => {
-            const data = JSON.parse(uploadRes.data);
-            if (data.url) {
-              this.setData({
-                'userInfo.avatar': data.url
-              });
-              wx.showToast({
-                title: '上传成功',
-                icon: 'success'
-              });
-            }
+        // 压缩图片
+        wx.compressImage({
+          src: tempFilePath,
+          quality: 80,
+          success: (compressRes) => {
+            this.uploadAvatar(compressRes.tempFilePath);
           },
           fail: () => {
-            wx.showToast({
-              title: '上传失败',
-              icon: 'error'
-            });
-          },
-          complete: () => {
-            wx.hideLoading();
+            // 如果压缩失败，使用原图上传
+            this.uploadAvatar(tempFilePath);
           }
         });
+      }
+    });
+  },
+
+  // 上传头像
+  uploadAvatar(filePath) {
+    wx.showLoading({
+      title: '上传中...',
+      mask: true
+    });
+
+    wx.uploadFile({
+      url: config.baseUrl + '/upload/avatar',
+      filePath: filePath,
+      name: 'file',
+      header: {
+        Authorization: "Bearer " + wx.getStorageSync("token")
+      },
+      success: (uploadRes) => {
+        try {
+          const data = JSON.parse(uploadRes.data);
+          if (data.url) {
+            this.setData({
+              'userInfo.avatar': data.url,
+              isDataModified: true
+            });
+            wx.showToast({
+              title: '上传成功',
+              icon: 'success'
+            });
+          } else {
+            throw new Error('上传失败');
+          }
+        } catch (error) {
+          console.error('上传头像失败:', error);
+          // 恢复原来的头像
+          this.setData({
+            'userInfo.avatar': this.data.originalData ? JSON.parse(this.data.originalData).avatar : ''
+          });
+          wx.showToast({
+            title: '上传失败',
+            icon: 'error'
+          });
+        }
+      },
+      fail: (error) => {
+        console.error('上传头像请求失败:', error);
+        // 恢复原来的头像
+        this.setData({
+          'userInfo.avatar': this.data.originalData ? JSON.parse(this.data.originalData).avatar : ''
+        });
+        wx.showToast({
+          title: '网络错误',
+          icon: 'error'
+        });
+      },
+      complete: () => {
+        wx.hideLoading();
+        this.setData({ isUploadingPhoto: false });
       }
     });
   },
@@ -282,6 +338,160 @@ Page({
     return '未知';
   },
 
+  // 选择照片
+  choosePhotos() {
+    const remainCount = this.data.maxPhotos - this.data.userInfo.photos.length;
+    if (remainCount <= 0) {
+      wx.showToast({
+        title: '最多上传9张照片',
+        icon: 'none'
+      });
+      return;
+    }
+
+    if (this.data.isUploadingPhoto) {
+      wx.showToast({
+        title: '正在上传中...',
+        icon: 'none'
+      });
+      return;
+    }
+
+    wx.chooseMedia({
+      count: remainCount,
+      mediaType: ['image'],
+      sourceType: ['album', 'camera'],
+      sizeType: ['compressed'],
+      success: (res) => {
+        this.uploadPhotos(res.tempFiles);
+      }
+    });
+  },
+
+  // 上传照片
+  uploadPhotos(tempFiles) {
+    if (tempFiles.length === 0) return;
+
+    this.setData({ isUploadingPhoto: true });
+    wx.showLoading({
+      title: '上传中...',
+      mask: true
+    });
+
+    const uploadTasks = tempFiles.map(file => {
+      return new Promise((resolve, reject) => {
+        wx.compressImage({
+          src: file.tempFilePath,
+          quality: 80,
+          success: (compressRes) => {
+            wx.uploadFile({
+              url: config.baseUrl + '/upload/photo',
+              filePath: compressRes.tempFilePath,
+              name: 'file',
+              header: {
+                Authorization: "Bearer " + wx.getStorageSync("token")
+              },
+              success: (uploadRes) => {
+                try {
+                  const data = JSON.parse(uploadRes.data);
+                  if (data.url) {
+                    resolve(data.url);
+                  } else {
+                    reject(new Error('上传失败'));
+                  }
+                } catch (error) {
+                  reject(error);
+                }
+              },
+              fail: reject
+            });
+          },
+          fail: () => {
+            // 压缩失败，使用原图上传
+            wx.uploadFile({
+              url: config.baseUrl + '/upload/photo',
+              filePath: file.tempFilePath,
+              name: 'file',
+              header: {
+                Authorization: "Bearer " + wx.getStorageSync("token")
+              },
+              success: (uploadRes) => {
+                try {
+                  const data = JSON.parse(uploadRes.data);
+                  if (data.url) {
+                    resolve(data.url);
+                  } else {
+                    reject(new Error('上传失败'));
+                  }
+                } catch (error) {
+                  reject(error);
+                }
+              },
+              fail: reject
+            });
+          }
+        });
+      });
+    });
+
+    Promise.all(uploadTasks)
+      .then(photoUrls => {
+        const newPhotos = [...this.data.userInfo.photos, ...photoUrls];
+        this.setData({
+          'userInfo.photos': newPhotos,
+          isDataModified: true
+        });
+        wx.showToast({
+          title: '上传成功',
+          icon: 'success'
+        });
+      })
+      .catch(error => {
+        console.error('上传照片失败:', error);
+        wx.showToast({
+          title: '上传失败',
+          icon: 'error'
+        });
+      })
+      .finally(() => {
+        wx.hideLoading();
+        this.setData({ isUploadingPhoto: false });
+      });
+  },
+
+  // 预览照片
+  previewPhoto(e) {
+    const { index } = e.currentTarget.dataset;
+    const { photos } = this.data.userInfo;
+    
+    wx.previewImage({
+      current: photos[index],
+      urls: photos
+    });
+  },
+
+  // 删除照片
+  deletePhoto(e) {
+    const { index } = e.currentTarget.dataset;
+    Dialog.confirm({
+      title: '提示',
+      message: '确定要删除这张照片吗？'
+    }).then(() => {
+      const photos = [...this.data.userInfo.photos];
+      photos.splice(index, 1);
+      this.setData({
+        'userInfo.photos': photos,
+        isDataModified: true
+      });
+      wx.showToast({
+        title: '删除成功',
+        icon: 'success'
+      });
+    }).catch(() => {
+      // 取消删除
+    });
+  },
+
   // 保存资料
   saveProfile() {
     if (!this.checkLoginStatus()) return;
@@ -322,7 +532,6 @@ Page({
             isDataModified: false,
             originalData: JSON.stringify(this.data.userInfo)
           });
-          // 延迟返回上一页
           setTimeout(() => {
             wx.navigateBack();
           }, 1500);

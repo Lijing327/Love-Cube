@@ -2066,3 +2066,9 @@ Caused by: java.lang.ClassNotFoundException: com.lovecube.backend.dto.ChatPartne
 	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
 	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:525)
 	... 53 common frames omitted
+2025-06-12 14:28:37 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 31188 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
+2025-06-12 14:28:37 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
+2025-06-12 14:28:38 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
+2025-06-12 14:28:40 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-12 14:28:42 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-12 14:28:43 INFO  c.l.backend.BackendApplication - Started BackendApplication in 6.737 seconds (process running for 7.754)

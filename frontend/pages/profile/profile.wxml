@@ -134,6 +134,25 @@
     </view>
   </view>
 
+  <!-- 照片管理 -->
+  <view class="photos-section">
+    <view class="section-title">生活照片</view>
+    <view class="photos-grid">
+      <block wx:for="{{userInfo.photos}}" wx:key="index">
+        <view class="photo-item" bindtap="previewPhoto" data-index="{{index}}">
+          <image class="photo" src="{{item}}" mode="aspectFill" />
+          <view class="delete-btn" catchtap="deletePhoto" data-index="{{index}}">
+            <van-icon name="cross" class="delete-icon" />
+          </view>
+        </view>
+      </block>
+      <view class="add-photo" wx:if="{{userInfo.photos.length < maxPhotos}}" bindtap="choosePhotos"></view>
+    </view>
+    <view class="photos-tip">
+      最多上传{{maxPhotos}}张照片，长按照片可以调整顺序
+    </view>
+  </view>
+
   <!-- 保存按钮 -->
   <view class="save-btn-wrapper">
     <button class="save-btn" bindtap="saveProfile">保存</button>

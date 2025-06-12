@@ -1,7 +1,7 @@
 package com.lovecube.backend.entity;
 
-import jakarta.persistence.*;
 import lombok.Data;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
@@ -12,7 +12,7 @@ public class UserStatistics {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "user_id")
     private Long userId;
 
     @Column

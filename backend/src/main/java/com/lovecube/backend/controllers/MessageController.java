@@ -4,6 +4,8 @@ import com.lovecube.backend.models.ChatMessage;
 import com.lovecube.backend.models.User;
 import com.lovecube.backend.repository.ChatMessageRepository;
 import com.lovecube.backend.repository.UserRepository;
+import com.lovecube.backend.services.UserInteractionService;
+import com.lovecube.backend.services.UserVisitorService;
 import com.lovecube.backend.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,12 @@ public class MessageController {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private UserInteractionService interactionService;
+    
+    @Autowired
+    private UserVisitorService visitorService;
 
     /**
      * 获取聊天列表
@@ -105,24 +113,17 @@ public class MessageController {
                     .body(Map.of("message", "token 无效"));
             }
 
-            // 暂时返回空列表，后续可以扩展实现
-            List<Map<String, Object>> interactList = new ArrayList<>();
+            // 获取当前用户
+            User currentUser = userRepository.findByOpenid(openid);
+            if (currentUser == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "用户不存在"));
+            }
+
+            Long userId = currentUser.getUserid();
             
-            // 示例数据结构
-            /*
-            Map<String, Object> interact = new HashMap<>();
-            interact.put("id", 1);
-            interact.put("type", "like"); // like, comment, follow, gift
-            interact.put("user", Map.of(
-                "id", 2,
-                "name", "用户名",
-                "avatar", "/images/avatar.png"
-            ));
-            interact.put("content", "点赞了你的动态");
-            interact.put("time", System.currentTimeMillis());
-            interact.put("isRead", false);
-            interactList.add(interact);
-            */
+            // 获取互动列表（默认获取前20条）
+            List<Map<String, Object>> interactList = interactionService.getInteractionList(userId, 0, 20);
 
             return ResponseEntity.ok(interactList);
 
@@ -152,22 +153,17 @@ public class MessageController {
                     .body(Map.of("message", "token 无效"));
             }
 
-            // 暂时返回空列表，后续可以扩展实现
-            List<Map<String, Object>> visitorList = new ArrayList<>();
+            // 获取当前用户
+            User currentUser = userRepository.findByOpenid(openid);
+            if (currentUser == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "用户不存在"));
+            }
+
+            Long userId = currentUser.getUserid();
             
-            // 示例数据结构
-            /*
-            Map<String, Object> visitor = new HashMap<>();
-            visitor.put("id", 1);
-            visitor.put("user", Map.of(
-                "id", 2,
-                "name", "访客用户名",
-                "avatar", "/images/avatar.png"
-            ));
-            visitor.put("visitTime", System.currentTimeMillis());
-            visitor.put("isNew", true);
-            visitorList.add(visitor);
-            */
+            // 获取访客列表（默认获取前20条）
+            List<Map<String, Object>> visitorList = visitorService.getVisitorList(userId, 0, 20);
 
             return ResponseEntity.ok(visitorList);
 
@@ -209,10 +205,16 @@ public class MessageController {
             // 获取未读消息数量
             Long chatUnread = chatMessageRepository.countUnreadMessages(userId);
             
+            // 获取未读互动数量
+            Long interactUnread = interactionService.getUnreadInteractionCount(userId);
+            
+            // 获取今日新访客数量（作为访客未读数量）
+            Long visitorUnread = visitorService.getTodayVisitorCount(userId);
+            
             Map<String, Object> unreadCount = new HashMap<>();
             unreadCount.put("chat", chatUnread != null ? chatUnread.intValue() : 0);
-            unreadCount.put("interact", 0); // 暂时返回0，后续扩展
-            unreadCount.put("visitor", 0);  // 暂时返回0，后续扩展
+            unreadCount.put("interact", interactUnread != null ? interactUnread.intValue() : 0);
+            unreadCount.put("visitor", visitorUnread != null ? visitorUnread.intValue() : 0);
 
             return ResponseEntity.ok(unreadCount);
 

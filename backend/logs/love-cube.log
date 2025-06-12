@@ -5670,3 +5670,36 @@ Caused by: java.sql.SQLIntegrityConstraintViolationException: Column 'receiver_i
 2025-06-12 17:28:25 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
 2025-06-12 17:28:28 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
 2025-06-12 17:28:31 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:30:38 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:30:38 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:30:38 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:31:34 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 17:31:34 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 17:31:38 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:31:41 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:31:43 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:31:46 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:31:47 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:31:49 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:32:09 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:32:09 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:32:46 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 17:32:46 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 17:32:52 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:32:54 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:32:56 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:33:05 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:33:07 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:33:09 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:33:27 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:33:27 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:35:37 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 17:35:38 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 17:52:23 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 4212 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
+2025-06-12 17:52:23 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
+2025-06-12 17:52:24 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
+2025-06-12 17:52:25 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-12 17:52:27 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-12 17:52:28 INFO  c.l.backend.BackendApplication - Started BackendApplication in 5.145 seconds (process running for 5.659)
+2025-06-12 17:52:47 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 17:52:47 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null

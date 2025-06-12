@@ -101,7 +101,8 @@ Page({
         if (res.statusCode === 200) {
           const newUsers = res.data.map(user => ({
             id: user.userId,
-            avatar: user.profilePhoto || '/images/default-avatar.png',
+            avatar: user.photos && user.photos.length > 0 ? user.photos[0] : (user.profilePhoto || '/images/default-avatar.png'),
+            photos: user.photos || [],
             nickname: user.nickname || '未设置昵称',
             age: user.age || '未知',
             location: user.location || '未设置',
@@ -142,6 +143,17 @@ Page({
     const userId = e.currentTarget.dataset.id;
     wx.navigateTo({
       url: `/pages/user-profile/user-profile?id=${userId}`
+    });
+  },
+
+  // 预览照片
+  previewPhotos(e) {
+    const photos = e.currentTarget.dataset.photos;
+    if (!photos || photos.length === 0) return;
+    
+    wx.previewImage({
+      current: photos[0],
+      urls: photos
     });
   }
 })

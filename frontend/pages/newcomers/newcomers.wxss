@@ -57,8 +57,34 @@
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
 }
 
+.photo-section {
+  position: relative;
+  flex-shrink: 0;
+}
+
 .user-avatar {
   flex-shrink: 0;
+}
+
+.photo-count {
+  position: absolute;
+  right: 10rpx;
+  bottom: 10rpx;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 24rpx;
+  padding: 4rpx 12rpx;
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.photo-count .van-icon {
+  color: #fff;
+}
+
+.photo-count text {
+  color: #fff;
+  font-size: 20rpx;
 }
 
 .user-info {

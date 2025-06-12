@@ -69,7 +69,7 @@ Page({
           const formattedData = res.data.map(user => ({
             id: user.userid,
             userId: user.userid,
-            avatar: user.profilePhoto || user.avatar || '/images/default-avatar.png',
+            avatar: user.photos && user.photos.length > 0 ? user.photos[0] : (user.profilePhoto || user.avatar || '/images/default-avatar.png'),
             nickname: user.username || '未设置昵称',
             age: user.age || '未知',
             tag: user.tag || user.occupation || '暂无标签'
@@ -96,7 +96,7 @@ Page({
           const formattedData = res.data.map(user => ({
             id: user.userid,
             userId: user.userid,
-            avatar: user.profilePhoto || user.avatar || '/images/default-avatar.png',
+            avatar: user.photos && user.photos.length > 0 ? user.photos[0] : (user.profilePhoto || user.avatar || '/images/default-avatar.png'),
             nickname: user.username || '未设置昵称',
             age: user.age || '未知',
             city: user.city || user.location || '未知'

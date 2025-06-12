@@ -18,14 +18,27 @@
           wx:key="id" 
           bindtap="viewProfile" 
           data-id="{{item.id}}">
-      <van-image
-        class="user-avatar"
-        width="200rpx"
-        height="200rpx"
-        radius="12rpx"
-        src="{{item.avatar}}"
-        lazy-load
-      />
+      <view class="photo-section">
+        <van-image
+          class="user-avatar"
+          width="200rpx"
+          height="200rpx"
+          radius="12rpx"
+          src="{{item.avatar}}"
+          lazy-load
+          use-loading-slot
+          use-error-slot
+          bindtap="previewPhotos"
+          data-photos="{{item.photos}}"
+        >
+          <van-loading slot="loading" type="spinner" size="20" vertical />
+          <van-icon slot="error" name="photo-fail" size="36rpx" />
+        </van-image>
+        <view class="photo-count" wx:if="{{item.photos.length > 0}}">
+          <van-icon name="photo-o" size="24rpx" />
+          <text>{{item.photos.length}}</text>
+        </view>
+      </view>
       <view class="user-info">
         <view class="name-row">
           <text class="nickname">{{item.nickname}}</text>

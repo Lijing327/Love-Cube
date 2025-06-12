@@ -30,9 +30,9 @@
   <!-- 聊天消息列表 -->
   <scroll-view class="chat-box" scroll-y="true" scroll-into-view="msg-{{chatMessages.length-1}}">
     <block wx:for="{{chatMessages}}" wx:key="id">
-      <!-- 日期分割线 -->
-      <view class="message-date" wx:if="{{index === 0 || (chatMessages[index-1].timestamp && chatMessages[index].timestamp && !isSameDay(chatMessages[index-1].timestamp, item.timestamp))}}">
-        <text>{{item.formattedTime}}</text>
+      <!-- 日期分割线 - 按日期分组显示 -->
+      <view class="message-date" wx:if="{{item.showDateLine}}">
+        <text>{{item.dateString}}</text>
       </view>
       
       <view class="chat-item {{item.isSelf ? 'self' : 'other'}}" id="msg-{{index}}">
@@ -46,7 +46,7 @@
         />
         <view class="chat-content">
           <text>{{item.content}}</text>
-          <text class="chat-time">{{item.formattedTime}}</text>
+          <text class="chat-time">{{item.timeString}}</text>
         </view>
       </view>
     </block>

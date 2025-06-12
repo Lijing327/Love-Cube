@@ -27,6 +27,13 @@ Page({
   },
 
   onShow() {
+    // 检查是否需要刷新消息列表
+    const shouldRefresh = wx.getStorageSync('shouldRefreshMessages');
+    if (shouldRefresh) {
+      wx.removeStorageSync('shouldRefreshMessages');
+      this.loadMessages(); // 刷新消息列表
+    }
+    
     // 每次显示页面时更新未读消息数
     this.updateUnreadCount();
   },

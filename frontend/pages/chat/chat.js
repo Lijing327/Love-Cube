@@ -2,42 +2,33 @@ import config from "../../utils/config";
 
 // 格式化时间的工具函数
 const formatTime = (timestamp) => {
-  if (!timestamp) return '';
+  if (!timestamp) return { dateString: '', timeString: '', date: '' };
   
-  const date = new Date(timestamp);
   const now = new Date();
-  const diff = now - date;
+  const msgDate = new Date(timestamp);
   
-  // 如果是无效日期，返回空
-  if (isNaN(date.getTime())) return '';
-  
-  // 补零函数
   const pad = (num) => num < 10 ? `0${num}` : num;
   
-  // 获取时间部分
-  const hours = pad(date.getHours());
-  const minutes = pad(date.getMinutes());
-  const timeStr = `${hours}:${minutes}`;
+  // 格式化时间 HH:mm
+  const timeString = `${pad(msgDate.getHours())}:${pad(msgDate.getMinutes())}`;
   
-  // 如果是今天的消息
-  if (date.toDateString() === now.toDateString()) {
-    return timeStr;
+  // 格式化日期
+  const isToday = now.toDateString() === msgDate.toDateString();
+  const isYesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000).toDateString() === msgDate.toDateString();
+  
+  let dateString;
+  if (isToday) {
+    dateString = '今天';
+  } else if (isYesterday) {
+    dateString = '昨天';
+  } else {
+    dateString = `${pad(msgDate.getMonth() + 1)}-${pad(msgDate.getDate())}`;
   }
   
-  // 如果是昨天的消息
-  const yesterday = new Date(now);
-  yesterday.setDate(yesterday.getDate() - 1);
-  if (date.toDateString() === yesterday.toDateString()) {
-    return `昨天 ${timeStr}`;
-  }
+  // 用于比较的日期字符串
+  const date = msgDate.toDateString();
   
-  // 如果是今年的消息
-  if (date.getFullYear() === now.getFullYear()) {
-    return `${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${timeStr}`;
-  }
-  
-  // 其他情况显示完整日期
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${timeStr}`;
+  return { dateString, timeString, date };
 };
 
 // 判断两个时间戳是否是同一天
@@ -74,6 +65,23 @@ const handleImageUrl = (url) => {
     console.error('处理图片URL出错:', err);
     return config.images.defaultAvatar;
   }
+};
+
+// 处理消息列表，添加日期分割线标记
+const processMessagesWithDateLines = (messages) => {
+  if (!messages || messages.length === 0) return [];
+  
+  return messages.map((msg, index) => {
+    const timeInfo = formatTime(msg.timestamp);
+    const prevTimeInfo = index > 0 ? formatTime(messages[index - 1].timestamp) : null;
+    
+    return {
+      ...msg,
+      dateString: timeInfo.dateString,
+      timeString: timeInfo.timeString,
+      showDateLine: index === 0 || (prevTimeInfo && timeInfo.date !== prevTimeInfo.date)
+    };
+  });
 };
 
 Page({
@@ -137,6 +145,13 @@ Page({
     this.initWebSocket();
   },
 
+  onShow() {
+    // 页面显示时标记消息为已读
+    if (this.data.userId && this.data.receiverId) {
+      this.markMessagesAsRead();
+    }
+  },
+
   // 加载聊天记录
   loadChatHistory() {
     wx.request({
@@ -158,14 +173,19 @@ Page({
               content: msg.content,
               type: msg.type || 'chat',
               timestamp: msg.timestamp,
-              formattedTime: formatTime(msg.timestamp), // 添加格式化后的时间
               isSelf: isSelfMessage,
               avatar: isSelfMessage ? 
                 this.data.userAvatar : 
                 this.data.avatar
             };
           });
-          this.setData({ chatMessages: formattedMessages });
+          
+          // 处理消息，添加日期分割线
+          const processedMessages = processMessagesWithDateLines(formattedMessages);
+          this.setData({ chatMessages: processedMessages });
+          
+          // 标记消息为已读
+          this.markMessagesAsRead();
         } else {
           console.log("没有聊天记录或返回格式不正确");
           this.setData({ chatMessages: [] });
@@ -317,7 +337,6 @@ Page({
       content: msg.content, // 确保使用消息内容
       type: msg.type || 'chat',
       timestamp: msg.timestamp || Date.now(),
-      formattedTime: formatTime(msg.timestamp || Date.now()),
       isSelf: isSelfMessage,
       avatar: isSelfMessage ? 
         this.data.userAvatar : 
@@ -327,11 +346,19 @@ Page({
     console.log("📝 添加接收的消息到列表:", newMessage);
     messages.push(newMessage);
     
+    // 重新处理所有消息，添加日期分割线
+    const processedMessages = processMessagesWithDateLines(messages);
+    
     this.setData({ 
-      chatMessages: messages 
+      chatMessages: processedMessages 
     }, () => {
       // 滚动到最新消息
       this.scrollToBottom();
+      
+      // 如果收到的不是自己发送的消息，标记为已读
+      if (!isSelfMessage) {
+        this.markMessagesAsRead();
+      }
     });
   },
 
@@ -463,15 +490,17 @@ Page({
             content: message.content, // 确保使用消息内容
             type: message.type,
             timestamp: message.timestamp,
-            formattedTime: formatTime(message.timestamp),
             isSelf: true
           };
           
           console.log("📝 添加发送的消息到列表:", newMessage);
           messages.push(newMessage);
           
+          // 重新处理所有消息，添加日期分割线
+          const processedMessages = processMessagesWithDateLines(messages);
+          
           this.setData({
-            chatMessages: messages,
+            chatMessages: processedMessages,
             inputText: ""
           }, () => {
             this.scrollToBottom();
@@ -546,6 +575,9 @@ Page({
     // 停止心跳
     this.stopHeartbeat();
     
+    // 通知其他页面刷新消息数量
+    wx.setStorageSync('shouldRefreshMessages', true);
+    
     // 返回上一页
     wx.navigateBack({
       delta: 1,
@@ -571,9 +603,6 @@ Page({
     this.stopHeartbeat();
   },
 
-  // 添加到 Page 中供模板使用
-  isSameDay: isSameDay,
-
   // 处理发送确认
   handleSentConfirm(confirmMsg) {
     console.log("📝 处理发送确认:", confirmMsg);
@@ -590,5 +619,32 @@ Page({
         icon: 'none'
       });
     }
+  },
+
+  // 标记消息为已读
+  markMessagesAsRead() {
+    if (!this.data.userId || !this.data.receiverId) {
+      console.warn("⚠️ 用户ID或接收者ID不存在，无法标记消息已读");
+      return;
+    }
+
+    // API参数说明：userId是当前用户（接收者），senderId是对方用户（发送者）
+    wx.request({
+      url: `${config.baseUrl}/chat/markRead/${this.data.userId}/${this.data.receiverId}`,
+      method: 'PUT',
+      header: {
+        'Authorization': 'Bearer ' + wx.getStorageSync('token')
+      },
+      success: (res) => {
+        if (res.statusCode === 200) {
+          console.log("✅ 消息已标记为已读");
+        } else {
+          console.error("❌ 标记消息已读失败:", res);
+        }
+      },
+      fail: (err) => {
+        console.error("❌ 标记消息已读请求失败:", err);
+      }
+    });
   },
 });

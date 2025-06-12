@@ -5605,3 +5605,68 @@ Caused by: java.sql.SQLIntegrityConstraintViolationException: Column 'receiver_i
 2025-06-12 17:03:52 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
 2025-06-12 17:06:17 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
 2025-06-12 17:06:17 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:06:22 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 29084 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
+2025-06-12 17:06:22 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
+2025-06-12 17:06:23 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
+2025-06-12 17:06:25 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-12 17:06:27 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-12 17:06:27 INFO  c.l.backend.BackendApplication - Started BackendApplication in 5.341 seconds (process running for 5.965)
+2025-06-12 17:06:28 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:06:28 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:06:28 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 17:06:28 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-12 17:06:30 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:06:30 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:06:47 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:08:39 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:08:39 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:08:42 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:08:53 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:08:53 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:08:56 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:09:01 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:09:01 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:09:04 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:09:04 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:09:04 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:09:06 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:09:07 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:09:09 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:09:09 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:09:11 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:09:14 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:09:15 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:09:28 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:09:28 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:09:28 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:09:28 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:09:28 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:10:16 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:10:18 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:10:21 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:10:21 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:10:23 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:10:26 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:10:31 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:10:32 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:10:33 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:10:33 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:10:45 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:10:47 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:10:50 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:11:36 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:27:49 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 37540 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
+2025-06-12 17:27:49 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
+2025-06-12 17:27:50 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
+2025-06-12 17:27:51 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-12 17:27:53 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-12 17:27:54 INFO  c.l.backend.BackendApplication - Started BackendApplication in 5.148 seconds (process running for 5.62)
+2025-06-12 17:28:11 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:28:13 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:28:16 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:28:17 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:28:19 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:28:22 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:28:25 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
+2025-06-12 17:28:28 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
+2025-06-12 17:28:31 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接

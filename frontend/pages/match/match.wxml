@@ -12,7 +12,7 @@
   <!-- 用户列表区域 -->
   <view class="match-area">
     <view class="user-grid">
-      <view class="user-card" wx:for="{{matchList}}" wx:key="userid">
+      <view class="user-card" wx:for="{{matchList}}" wx:key="userid" bindtap="viewProfile" data-id="{{item.userid}}">
         <image class="user-image" src="{{item.profilePhoto || '/images/default-avatar.png'}}" mode="aspectFill" />
         <view class="user-info">
           <view class="basic-info">
@@ -25,7 +25,7 @@
           </view>
         </view>
         <!-- 操作按钮 -->
-        <view class="action-buttons">
+        <view class="action-buttons" catchtap="stopPropagation">
           <view class="action-btn dislike" bindtap="onDislike" data-userid="{{item.userid}}">
             <van-icon name="close" size="40rpx" color="#ff4d6a" />
           </view>

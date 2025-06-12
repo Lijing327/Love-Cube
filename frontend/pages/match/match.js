@@ -419,4 +419,31 @@ Page({
         break;
     }
   },
+
+  // 阻止事件冒泡
+  stopPropagation(e) {
+    e.stopPropagation();
+  },
+
+  // 查看用户资料
+  viewProfile(e) {
+    const userId = e.currentTarget.dataset.id;
+    if (userId) {
+      wx.navigateTo({
+        url: `/pages/user-profile/user-profile?id=${userId}`,
+        fail: function(err) {
+          console.error('Navigation failed:', err);
+          wx.showToast({
+            title: '页面跳转失败',
+            icon: 'none'
+          });
+        }
+      });
+    } else {
+      wx.showToast({
+        title: '用户ID不存在',
+        icon: 'none'
+      });
+    }
+  }
 });

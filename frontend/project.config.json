@@ -24,6 +24,16 @@
         "packageJsonPath": "./package.json",
         "miniprogramNpmDistDir": "./"
       }
+    ],
+    "uploadWithSourceMap": true,
+    "compileHotReLoad": false,
+    "lazyloadPlaceholderEnable": false,
+    "preloadBackgroundData": false,
+    "minifyWXSS": true,
+    "autoAudits": false,
+    "uglifyFileName": false,
+    "uploadFileDomain": [
+      "192.168.1.158"
     ]
   },
   "condition": {},

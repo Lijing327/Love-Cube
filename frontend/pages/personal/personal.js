@@ -92,13 +92,31 @@ Page({
         });
 
         if (res.statusCode === 200 && res.data) {
+          console.log('完整的用户信息对象:', JSON.stringify(res.data, null, 2));
+          console.log('用户信息中的所有字段:', Object.keys(res.data));
+          
+          // 临时解决方案：从本地存储获取照片数据（后端修复前的临时方案）
+          const localPhotos = wx.getStorageSync('userPhotos') || [];
+          console.log('本地存储的照片数据:', localPhotos);
+          
+          // 处理照片URL
+          const processedPhotos = res.data.photos ? 
+            res.data.photos.map(photo => this.handleImageUrl(photo)) : 
+            localPhotos.map(photo => this.handleImageUrl(photo));
+          console.log('原始照片数据:', res.data.photos);
+          console.log('处理后的照片数据:', processedPhotos);
+          
           this.setData({
-            userInfo: res.data,
-            avatarUrl: this.handleImageUrl(res.data.avatar),
+            userInfo: {
+              ...res.data,
+              photos: processedPhotos
+            },
+            avatarUrl: this.handleImageUrl(res.data.profilePhoto || res.data.avatar),
             tempUserInfo: { ...res.data },
             loadError: false
           });
           console.log('用户信息加载成功:', res.data);
+          console.log('处理后的头像URL:', this.handleImageUrl(res.data.profilePhoto || res.data.avatar));
         } else if (res.statusCode === 401) {
           console.log('token已过期');
           wx.removeStorageSync('token');
@@ -163,11 +181,18 @@ Page({
   },
 
   handleImageUrl(url) {
-    if (!url) return config.images.defaultAvatar;
+    console.log('处理头像URL:', url);
+    if (!url) {
+      console.log('使用默认头像');
+      return config.images.defaultAvatar;
+    }
     if (url.startsWith('http://') || url.startsWith('https://')) {
+      console.log('使用完整URL:', url);
       return url;
     }
-    return `${config.images.baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
+    const processedUrl = `${config.images.baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
+    console.log('拼接后的URL:', processedUrl);
+    return processedUrl;
   },
 
   editProfile() {
@@ -440,8 +465,19 @@ Page({
 
   // 跳转到登录页
   goToLogin() {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/login/login'
+    });
+  },
+
+  // 预览照片
+  previewPhoto(e) {
+    const { index } = e.currentTarget.dataset;
+    const { photos } = this.data.userInfo;
+    
+    wx.previewImage({
+      current: photos[index],
+      urls: photos
     });
   }
 });

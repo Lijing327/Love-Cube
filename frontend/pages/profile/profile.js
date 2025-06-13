@@ -196,15 +196,23 @@ Page({
     });
 
     wx.uploadFile({
-      url: config.baseUrl + '/upload/avatar',
+      url: config.baseUrl + '/upload/avatar', // 使用与personal.js一致的接口
       filePath: filePath,
       name: 'file',
       header: {
         Authorization: "Bearer " + wx.getStorageSync("token")
       },
       success: (uploadRes) => {
+        console.log('上传响应:', uploadRes);
         try {
+          // 检查HTTP状态码
+          if (uploadRes.statusCode !== 200) {
+            throw new Error(`HTTP ${uploadRes.statusCode}: ${uploadRes.data}`);
+          }
+          
           const data = JSON.parse(uploadRes.data);
+          console.log('解析后的数据:', data);
+          
           if (data.url) {
             this.setData({
               'userInfo.avatar': data.url,
@@ -215,7 +223,7 @@ Page({
               icon: 'success'
             });
           } else {
-            throw new Error('上传失败');
+            throw new Error(data.message || '上传失败');
           }
         } catch (error) {
           console.error('上传头像失败:', error);
@@ -224,7 +232,7 @@ Page({
             'userInfo.avatar': this.data.originalData ? JSON.parse(this.data.originalData).avatar : ''
           });
           wx.showToast({
-            title: '上传失败',
+            title: error.message || '上传失败',
             icon: 'error'
           });
         }
@@ -385,21 +393,30 @@ Page({
           quality: 80,
           success: (compressRes) => {
             wx.uploadFile({
-              url: config.baseUrl + '/upload/photo',
+              url: config.baseUrl + '/upload/avatar', // 使用与头像上传相同的接口
               filePath: compressRes.tempFilePath,
               name: 'file',
               header: {
                 Authorization: "Bearer " + wx.getStorageSync("token")
               },
               success: (uploadRes) => {
+                console.log('照片上传响应:', uploadRes);
                 try {
+                  // 检查HTTP状态码
+                  if (uploadRes.statusCode !== 200) {
+                    throw new Error(`HTTP ${uploadRes.statusCode}: ${uploadRes.data}`);
+                  }
+                  
                   const data = JSON.parse(uploadRes.data);
+                  console.log('照片解析后的数据:', data);
+                  
                   if (data.url) {
                     resolve(data.url);
                   } else {
-                    reject(new Error('上传失败'));
+                    reject(new Error(data.message || '上传失败'));
                   }
                 } catch (error) {
+                  console.error('照片上传解析失败:', error);
                   reject(error);
                 }
               },
@@ -409,21 +426,30 @@ Page({
           fail: () => {
             // 压缩失败，使用原图上传
             wx.uploadFile({
-              url: config.baseUrl + '/upload/photo',
+              url: config.baseUrl + '/upload/avatar', // 使用与头像上传相同的接口
               filePath: file.tempFilePath,
               name: 'file',
               header: {
                 Authorization: "Bearer " + wx.getStorageSync("token")
               },
               success: (uploadRes) => {
+                console.log('照片上传响应:', uploadRes);
                 try {
+                  // 检查HTTP状态码
+                  if (uploadRes.statusCode !== 200) {
+                    throw new Error(`HTTP ${uploadRes.statusCode}: ${uploadRes.data}`);
+                  }
+                  
                   const data = JSON.parse(uploadRes.data);
+                  console.log('照片解析后的数据:', data);
+                  
                   if (data.url) {
                     resolve(data.url);
                   } else {
-                    reject(new Error('上传失败'));
+                    reject(new Error(data.message || '上传失败'));
                   }
                 } catch (error) {
+                  console.error('照片上传解析失败:', error);
                   reject(error);
                 }
               },
@@ -441,6 +467,14 @@ Page({
           'userInfo.photos': newPhotos,
           isDataModified: true
         });
+        
+        // 临时解决方案：保存到本地存储（后端修复前的临时方案）
+        wx.setStorageSync('userPhotos', newPhotos);
+        console.log('照片已保存到本地存储:', newPhotos);
+        
+        // 自动保存到后端
+        this.savePhotosToServer(newPhotos);
+        
         wx.showToast({
           title: '上传成功',
           icon: 'success'
@@ -457,6 +491,37 @@ Page({
         wx.hideLoading();
         this.setData({ isUploadingPhoto: false });
       });
+  },
+
+  // 保存照片到服务器
+  savePhotosToServer(photos) {
+    wx.request({
+      url: config.baseUrl + '/users/profile',
+      method: 'PUT',
+      data: {
+        ...this.data.userInfo,
+        photos: photos,
+        location: this.data.region.join(' '),
+        height: this.data.heightArray[this.data.heightIndex]
+      },
+      header: {
+        'Authorization': 'Bearer ' + wx.getStorageSync('token'),
+        'Content-Type': 'application/json'
+      },
+      success: (res) => {
+        if (res.statusCode === 200) {
+          console.log('照片保存成功');
+          this.setData({
+            originalData: JSON.stringify(this.data.userInfo)
+          });
+        } else {
+          console.error('照片保存失败:', res);
+        }
+      },
+      fail: (error) => {
+        console.error('照片保存请求失败:', error);
+      }
+    });
   },
 
   // 预览照片
@@ -483,6 +548,14 @@ Page({
         'userInfo.photos': photos,
         isDataModified: true
       });
+      
+      // 临时解决方案：更新本地存储（后端修复前的临时方案）
+      wx.setStorageSync('userPhotos', photos);
+      console.log('本地存储照片已更新:', photos);
+      
+      // 自动保存到后端
+      this.savePhotosToServer(photos);
+      
       wx.showToast({
         title: '删除成功',
         icon: 'success'

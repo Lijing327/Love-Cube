@@ -236,40 +236,28 @@ Page({
     if (!content) return;
 
     const id = this.data.currentDynamicId;
-
-    wx.request({
-      url: config.baseUrl + `/dynamics/${id}/comments`,
-      method: 'POST',
-      data: { content },
-      header: {
-        Authorization: "Bearer " + wx.getStorageSync("token")
-      },
-      success: (res) => {
-        if (res.statusCode === 200) {
-          // 更新评论列表
-          const dynamicList = this.data.dynamicList;
-          const index = dynamicList.findIndex(item => item.id === id);
-          
-          if (index > -1) {
-            const dynamic = dynamicList[index];
-            const newComment = {
-              id: res.data.id,
-              content,
-              userInfo: {
-                nickname: wx.getStorageSync('userInfo').nickname
-              }
-            };
-
-            this.setData({
-              [`dynamicList[${index}].topComments`]: [newComment, ...(dynamic.topComments || [])].slice(0, 2),
-              [`dynamicList[${index}].commentCount`]: (dynamic.commentCount || 0) + 1,
-              showCommentInput: false,
-              commentContent: ''
-            });
-          }
+    const dynamicList = this.data.dynamicList;
+    const index = dynamicList.findIndex(item => item.id === id);
+    if (index > -1) {
+      const dynamic = dynamicList[index];
+      const newComment = {
+        id: Date.now(),
+        content,
+        userInfo: {
+          nickname: wx.getStorageSync('userInfo')?.nickname || '我'
         }
-      }
-    });
+      };
+      this.setData({
+        [`dynamicList[${index}].topComments`]: [newComment, ...(dynamic.topComments || [])].slice(0, 2),
+        [`dynamicList[${index}].commentCount`]: (dynamic.commentCount || 0) + 1,
+        showCommentInput: false,
+        commentContent: ''
+      });
+      wx.showToast({
+        title: '评论成功',
+        icon: 'success'
+      });
+    }
   },
 
   // 输入框获得焦点

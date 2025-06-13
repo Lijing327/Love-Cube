@@ -9,6 +9,27 @@
     </view>
   </view>
 
+  <!-- 签到卡片 -->
+  <view class="sign-in-card">
+    <view class="sign-in-header">
+      <view class="sign-in-info">
+        <text class="sign-in-title">每日签到</text>
+        <text class="sign-in-desc">已连续签到{{continuousSignIn}}天</text>
+      </view>
+      <view class="sign-in-btn {{todaySigned ? 'signed' : ''}}" bindtap="onSignIn">
+        {{todaySigned ? '已签到' : '签到'}}
+      </view>
+    </view>
+    <view class="sign-in-calendar">
+      <view class="calendar-item {{item.signed ? 'signed' : ''}}" 
+            wx:for="{{signInCalendar}}" 
+            wx:key="date">
+        <text class="date">{{item.date}}</text>
+        <text class="points">+{{item.points}}</text>
+      </view>
+    </view>
+  </view>
+
   <!-- 动态内容区 -->
   <scroll-view 
     scroll-y 

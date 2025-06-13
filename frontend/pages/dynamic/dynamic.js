@@ -16,11 +16,15 @@ Page({
     actions: [
       { name: '删除', color: '#ff4d6a' },
       { name: '举报' }
-    ]
+    ],
+    continuousSignIn: 0,
+    todaySigned: false,
+    signInCalendar: [],
   },
 
   onLoad() {
     this.loadDynamicList();
+    this.initSignInData();
   },
 
   // 加载动态列表
@@ -77,9 +81,15 @@ Page({
 
   // 发布动态
   onPostDynamic() {
-    wx.navigateTo({
-      url: '/pages/post/post'
+    wx.showToast({
+      title: '发布功能开发中',
+      icon: 'none',
+      duration: 2000
     });
+    // TODO: 后续实现发布动态页面
+    // wx.navigateTo({
+    //   url: '/pages/post/post'
+    // });
   },
 
   // 点赞
@@ -319,5 +329,114 @@ Page({
       title: '心愿魔方',
       path: '/pages/dynamic/dynamic'
     };
-  }
+  },
+
+  // 初始化签到数据
+  initSignInData: function() {
+    const today = new Date();
+    const calendar = [];
+    
+    // 生成最近7天的日历数据
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(date.getDate() - i);
+      calendar.push({
+        date: `${date.getMonth() + 1}/${date.getDate()}`,
+        signed: false,
+        points: this.calculateSignInPoints(i)
+      });
+    }
+
+    // 从本地存储获取签到记录
+    const signInRecord = wx.getStorageSync('signInRecord') || {};
+    const lastSignInDate = signInRecord.lastSignInDate;
+    const continuousSignIn = signInRecord.continuousSignIn || 0;
+
+    // 检查今天是否已签到
+    const todayStr = today.toDateString();
+    const todaySigned = lastSignInDate === todayStr;
+
+    // 更新日历数据
+    if (lastSignInDate) {
+      const lastDate = new Date(lastSignInDate);
+      calendar.forEach(item => {
+        const itemDate = new Date(item.date);
+        if (itemDate <= lastDate) {
+          item.signed = true;
+        }
+      });
+    }
+
+    this.setData({
+      continuousSignIn,
+      todaySigned,
+      signInCalendar: calendar
+    });
+  },
+
+  // 计算签到积分
+  calculateSignInPoints: function(daysAgo) {
+    // 根据连续签到天数计算积分
+    const basePoints = 5;
+    const bonusPoints = Math.floor(daysAgo / 3) * 2;
+    return basePoints + bonusPoints;
+  },
+
+  // 处理签到
+  onSignIn: function() {
+    if (this.data.todaySigned) {
+      wx.showToast({
+        title: '今天已经签到过了',
+        icon: 'none'
+      });
+      return;
+    }
+
+    const today = new Date();
+    const todayStr = today.toDateString();
+    const signInRecord = wx.getStorageSync('signInRecord') || {};
+    const lastSignInDate = signInRecord.lastSignInDate;
+    const continuousSignIn = signInRecord.continuousSignIn || 0;
+
+    // 检查是否连续签到
+    let newContinuousSignIn = 1;
+    if (lastSignInDate) {
+      const lastDate = new Date(lastSignInDate);
+      const diffDays = Math.floor((today - lastDate) / (24 * 60 * 60 * 1000));
+      if (diffDays === 1) {
+        newContinuousSignIn = continuousSignIn + 1;
+      }
+    }
+
+    // 更新签到记录
+    const newSignInRecord = {
+      lastSignInDate: todayStr,
+      continuousSignIn: newContinuousSignIn
+    };
+    wx.setStorageSync('signInRecord', newSignInRecord);
+
+    // 计算获得的积分
+    const points = this.calculateSignInPoints(0);
+
+    // 更新用户积分
+    this.updateUserPoints(points);
+
+    // 更新UI
+    this.setData({
+      todaySigned: true,
+      continuousSignIn: newContinuousSignIn
+    });
+
+    // 显示签到成功提示
+    wx.showToast({
+      title: `签到成功，获得${points}积分`,
+      icon: 'success'
+    });
+  },
+
+  // 更新用户积分
+  updateUserPoints: function(points) {
+    // TODO: 调用后端API更新用户积分
+    console.log('更新用户积分:', points);
+  },
 });

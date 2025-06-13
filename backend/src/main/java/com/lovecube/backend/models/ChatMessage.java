@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "chat_messages")
+@Table(name = "chatmessages")
 public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,7 @@ public class ChatMessage {
     @Column(nullable = false)
     private String content;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Column(name = "timestamp", nullable = false)
@@ -30,13 +30,17 @@ public class ChatMessage {
     @Column(name = "is_read", nullable = false)
     private boolean isRead;
 
-    @Column(name = "message_type", nullable = false)
+    @Column(name = "message_type")
     private String type = "chat"; // 消息类型：chat, ping, pong, ack, error 等
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        timestamp = System.currentTimeMillis();
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+        if (timestamp == null) {
+            timestamp = System.currentTimeMillis();
+        }
         isRead = false;
         if (type == null) {
             type = "chat";

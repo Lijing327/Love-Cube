@@ -38,7 +38,17 @@ public class ChatWebSocket extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) {
         try {
-            JsonNode jsonNode = objectMapper.readTree(message.getPayload());
+            String payload = message.getPayload();
+            logger.info("收到WebSocket消息: {}", payload);
+            
+            JsonNode jsonNode = objectMapper.readTree(payload);
+            
+            // 检查必要字段是否存在
+            if (!jsonNode.has("type")) {
+                logger.error("消息缺少type字段: {}", payload);
+                return;
+            }
+            
             String messageType = jsonNode.get("type").asText();
             
             // 处理心跳消息
@@ -50,15 +60,39 @@ public class ChatWebSocket extends TextWebSocketHandler {
             
             // 处理聊天消息
             if ("chat".equals(messageType)) {
-                Long senderId = jsonNode.get("senderId").asLong();
-                Long receiverId = jsonNode.get("receiverId").asLong();
-                String content = jsonNode.get("content").asText();
+                // 安全地获取字段值
+                Long senderId = null;
+                Long receiverId = null;
+                String content = null;
+                
+                if (jsonNode.has("senderId") && !jsonNode.get("senderId").isNull()) {
+                    senderId = jsonNode.get("senderId").asLong();
+                }
+                
+                if (jsonNode.has("receiverId") && !jsonNode.get("receiverId").isNull()) {
+                    receiverId = jsonNode.get("receiverId").asLong();
+                }
+                
+                if (jsonNode.has("content") && !jsonNode.get("content").isNull()) {
+                    content = jsonNode.get("content").asText();
+                }
                 
                 // 验证必要字段
                 if (senderId == null || receiverId == null || content == null || content.trim().isEmpty()) {
                     logger.error("消息字段不完整: senderId={}, receiverId={}, content={}", senderId, receiverId, content);
+                    logger.error("原始消息: {}", payload);
+                    
+                    // 发送错误响应给客户端
+                    String errorResponse = objectMapper.writeValueAsString(Map.of(
+                        "type", "error",
+                        "message", "消息字段不完整",
+                        "timestamp", System.currentTimeMillis()
+                    ));
+                    session.sendMessage(new TextMessage(errorResponse));
                     return;
                 }
+                
+                logger.info("解析消息成功: senderId={}, receiverId={}, content={}", senderId, receiverId, content);
                 
                 // 创建聊天消息对象
                 ChatMessage chatMessage = new ChatMessage();
@@ -111,7 +145,12 @@ public class ChatWebSocket extends TextWebSocketHandler {
             logger.error("处理消息时发生错误: {}", message.getPayload(), e);
             try {
                 // 发送错误响应
-                session.sendMessage(new TextMessage("{\"type\":\"error\",\"message\":\"消息处理失败\"}"));
+                String errorResponse = objectMapper.writeValueAsString(Map.of(
+                    "type", "error",
+                    "message", "消息处理失败: " + e.getMessage(),
+                    "timestamp", System.currentTimeMillis()
+                ));
+                session.sendMessage(new TextMessage(errorResponse));
             } catch (IOException ex) {
                 logger.error("发送错误响应失败", ex);
             }

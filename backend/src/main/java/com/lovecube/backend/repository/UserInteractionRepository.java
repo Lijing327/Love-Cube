@@ -3,9 +3,11 @@ package com.lovecube.backend.repository;
 import com.lovecube.backend.entity.UserInteraction;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -84,6 +86,8 @@ public interface UserInteractionRepository extends JpaRepository<UserInteraction
     /**
      * 批量标记互动为已读
      */
+    @Modifying
+    @Transactional
     @Query("UPDATE UserInteraction ui SET ui.isRead = true WHERE ui.toUserId = :userId AND ui.isRead = false")
     void markAllAsRead(@Param("userId") Long userId);
     

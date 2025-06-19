@@ -1,5 +1,7 @@
 package com.lovecube.backend.controllers;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lovecube.backend.entity.UserStatistics;
 import com.lovecube.backend.models.User;
 import com.lovecube.backend.repository.UserRepository;
@@ -27,6 +29,8 @@ public class UserController {
 
     @Autowired
     private UserStatisticsRepository userStatisticsRepository;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @GetMapping("/users/{userId}")
     public ResponseEntity<?> getUserProfile(@PathVariable Long userId) {
@@ -222,6 +226,10 @@ public class UserController {
         result.put("signature", user.getBio()); // 前端期望的是 signature 字段
         result.put("bio", user.getBio()); // 保留原字段以兼容
         result.put("height", user.getHeight());
+        
+        // 处理生活照片
+        List<String> photosList = parsePhotosJson(user.getPhotos());
+        result.put("photos", photosList);
 
         // 获取用户统计信息
         UserStatistics stats = userStatisticsRepository.findByUserId(user.getUserid());
@@ -282,5 +290,18 @@ public class UserController {
         if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return "摩羯座";
         
         return "未知";
+    }
+
+    // 解析照片JSON字符串
+    private List<String> parsePhotosJson(String photosJson) {
+        if (photosJson == null || photosJson.trim().isEmpty()) {
+            return new ArrayList<>();
+        }
+        try {
+            return objectMapper.readValue(photosJson, new TypeReference<List<String>>() {});
+        } catch (Exception e) {
+            System.err.println("解析照片JSON失败: " + e.getMessage());
+            return new ArrayList<>();
+        }
     }
 }

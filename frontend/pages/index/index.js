@@ -34,6 +34,9 @@ Page({
     this.loadBanners();
     this.loadRecommends();
     this.loadNewcomers();
+    
+    // 测试数据 - 临时启用来测试功能
+    this.testWithMockData();
   },
 
   onPullDownRefresh() {
@@ -66,10 +69,15 @@ Page({
       success: (res) => {
         if (res.statusCode === 200) {
           console.log('Recommends raw data:', res.data);
+          // 查看第一个用户的完整数据结构
+          if (res.data.length > 0) {
+            console.log('第一个推荐用户的完整数据:', res.data[0]);
+            console.log('第一个推荐用户的所有字段:', Object.keys(res.data[0]));
+          }
           const formattedData = res.data.map(user => ({
             id: user.userid,
             userId: user.userid,
-            avatar: user.photos && user.photos.length > 0 ? user.photos[0] : (user.profilePhoto || user.avatar || '/images/default-avatar.png'),
+            avatar: this.getDisplayAvatar(user),
             nickname: user.username || '未设置昵称',
             age: user.age || '未知',
             tag: user.tag || user.occupation || '暂无标签'
@@ -93,10 +101,15 @@ Page({
       success: (res) => {
         if (res.statusCode === 200) {
           console.log('Newcomers raw data:', res.data);
+          // 查看第一个用户的完整数据结构
+          if (res.data.length > 0) {
+            console.log('第一个新人用户的完整数据:', res.data[0]);
+            console.log('第一个新人用户的所有字段:', Object.keys(res.data[0]));
+          }
           const formattedData = res.data.map(user => ({
             id: user.userid,
             userId: user.userid,
-            avatar: user.photos && user.photos.length > 0 ? user.photos[0] : (user.profilePhoto || user.avatar || '/images/default-avatar.png'),
+            avatar: this.getDisplayAvatar(user),
             nickname: user.username || '未设置昵称',
             age: user.age || '未知',
             city: user.city || user.location || '未知'
@@ -108,6 +121,50 @@ Page({
         }
       }
     });
+  },
+
+  // 获取显示头像（优先使用生活照片）
+  getDisplayAvatar(user) {
+    console.log('处理用户头像:', user.userid, user);
+    let avatarUrl = '';
+    
+    // 优先使用生活照片 - 检查多个可能的字段
+    if (user.photos && user.photos.length > 0) {
+      avatarUrl = user.photos[0];
+      console.log('使用photos字段的生活照片:', avatarUrl);
+    } else if (user.lifePhotos && user.lifePhotos.length > 0) {
+      avatarUrl = user.lifePhotos[0];
+      console.log('使用lifePhotos字段的生活照片:', avatarUrl);
+    } else if (user.images && user.images.length > 0) {
+      avatarUrl = user.images[0];
+      console.log('使用images字段的生活照片:', avatarUrl);
+    } else if (user.gallery && user.gallery.length > 0) {
+      avatarUrl = user.gallery[0];
+      console.log('使用gallery字段的生活照片:', avatarUrl);
+    } else if (user.profilePhoto) {
+      avatarUrl = user.profilePhoto;
+      console.log('使用profilePhoto:', avatarUrl);
+    } else if (user.avatar) {
+      avatarUrl = user.avatar;
+      console.log('使用avatar:', avatarUrl);
+    } else {
+      console.log('使用默认头像');
+      return '/images/default-avatar.svg';
+    }
+    
+    // 处理URL
+    const finalUrl = this.handleImageUrl(avatarUrl);
+    console.log('最终头像URL:', finalUrl);
+    return finalUrl;
+  },
+
+  // 处理图片URL
+  handleImageUrl(url) {
+    if (!url) return '/images/default-avatar.svg';
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    return `${config.images.baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
   },
 
   // 点击搜索框
@@ -218,7 +275,7 @@ Page({
           const formattedData = res.data.map(user => ({
             id: user.userid,
             userId: user.userid,
-            avatar: user.profilePhoto || user.avatar || '/images/default-avatar.png',
+            avatar: this.getDisplayAvatar(user),
             nickname: user.username || '未设置昵称',
             age: user.age || '未知',
             tag: user.tag || user.occupation || '暂无标签'
@@ -288,6 +345,47 @@ Page({
   viewMoreNewcomers() {
     wx.navigateTo({
       url: '/pages/newcomers/newcomers'
+    });
+  },
+
+  // 测试用的模拟数据
+  testWithMockData() {
+    const mockRecommends = [
+      {
+        userid: 'test1',
+        username: '测试用户1',
+        age: 25,
+        occupation: '设计师',
+        profilePhoto: 'http://192.168.1.158:8090/admin/uploads/avatar/test1.jpg',
+        photos: [
+          'http://192.168.1.158:8090/admin/uploads/photos/life1.jpg',
+          'http://192.168.1.158:8090/admin/uploads/photos/life2.jpg'
+        ]
+      },
+      {
+        userid: 'test2',
+        username: '测试用户2',
+        age: 28,
+        occupation: '工程师',
+        profilePhoto: 'http://192.168.1.158:8090/admin/uploads/avatar/test2.jpg',
+        photos: [
+          'http://192.168.1.158:8090/admin/uploads/photos/life3.jpg'
+        ]
+      }
+    ];
+
+    const formattedData = mockRecommends.map(user => ({
+      id: user.userid,
+      userId: user.userid,
+      avatar: this.getDisplayAvatar(user),
+      nickname: user.username || '未设置昵称',
+      age: user.age || '未知',
+      tag: user.occupation || '暂无标签'
+    }));
+
+    console.log('Mock data formatted:', formattedData);
+    this.setData({
+      recommends: formattedData
     });
   }
 });

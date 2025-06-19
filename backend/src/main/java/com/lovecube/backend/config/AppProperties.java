@@ -10,4 +10,5 @@ import org.springframework.stereotype.Component;
 public class AppProperties {
     private String baseUrl;
     private String avatarPath;
+    private String photosPath;
 }

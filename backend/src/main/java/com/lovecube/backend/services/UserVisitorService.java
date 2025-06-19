@@ -70,6 +70,13 @@ public class UserVisitorService {
     }
     
     /**
+     * 标记所有访客记录为已读
+     */
+    public void markAllVisitorsAsRead(Long userId) {
+        visitorRepository.markAllAsRead(userId);
+    }
+    
+    /**
      * 获取用户的访客列表
      */
     public List<Map<String, Object>> getVisitorList(Long userId, int page, int size) {

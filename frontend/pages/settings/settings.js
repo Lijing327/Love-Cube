@@ -1,5 +1,5 @@
 import Dialog from "@vant/weapp/dialog/dialog";
-import config from "../utils/config";
+import config from "../../utils/config";
 
 
 Page({
@@ -7,7 +7,8 @@ Page({
   clearCache() {
     Dialog.confirm({
       title: "清理缓存",
-      message: "确定要清理缓存吗？"
+      message: "确定要清理缓存吗？",
+      selector: '#dialog'
     }).then(() => {
       wx.clearStorageSync();
       wx.showToast({ title: "缓存已清理", icon: "success" });

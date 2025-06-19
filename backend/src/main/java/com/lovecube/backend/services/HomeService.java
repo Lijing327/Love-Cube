@@ -1,5 +1,7 @@
 package com.lovecube.backend.services;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lovecube.backend.dto.UserFilterDTO;
 import com.lovecube.backend.entity.Banner;
 import com.lovecube.backend.models.User;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 @Service
 public class HomeService {
@@ -19,6 +22,8 @@ public class HomeService {
 
     @Autowired
     private UserRepository userRepository;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public List<Banner> getBanners() {
         return bannerRepository.findByIsActiveTrueOrderBySortAsc();
@@ -55,5 +60,18 @@ public class HomeService {
             "男".equals(filterDTO.getGender()) ? 1 : 2,
             filterDTO.getRegion()
         );
+    }
+
+    // 解析照片JSON字符串
+    private List<String> parsePhotosJson(String photosJson) {
+        if (photosJson == null || photosJson.trim().isEmpty()) {
+            return new ArrayList<>();
+        }
+        try {
+            return objectMapper.readValue(photosJson, new TypeReference<List<String>>() {});
+        } catch (Exception e) {
+            System.err.println("解析照片JSON失败: " + e.getMessage());
+            return new ArrayList<>();
+        }
     }
 } 

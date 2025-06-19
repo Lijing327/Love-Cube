@@ -34,7 +34,19 @@
     "uglifyFileName": false,
     "uploadFileDomain": [
       "192.168.1.158"
-    ]
+    ],
+    "urlCheck": false,
+    "domain": {
+      "request": [
+        "http://192.168.1.158:8090"
+      ],
+      "download": [
+        "http://192.168.1.158:8090"
+      ],
+      "upload": [
+        "http://192.168.1.158:8090"
+      ]
+    }
   },
   "condition": {},
   "editorSetting": {

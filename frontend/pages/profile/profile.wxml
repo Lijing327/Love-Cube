@@ -171,3 +171,6 @@
   bind:confirm="confirmLeave"
   bind:cancel="cancelLeave"
 />
+
+<!-- 照片删除确认弹窗 -->
+<van-dialog id="delete-photo-dialog" />

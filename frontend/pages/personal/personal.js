@@ -201,6 +201,13 @@ Page({
     });
   },
 
+  // 管理生活照片
+  managePhotos() {
+    wx.navigateTo({
+      url: '/pages/profile/profile?tab=photos'
+    });
+  },
+
   onCloseEditModal() {
     this.setData({
       showEditModal: false
@@ -478,6 +485,25 @@ Page({
     wx.previewImage({
       current: photos[index],
       urls: photos
+    });
+  },
+
+  // 图片加载成功
+  onPhotoLoad(e) {
+    console.log('图片加载成功:', e.currentTarget.dataset.index);
+  },
+
+  // 图片加载失败
+  onPhotoError(e) {
+    const index = e.currentTarget.dataset.index;
+    console.error('图片加载失败:', e, 'index:', index);
+    console.error('失败的图片URL:', this.data.userInfo.photos[index]);
+    
+    // 可以在这里设置一个默认图片或显示错误提示
+    wx.showToast({
+      title: `第${index + 1}张照片加载失败`,
+      icon: 'none',
+      duration: 2000
     });
   }
 });

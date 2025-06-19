@@ -56,6 +56,9 @@ public class User
     @Column(name = "birth_date")
     private LocalDateTime birthDate;//出生日期
 
+    @Column(name = "photos", columnDefinition = "TEXT")
+    private String photos; // 生活照片JSON数组
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;//注册时间
 

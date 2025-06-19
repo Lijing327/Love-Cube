@@ -27,9 +27,11 @@ public class WebMvcConfig implements WebMvcConfigurer
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         String uploadPath = System.getProperty("user.dir") + "/uploads/";
         String avatarPath = uploadPath + "avatar/";
+        String photosPath = uploadPath + "photos/";
 
         new File(uploadPath).mkdirs();
         new File(avatarPath).mkdirs();
+        new File(photosPath).mkdirs();
 
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations("file:" + uploadPath);
@@ -41,5 +43,6 @@ public class WebMvcConfig implements WebMvcConfigurer
                 .addResourceLocations("classpath:/static/images/");
 
         System.out.println("✅ 静态资源目录配置成功！上传目录：" + uploadPath);
+        System.out.println("✅ 照片目录：" + photosPath);
     }
 }

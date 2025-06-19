@@ -162,18 +162,8 @@ Page({
             unreadVisitor: res.data.visitor || 0
           });
 
-          // 更新TabBar的消息数
-          const totalUnread = res.data.chat + res.data.interact + res.data.visitor;
-          if (totalUnread > 0) {
-            wx.setTabBarBadge({
-              index: 2,
-              text: totalUnread.toString()
-            });
-          } else {
-            wx.removeTabBarBadge({
-              index: 2
-            });
-          }
+          // 使用统一的角标更新方法
+          this.updateTabBarBadge();
         }
       }
     });
@@ -187,7 +177,79 @@ Page({
       showEmpty: false
     }, () => {
       this.loadMessages();
+      
+      // 如果切换到互动或访客tab，标记对应消息为已读
+      if (tab === 'interact') {
+        this.markInteractAsRead();
+      } else if (tab === 'visitor') {
+        this.markVisitorAsRead();
+      }
     });
+  },
+
+  // 标记互动消息为已读
+  markInteractAsRead() {
+    wx.request({
+      url: config.baseUrl + '/messages/interact/markRead',
+      method: 'PUT',
+      header: {
+        Authorization: "Bearer " + wx.getStorageSync("token")
+      },
+      success: (res) => {
+        if (res.statusCode === 200) {
+          console.log("✅ 互动消息已标记为已读");
+          // 更新本地状态
+          this.setData({
+            unreadInteract: 0
+          });
+          // 重新更新TabBar角标
+          this.updateTabBarBadge();
+        }
+      },
+      fail: (err) => {
+        console.error("❌ 标记互动消息已读失败:", err);
+      }
+    });
+  },
+
+  // 标记访客消息为已读
+  markVisitorAsRead() {
+    wx.request({
+      url: config.baseUrl + '/messages/visitor/markRead',
+      method: 'PUT',
+      header: {
+        Authorization: "Bearer " + wx.getStorageSync("token")
+      },
+      success: (res) => {
+        if (res.statusCode === 200) {
+          console.log("✅ 访客消息已标记为已读");
+          // 更新本地状态
+          this.setData({
+            unreadVisitor: 0
+          });
+          // 重新更新TabBar角标
+          this.updateTabBarBadge();
+        }
+      },
+      fail: (err) => {
+        console.error("❌ 标记访客消息已读失败:", err);
+      }
+    });
+  },
+
+  // 更新TabBar角标
+  updateTabBarBadge() {
+    const totalUnread = this.data.unreadChat + this.data.unreadInteract + this.data.unreadVisitor;
+    if (totalUnread > 0) {
+      wx.setTabBarBadge({
+        index: 3, // 消息tab的index，根据app.json中的配置
+        text: totalUnread.toString()
+      });
+    } else {
+      wx.removeTabBarBadge({
+        index: 3
+      });
+    }
   },
 
   // 进入聊天

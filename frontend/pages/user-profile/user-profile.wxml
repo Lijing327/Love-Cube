@@ -30,11 +30,11 @@
           </view>
         </view>
         <view class="basic-info">
-          <text>{{userInfo.age}}岁</text>
-          <text class="dot">·</text>
-          <text>{{userInfo.constellation}}</text>
-          <text class="dot">·</text>
-          <text>{{userInfo.location}}</text>
+          <text>{{userInfo.age}}{{userInfo.age ? '岁' : ''}}</text>
+          <text class="dot" wx:if="{{userInfo.age && userInfo.constellation}}">·</text>
+          <text wx:if="{{userInfo.constellation}}">{{userInfo.constellation}}</text>
+          <text class="dot" wx:if="{{(userInfo.age || userInfo.constellation) && userInfo.location}}">·</text>
+          <text wx:if="{{userInfo.location}}">{{userInfo.location}}</text>
         </view>
       </view>
     </view>

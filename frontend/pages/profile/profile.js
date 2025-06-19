@@ -393,7 +393,7 @@ Page({
           quality: 80,
           success: (compressRes) => {
             wx.uploadFile({
-              url: config.baseUrl + '/upload/avatar', // 使用与头像上传相同的接口
+              url: config.baseUrl + '/upload/photos', // 使用专门的照片上传接口
               filePath: compressRes.tempFilePath,
               name: 'file',
               header: {
@@ -426,7 +426,7 @@ Page({
           fail: () => {
             // 压缩失败，使用原图上传
             wx.uploadFile({
-              url: config.baseUrl + '/upload/avatar', // 使用与头像上传相同的接口
+              url: config.baseUrl + '/upload/photos', // 使用专门的照片上传接口
               filePath: file.tempFilePath,
               name: 'file',
               header: {
@@ -496,13 +496,10 @@ Page({
   // 保存照片到服务器
   savePhotosToServer(photos) {
     wx.request({
-      url: config.baseUrl + '/users/profile',
-      method: 'PUT',
+      url: config.baseUrl + '/upload/photos/save',
+      method: 'POST',
       data: {
-        ...this.data.userInfo,
-        photos: photos,
-        location: this.data.region.join(' '),
-        height: this.data.heightArray[this.data.heightIndex]
+        photos: photos
       },
       header: {
         'Authorization': 'Bearer ' + wx.getStorageSync('token'),
@@ -510,7 +507,7 @@ Page({
       },
       success: (res) => {
         if (res.statusCode === 200) {
-          console.log('照片保存成功');
+          console.log('照片保存成功:', res.data);
           this.setData({
             originalData: JSON.stringify(this.data.userInfo)
           });
@@ -538,27 +535,54 @@ Page({
   // 删除照片
   deletePhoto(e) {
     const { index } = e.currentTarget.dataset;
+    const photoUrl = this.data.userInfo.photos[index];
+    
     Dialog.confirm({
       title: '提示',
-      message: '确定要删除这张照片吗？'
+      message: '确定要删除这张照片吗？',
+      selector: '#delete-photo-dialog'
     }).then(() => {
-      const photos = [...this.data.userInfo.photos];
-      photos.splice(index, 1);
-      this.setData({
-        'userInfo.photos': photos,
-        isDataModified: true
+      wx.showLoading({
+        title: '删除中...'
       });
-      
-      // 临时解决方案：更新本地存储（后端修复前的临时方案）
-      wx.setStorageSync('userPhotos', photos);
-      console.log('本地存储照片已更新:', photos);
-      
-      // 自动保存到后端
-      this.savePhotosToServer(photos);
-      
-      wx.showToast({
-        title: '删除成功',
-        icon: 'success'
+
+      // 调用后端删除API
+      wx.request({
+        url: config.baseUrl + '/upload/photos?photoUrl=' + encodeURIComponent(photoUrl),
+        method: 'DELETE',
+        header: {
+          'Authorization': 'Bearer ' + wx.getStorageSync('token')
+        },
+        success: (res) => {
+          if (res.statusCode === 200) {
+            const photos = [...this.data.userInfo.photos];
+            photos.splice(index, 1);
+            this.setData({
+              'userInfo.photos': photos,
+              isDataModified: true
+            });
+            
+            wx.showToast({
+              title: '删除成功',
+              icon: 'success'
+            });
+          } else {
+            wx.showToast({
+              title: res.data?.message || '删除失败',
+              icon: 'error'
+            });
+          }
+        },
+        fail: (error) => {
+          console.error('删除照片失败:', error);
+          wx.showToast({
+            title: '删除失败',
+            icon: 'error'
+          });
+        },
+        complete: () => {
+          wx.hideLoading();
+        }
       });
     }).catch(() => {
       // 取消删除

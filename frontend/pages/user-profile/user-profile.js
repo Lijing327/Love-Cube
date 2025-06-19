@@ -21,7 +21,13 @@ Page({
   onLoad(options) {
     if (options.id) {
       this.setData({ userId: options.id });
-      this.loadUserProfile(options.id);
+      
+      // 如果是测试用户，使用模拟数据
+      if (options.id.startsWith('test')) {
+        this.loadMockUserProfile(options.id);
+      } else {
+        this.loadUserProfile(options.id);
+      }
     } else {
       wx.showToast({
         title: '用户ID不存在',
@@ -46,21 +52,44 @@ Page({
         'Authorization': 'Bearer ' + wx.getStorageSync('token')
       },
       success: (res) => {
+        console.log('用户资料响应:', res);
         if (res.statusCode === 200) {
           const data = res.data;
+          console.log('用户资料数据:', data);
+          console.log('用户资料数据的所有字段:', Object.keys(data));
+          console.log('photos字段:', data.photos);
+          console.log('profilePhoto字段:', data.profilePhoto);
+          
+          // 处理照片URL - 检查多个可能的字段
+          let photosArray = [];
+          if (data.photos && Array.isArray(data.photos)) {
+            photosArray = data.photos;
+          } else if (data.lifePhotos && Array.isArray(data.lifePhotos)) {
+            photosArray = data.lifePhotos;
+          } else if (data.images && Array.isArray(data.images)) {
+            photosArray = data.images;
+          } else if (data.gallery && Array.isArray(data.gallery)) {
+            photosArray = data.gallery;
+          }
+          
+          const processedPhotos = photosArray.map(photo => this.handleImageUrl(photo));
+          console.log('原始照片数组:', photosArray);
+          console.log('处理后的照片:', processedPhotos);
+          
           this.setData({
             userInfo: {
-              avatar: data.profilePhoto || config.defaults.avatar,
+              avatar: this.handleImageUrl(data.profilePhoto) || config.defaults.avatar,
               nickname: data.username || '未设置昵称',
               gender: data.gender || '未设置',
-              age: data.age ? `${data.age}岁` : '未知',
+              age: data.age || '未知',
               constellation: data.constellation || '未知',
               location: data.location || '未设置',
               occupation: data.occupation || '未设置',
-              height: data.height ? `${data.height}cm` : '',
+              height: data.height || '',
               signature: data.bio || '',
               isVip: data.isVip || false,
-              level: data.level || 1
+              level: data.level || 1,
+              photos: processedPhotos
             }
           });
         } else {
@@ -80,6 +109,72 @@ Page({
         wx.hideLoading();
       }
     });
+  },
+
+  // 加载模拟用户资料（用于测试）
+  loadMockUserProfile(userId) {
+    const mockData = {
+      test1: {
+        profilePhoto: 'http://192.168.1.158:8090/admin/uploads/avatar/test1.jpg',
+        username: '测试用户1',
+        gender: '女',
+        age: 25,
+        constellation: '天秤座',
+        location: '北京市朝阳区',
+        occupation: '设计师',
+        height: 165,
+        bio: '热爱生活，喜欢设计和摄影',
+        photos: [
+          'http://192.168.1.158:8090/admin/uploads/photos/life1.jpg',
+          'http://192.168.1.158:8090/admin/uploads/photos/life2.jpg',
+          'http://192.168.1.158:8090/admin/uploads/photos/life3.jpg'
+        ]
+      },
+      test2: {
+        profilePhoto: 'http://192.168.1.158:8090/admin/uploads/avatar/test2.jpg',
+        username: '测试用户2',
+        gender: '男',
+        age: 28,
+        constellation: '狮子座',
+        location: '上海市浦东新区',
+        occupation: '工程师',
+        height: 175,
+        bio: '技术宅，喜欢编程和游戏',
+        photos: [
+          'http://192.168.1.158:8090/admin/uploads/photos/life4.jpg',
+          'http://192.168.1.158:8090/admin/uploads/photos/life5.jpg'
+        ]
+      }
+    };
+
+    const data = mockData[userId];
+    if (data) {
+      this.setData({
+        userInfo: {
+          avatar: this.handleImageUrl(data.profilePhoto) || config.defaults.avatar,
+          nickname: data.username || '未设置昵称',
+          gender: data.gender || '未设置',
+          age: data.age || '未知',
+          constellation: data.constellation || '未知',
+          location: data.location || '未设置',
+          occupation: data.occupation || '未设置',
+          height: data.height || '',
+          signature: data.bio || '',
+          isVip: false,
+          level: 1,
+          photos: data.photos.map(photo => this.handleImageUrl(photo))
+        }
+      });
+    }
+  },
+
+  // 处理图片URL
+  handleImageUrl(url) {
+    if (!url) return null;
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    return `${config.images.baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
   },
 
   // 返回上一页

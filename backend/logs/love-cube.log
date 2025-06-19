@@ -1,34 +1,34 @@
-2025-06-13 09:26:19 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 25832 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
-2025-06-13 09:26:19 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
-2025-06-13 09:26:20 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
-2025-06-13 09:26:23 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-06-13 09:26:27 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-06-13 09:26:28 INFO  c.l.backend.BackendApplication - Started BackendApplication in 9.223 seconds (process running for 10.254)
-2025-06-13 09:27:00 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
-2025-06-13 09:27:00 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
-2025-06-13 09:27:41 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
-2025-06-13 09:27:44 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
-2025-06-13 09:27:46 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
-2025-06-13 09:28:16 INFO  c.l.backend.websockets.ChatWebSocket - 收到WebSocket消息: {"type":"ping","timestamp":1749778096531}
-2025-06-13 09:28:29 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
-2025-06-13 09:28:29 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
-2025-06-13 09:28:46 INFO  c.l.backend.websockets.ChatWebSocket - 收到WebSocket消息: {"type":"ping","timestamp":1749778126517}
-2025-06-13 09:29:16 INFO  c.l.backend.websockets.ChatWebSocket - 收到WebSocket消息: {"type":"ping","timestamp":1749778156525}
-2025-06-13 09:29:33 INFO  c.l.b.controllers.MatchController - 筛选匹配用户 - filters: {ageRange=[18, 35], distance=50, gender=2, region=, tags=[]}
-2025-06-13 09:29:33 INFO  c.l.backend.services.MatchService - 开始查找匹配 - userId: 4, minAge: 18, maxAge: 35, gender: 2, location: 
-2025-06-13 09:29:33 INFO  c.l.backend.services.MatchService - 初步筛选 - 找到 11 个潜在匹配
-2025-06-13 09:29:33 INFO  c.l.backend.services.MatchService - 已匹配用户数量: 103
-2025-06-13 09:29:33 INFO  c.l.backend.services.MatchService - 成功保存 11 条匹配记录
-2025-06-13 09:29:46 INFO  c.l.backend.websockets.ChatWebSocket - 收到WebSocket消息: {"type":"ping","timestamp":1749778186530}
-2025-06-13 09:30:16 INFO  c.l.backend.websockets.ChatWebSocket - 收到WebSocket消息: {"type":"ping","timestamp":1749778216518}
-2025-06-13 09:30:46 INFO  c.l.backend.websockets.ChatWebSocket - 收到WebSocket消息: {"type":"ping","timestamp":1749778246520}
-2025-06-13 09:31:16 INFO  c.l.backend.websockets.ChatWebSocket - 收到WebSocket消息: {"type":"ping","timestamp":1749778276518}
-2025-06-13 09:31:46 INFO  c.l.backend.websockets.ChatWebSocket - 收到WebSocket消息: {"type":"ping","timestamp":1749778306528}
-2025-06-13 09:32:16 INFO  c.l.backend.websockets.ChatWebSocket - 收到WebSocket消息: {"type":"ping","timestamp":1749778336527}
-2025-06-13 09:32:20 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
-2025-06-13 11:00:28 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 25140 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
-2025-06-13 11:00:28 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
-2025-06-13 11:00:29 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
-2025-06-13 11:00:31 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-06-13 11:00:33 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-06-13 11:00:34 INFO  c.l.backend.BackendApplication - Started BackendApplication in 6.334 seconds (process running for 7.064)
+2025-06-19 16:36:19 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 41956 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
+2025-06-19 16:36:19 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
+2025-06-19 16:36:20 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
+2025-06-19 16:36:22 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-19 16:36:25 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-19 16:36:26 INFO  c.l.backend.BackendApplication - Started BackendApplication in 7.178 seconds (process running for 8.24)
+2025-06-19 16:37:50 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-19 16:37:50 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-19 16:45:31 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 42464 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
+2025-06-19 16:45:31 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
+2025-06-19 16:45:32 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
+2025-06-19 16:45:33 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-19 16:45:35 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-19 16:45:36 INFO  c.l.backend.BackendApplication - Started BackendApplication in 5.312 seconds (process running for 5.863)
+2025-06-19 16:46:18 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-19 16:46:18 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-19 16:54:25 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 44860 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
+2025-06-19 16:54:25 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
+2025-06-19 16:54:26 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
+2025-06-19 16:54:27 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-19 16:54:29 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-19 16:54:30 INFO  c.l.backend.BackendApplication - Started BackendApplication in 4.948 seconds (process running for 5.458)
+2025-06-19 17:42:15 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 41968 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
+2025-06-19 17:42:15 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
+2025-06-19 17:42:16 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
+2025-06-19 17:42:17 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-19 17:42:19 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-19 17:42:20 INFO  c.l.backend.BackendApplication - Started BackendApplication in 5.684 seconds (process running for 6.345)
+2025-06-19 17:56:29 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 45728 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
+2025-06-19 17:56:29 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
+2025-06-19 17:56:30 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
+2025-06-19 17:56:31 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-19 17:56:34 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-19 17:56:34 INFO  c.l.backend.BackendApplication - Started BackendApplication in 6.013 seconds (process running for 6.6)

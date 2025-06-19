@@ -238,4 +238,84 @@ public class MessageController {
             return 0;
         }
     }
+
+    /**
+     * 标记互动消息为已读
+     */
+    @PutMapping("/messages/interact/markRead")
+    public ResponseEntity<?> markInteractAsRead(@RequestHeader("Authorization") String authHeader) {
+        try {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "未提供或格式错误的 token"));
+            }
+
+            String token = authHeader.substring(7);
+            String openid = JwtUtil.getOpenIdFromToken(token);
+
+            if (openid == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "token 无效"));
+            }
+
+            // 获取当前用户
+            User currentUser = userRepository.findByOpenid(openid);
+            if (currentUser == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "用户不存在"));
+            }
+
+            Long userId = currentUser.getUserid();
+            
+            // 标记所有互动消息为已读
+            interactionService.markAllInteractionsAsRead(userId);
+
+            return ResponseEntity.ok(Map.of("message", "互动消息已标记为已读"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("message", "标记互动消息已读失败: " + e.getMessage()));
+        }
+    }
+
+    /**
+     * 标记访客消息为已读
+     */
+    @PutMapping("/messages/visitor/markRead")
+    public ResponseEntity<?> markVisitorAsRead(@RequestHeader("Authorization") String authHeader) {
+        try {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "未提供或格式错误的 token"));
+            }
+
+            String token = authHeader.substring(7);
+            String openid = JwtUtil.getOpenIdFromToken(token);
+
+            if (openid == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "token 无效"));
+            }
+
+            // 获取当前用户
+            User currentUser = userRepository.findByOpenid(openid);
+            if (currentUser == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "用户不存在"));
+            }
+
+            Long userId = currentUser.getUserid();
+            
+            // 标记所有访客记录为已读
+            visitorService.markAllVisitorsAsRead(userId);
+
+            return ResponseEntity.ok(Map.of("message", "访客消息已标记为已读"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("message", "标记访客消息已读失败: " + e.getMessage()));
+        }
+    }
 } 

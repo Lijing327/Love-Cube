@@ -3,9 +3,11 @@ package com.lovecube.backend.repository;
 import com.lovecube.backend.entity.UserVisitor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -97,6 +99,25 @@ public interface UserVisitorRepository extends JpaRepository<UserVisitor, Long> 
     /**
      * 删除过期的访客记录（超过指定天数）
      */
+    @Modifying
+    @Transactional
     @Query("DELETE FROM UserVisitor uv WHERE uv.createdAt < :cutoffDate")
     void deleteOldVisitorRecords(@Param("cutoffDate") LocalDateTime cutoffDate);
+    
+    /**
+     * 标记所有访客记录为已读（假设UserVisitor有isRead字段）
+     * 注：由于当前UserVisitor实体没有isRead字段，此方法仅作占位符
+     * 实际实现可能需要在其他地方维护访客已读状态
+     */
+    @Modifying
+    @Transactional
+    @Query("UPDATE UserVisitor uv SET uv.updatedAt = :readTime WHERE uv.visitedUserId = :userId")
+    void markAllAsRead(@Param("userId") Long userId, @Param("readTime") LocalDateTime readTime);
+    
+    /**
+     * 标记所有访客记录为已读（重载方法）
+     */
+    default void markAllAsRead(Long userId) {
+        markAllAsRead(userId, LocalDateTime.now());
+    }
 } 

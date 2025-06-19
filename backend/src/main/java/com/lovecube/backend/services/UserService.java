@@ -1,16 +1,19 @@
 package com.lovecube.backend.services;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lovecube.backend.entity.UserStatistics;
 import com.lovecube.backend.models.User;
 import com.lovecube.backend.repository.UserRepository;
 import com.lovecube.backend.repository.UserStatisticsRepository;
+import com.lovecube.backend.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.Period;
+import java.util.*;
 
 /**
  * @author Admin
@@ -24,6 +27,8 @@ public class UserService
 
     @Autowired
     private UserStatisticsRepository userStatisticsRepository;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public Map<String, Object> getUserProfile(Long userId) {
         User user = userRepository.findById(userId)
@@ -39,6 +44,10 @@ public class UserService
         result.put("occupation", user.getOccupation());
         result.put("bio", user.getBio());
         result.put("height", user.getHeight());
+        
+        // 处理生活照片
+        List<String> photosList = parsePhotosJson(user.getPhotos());
+        result.put("photos", photosList);
         
         // 添加星座信息
         if (user.getBirthDate() != null) {
@@ -102,19 +111,20 @@ public class UserService
     }
 
     public User getCurrentUser(String token) {
-        // 从token中获取用户ID
-        String userId = extractUserIdFromToken(token);
-        return userRepository.findById(Long.parseLong(userId))
-                .orElseThrow(() -> new RuntimeException("用户不存在"));
+        String openid = JwtUtil.getOpenIdFromToken(token.replace("Bearer ", ""));
+        return userRepository.findByOpenid(openid);
     }
 
-    private String extractUserIdFromToken(String token) {
-        // 移除 "Bearer " 前缀
-        if (token != null && token.startsWith("Bearer ")) {
-            token = token.substring(7);
+    // 解析照片JSON字符串
+    private List<String> parsePhotosJson(String photosJson) {
+        if (photosJson == null || photosJson.trim().isEmpty()) {
+            return new ArrayList<>();
         }
-        // TODO: 实现从token中解析用户ID的逻辑
-        // 这里暂时返回一个测试用的用户ID
-        return "1";
+        try {
+            return objectMapper.readValue(photosJson, new TypeReference<List<String>>() {});
+        } catch (Exception e) {
+            System.err.println("解析照片JSON失败: " + e.getMessage());
+            return new ArrayList<>();
+        }
     }
 }

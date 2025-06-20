@@ -1,4 +1,93 @@
 ﻿app:
-  base-url: https://xifg.com.cn/admin
+  base-url: ${APP_BASE_URL:https://xifg.com.cn/admin}
   avatar-path: /uploads/avatar/
   photos-path: /uploads/photos/
+  # OSS配置（生产环境）
+  oss:
+    enabled: true
+    access-key-id: ${OSS_ACCESS_KEY_ID:}
+    access-key-secret: ${OSS_ACCESS_KEY_SECRET:}
+    endpoint: ${OSS_ENDPOINT:oss-cn-beijing.aliyuncs.com}  # 根据你的实际区域调整
+    bucket-name: ${OSS_BUCKET_NAME:love-cube-files}
+    cdn-domain: ${OSS_CDN_DOMAIN:} # CDN域名，如：cdn.yourdomain.com
+    avatar-folder: avatars/
+    photos-folder: photos/
+
+server:
+  address: 0.0.0.0
+  port: 8090
+  servlet:
+    context-path: /admin
+
+jwt:
+  secret: ${JWT_SECRET:9a4f2c8d3b7a1e6f45c8a0b3f267d8b1d4e6f3c8a9d2b5f8e3a9c6b5d4e1f7a2}
+  expiration: 864000000  # 10 days in milliseconds
+
+spring:
+  profiles:
+    active: prod
+    
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:3306/${DB_NAME:lovecube}?useSSL=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+
+  sql:
+    init:
+      mode: never
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: false  # 生产环境关闭SQL日志
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      database: 0
+      timeout: 10000
+      password: ${REDIS_PASSWORD:}
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1
+
+  session:
+    store-type: none
+
+  cache:
+    type: none
+
+logging:
+  level:
+    root: warn
+    com.lovecube: info
+    org.springframework.web: warn
+  file:
+    name: logs/love-cube.log
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
+
+wechat:
+  appid: ${WECHAT_APPID:wx4fd72b722c677342}
+  secret: ${WECHAT_SECRET:5dd1e246d84e0ff739338509fd952596}
+  api:
+    login:
+      path: /api/wechat/login

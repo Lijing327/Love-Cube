@@ -2,3 +2,6 @@
   base-url: http://192.168.1.158:8090/admin
   avatar-path: /uploads/avatar/
   photos-path: /uploads/photos/
+  # OSS配置（开发环境暂时禁用）
+  oss:
+    enabled: false

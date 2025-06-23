@@ -37,14 +37,13 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long>
 
     // 查询最近一条聊天消息
     @Query("SELECT m FROM ChatMessage m WHERE " +
-           "m.type = 'chat' AND " +
            "((m.senderId = :userId1 AND m.receiverId = :userId2) OR " +
            "(m.senderId = :userId2 AND m.receiverId = :userId1)) " +
            "ORDER BY m.timestamp DESC LIMIT 1")
     ChatMessage findLatestChatMessage(@Param("userId1") Long userId1, @Param("userId2") Long userId2);
 
     @Query("SELECT COUNT(m) FROM ChatMessage m WHERE " +
-           "m.receiverId = :userId AND m.isRead = false AND m.type = 'chat'")
+           "m.receiverId = :userId AND m.isRead = false")
     Long countUnreadMessages(@Param("userId") Long userId);
 
     // 删除聊天记录

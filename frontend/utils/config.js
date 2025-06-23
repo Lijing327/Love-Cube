@@ -1,11 +1,13 @@
+const GLOBAL_CONFIG = require("../global-config");
+
 const config = {
-  baseUrl: "http://192.168.1.158:8090/admin/api",
-  wsBaseUrl: "ws://192.168.1.158:8090/admin",
+  baseUrl: GLOBAL_CONFIG.urls.baseUrl,
+  wsBaseUrl: GLOBAL_CONFIG.urls.wsBaseUrl,
   version: '1.0.0',
   
   // 上传相关配置
   upload: {
-    imageUrl: 'http://192.168.1.158:8090/admin/api/upload/image',
+    imageUrl: GLOBAL_CONFIG.urls.uploadImageUrl,
     maxSize: 5 * 1024 * 1024, // 5MB
     acceptTypes: ['jpg', 'jpeg', 'png', 'gif']
   },
@@ -22,7 +24,7 @@ const config = {
 
   // 图片处理配置
   images: {
-    baseUrl: 'http://192.168.1.158:8090/admin',
+    baseUrl: GLOBAL_CONFIG.urls.imageBaseUrl,
     defaultAvatar: '/images/default-avatar.svg', // 默认头像
     avatarPlaceholder: '/images/avatar-placeholder.svg', // 头像加载失败时的占位图
     uploadPath: '/uploads/avatar/' // 头像上传路径

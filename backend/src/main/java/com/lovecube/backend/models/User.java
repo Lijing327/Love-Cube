@@ -51,7 +51,7 @@ public class User
     private String occupation;//工作
 
     @Column(name = "height")
-    private Integer height;
+    private Integer height; // 用户身高(厘米)
 
     @Column(name = "birth_date")
     private LocalDateTime birthDate;//出生日期

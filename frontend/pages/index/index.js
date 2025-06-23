@@ -34,9 +34,6 @@ Page({
     this.loadBanners();
     this.loadRecommends();
     this.loadNewcomers();
-    
-    // 测试数据 - 临时启用来测试功能
-    this.testWithMockData();
   },
 
   onPullDownRefresh() {
@@ -348,44 +345,5 @@ Page({
     });
   },
 
-  // 测试用的模拟数据
-  testWithMockData() {
-    const mockRecommends = [
-      {
-        userid: 'test1',
-        username: '测试用户1',
-        age: 25,
-        occupation: '设计师',
-        profilePhoto: 'http://192.168.1.158:8090/admin/uploads/avatar/test1.jpg',
-        photos: [
-          'http://192.168.1.158:8090/admin/uploads/photos/life1.jpg',
-          'http://192.168.1.158:8090/admin/uploads/photos/life2.jpg'
-        ]
-      },
-      {
-        userid: 'test2',
-        username: '测试用户2',
-        age: 28,
-        occupation: '工程师',
-        profilePhoto: 'http://192.168.1.158:8090/admin/uploads/avatar/test2.jpg',
-        photos: [
-          'http://192.168.1.158:8090/admin/uploads/photos/life3.jpg'
-        ]
-      }
-    ];
 
-    const formattedData = mockRecommends.map(user => ({
-      id: user.userid,
-      userId: user.userid,
-      avatar: this.getDisplayAvatar(user),
-      nickname: user.username || '未设置昵称',
-      age: user.age || '未知',
-      tag: user.occupation || '暂无标签'
-    }));
-
-    console.log('Mock data formatted:', formattedData);
-    this.setData({
-      recommends: formattedData
-    });
-  }
 });

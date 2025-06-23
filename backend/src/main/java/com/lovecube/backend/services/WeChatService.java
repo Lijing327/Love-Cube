@@ -59,7 +59,7 @@ public class WeChatService
 
     private String generateToken(User user)
     {
-        // 这里可以使用 JWT 生成 Token
-        return "mockToken-" + user.getUserid();
+        // 使用 JWT 生成 Token
+        return JwtUtil.generateToken(user.getOpenid());
     }
 }

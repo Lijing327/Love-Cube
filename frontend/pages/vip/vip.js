@@ -1,3 +1,5 @@
+import config from "../../utils/config";
+
 Page({
   data: {
     userInfo: {
@@ -39,14 +41,33 @@ Page({
   processPayment(packageInfo) {
     wx.showLoading({ title: "支付中..." });
 
-    // 模拟支付请求（实际支付需调用后端API）
-    setTimeout(() => {
-      wx.hideLoading();
-      wx.showToast({ title: "支付成功", icon: "success" });
-
-      this.setData({
-        vipStatus: `VIP 有效期：${packageInfo.name}`,
-      });
-    }, 2000);
+    // 调用后端支付API
+    wx.request({
+      url: config.baseUrl + '/payment/vip',
+      method: 'POST',
+      header: {
+        'Authorization': 'Bearer ' + wx.getStorageSync('token')
+      },
+      data: {
+        packageId: packageInfo.id,
+        packageName: packageInfo.name,
+        price: packageInfo.price
+      },
+      success: (res) => {
+        wx.hideLoading();
+        if (res.statusCode === 200) {
+          wx.showToast({ title: "支付成功", icon: "success" });
+          this.setData({
+            vipStatus: `VIP 有效期：${packageInfo.name}`,
+          });
+        } else {
+          wx.showToast({ title: "支付失败", icon: "error" });
+        }
+      },
+      fail: () => {
+        wx.hideLoading();
+        wx.showToast({ title: "网络错误", icon: "error" });
+      }
+    });
   }
 });

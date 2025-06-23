@@ -56,7 +56,8 @@ public class ChatController {
                     Map<String, Object> messageMap = new HashMap<>();
                     messageMap.put("id", msg.getId());
                     messageMap.put("content", msg.getContent());
-                    messageMap.put("type", msg.getType());
+                    // 暂时注释掉type字段，因为数据库表中没有这个字段
+                    // messageMap.put("type", msg.getType());
                     messageMap.put("senderId", msg.getSenderId());
                     messageMap.put("receiverId", msg.getReceiverId());
                     messageMap.put("timestamp", msg.getTimestamp());
@@ -99,16 +100,17 @@ public class ChatController {
             message.setSenderId(Long.parseLong(messageData.get("senderId").toString()));
             message.setReceiverId(Long.parseLong(messageData.get("receiverId").toString()));
             message.setContent(messageData.get("content").toString());
-            message.setType(messageData.getOrDefault("type", "chat").toString());
+            // 暂时注释掉type字段设置，因为数据库表中没有这个字段
+            // message.setType(messageData.getOrDefault("type", "chat").toString());
+            message.setRead(false);
 
-            // 保存消息
-            ChatMessage savedMessage = chatMessageRepository.save(message);
+            ChatMessage savedMessage = chatMessageService.saveMessage(message);
 
-            // 返回保存的消息
             Map<String, Object> response = new HashMap<>();
             response.put("id", savedMessage.getId());
             response.put("content", savedMessage.getContent());
-            response.put("type", savedMessage.getType());
+            // 暂时注释掉type字段，因为数据库表中没有这个字段
+            // response.put("type", savedMessage.getType());
             response.put("senderId", savedMessage.getSenderId());
             response.put("receiverId", savedMessage.getReceiverId());
             response.put("timestamp", savedMessage.getTimestamp());

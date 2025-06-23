@@ -2,7 +2,6 @@ package com.lovecube.backend.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -21,29 +20,17 @@ public class ChatMessage {
     @Column(nullable = false)
     private String content;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
     @Column(name = "timestamp", nullable = false)
     private Long timestamp;
 
     @Column(name = "is_read", nullable = false)
     private boolean isRead;
 
-    @Column(name = "message_type")
-    private String type = "chat"; // 消息类型：chat, ping, pong, ack, error 等
-
     @PrePersist
     protected void onCreate() {
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
         if (timestamp == null) {
             timestamp = System.currentTimeMillis();
         }
         isRead = false;
-        if (type == null) {
-            type = "chat";
-        }
     }
 }

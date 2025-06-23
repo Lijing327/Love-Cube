@@ -28,16 +28,5 @@ CREATE TABLE IF NOT EXISTS `dynamic_likes` (
   KEY `idx_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='动态点赞表';
 
--- 插入测试数据
-INSERT INTO `dynamics` (`user_id`, `content`, `image_urls`, `like_count`, `comment_count`, `share_count`) VALUES
-(2, '今天天气真好，出来散散步~', '["http://192.168.1.158:8090/admin/images/dynamic1.jpg"]', 5, 2, 1),
-(3, '分享一下今天的美食，超级好吃！', '["http://192.168.1.158:8090/admin/images/dynamic2.jpg", "http://192.168.1.158:8090/admin/images/dynamic3.jpg"]', 8, 3, 2),
-(4, '工作之余，来一杯咖啡放松一下', NULL, 3, 1, 0),
-(2, '周末的阳光真的太舒服了', '["http://192.168.1.158:8090/admin/images/dynamic4.jpg"]', 12, 5, 3);
-
--- 插入点赞测试数据
-INSERT INTO `dynamic_likes` (`dynamic_id`, `user_id`) VALUES
-(1, 3), (1, 4),
-(2, 2), (2, 4),
-(3, 2), (3, 3),
-(4, 3), (4, 4); 
+-- 注意：这是表结构创建文件，不包含测试数据
+-- 实际数据将通过应用程序正常运行产生 

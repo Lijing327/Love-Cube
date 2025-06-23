@@ -19,11 +19,5 @@ CREATE TABLE `user_visitors` (
   KEY `idx_is_new_visitor` (`is_new_visitor`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户访客表';
 
--- 初始化一些测试数据
-INSERT INTO `user_visitors` 
-(`visitor_user_id`, `visited_user_id`, `visit_type`, `visit_source`, `duration_seconds`, `is_new_visitor`, `created_at`, `updated_at`)
-VALUES
-(1, 2, 'PROFILE', 'RECOMMEND', 45, TRUE, NOW(), NOW()),
-(3, 2, 'DETAIL', 'SEARCH', 120, TRUE, NOW(), NOW()),
-(4, 2, 'PHOTO', 'DISCOVER', 30, TRUE, NOW(), NOW()),
-(1, 2, 'PROFILE', 'RECOMMEND', 60, FALSE, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_SUB(NOW(), INTERVAL 1 DAY));
+-- 注意：这是表结构创建文件，不包含测试数据
+-- 实际数据将通过应用程序正常使用产生

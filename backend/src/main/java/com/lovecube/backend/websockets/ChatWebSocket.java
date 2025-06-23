@@ -99,7 +99,8 @@ public class ChatWebSocket extends TextWebSocketHandler {
                 chatMessage.setSenderId(senderId);
                 chatMessage.setReceiverId(receiverId);
                 chatMessage.setContent(content);
-                chatMessage.setType("chat");
+                // 暂时注释掉type字段设置，因为数据库表中没有这个字段
+                // chatMessage.setType("chat");
                 chatMessage.setTimestamp(System.currentTimeMillis());
                 chatMessage.setRead(false);
                 

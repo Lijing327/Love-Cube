@@ -21,11 +21,5 @@ CREATE TABLE `user_interactions` (
   UNIQUE KEY `uk_interaction` (`from_user_id`, `to_user_id`, `interaction_type`, `target_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户互动表';
 
--- 初始化一些测试数据
-INSERT INTO `user_interactions` 
-(`from_user_id`, `to_user_id`, `interaction_type`, `target_type`, `target_id`, `content`, `is_read`, `created_at`, `updated_at`)
-VALUES
-(1, 2, 'LIKE', 'PROFILE', 2, NULL, FALSE, NOW(), NOW()),
-(3, 2, 'FOLLOW', 'USER', NULL, NULL, FALSE, NOW(), NOW()),
-(1, 2, 'GIFT', 'USER', NULL, '送你一朵玫瑰花', FALSE, NOW(), NOW()),
-(4, 2, 'SUPER_LIKE', 'PROFILE', 2, NULL, FALSE, NOW(), NOW()); 
+-- 注意：这是表结构创建文件，不包含测试数据
+-- 实际数据将通过应用程序正常使用产生 

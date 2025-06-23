@@ -18,13 +18,6 @@ public class LoginController {
     @GetMapping("/login")
     public ResponseEntity<?> login(@RequestParam String code)
     {
-        if ("test".equals(code)) {
-            Map<String, Object> mock = new HashMap<>();
-            mock.put("status", "MOCK_SUCCESS");
-            mock.put("message", "接口联调成功！");
-            return ResponseEntity.ok(mock);
-        }
-
         Map<String, Object> response = weChatService.login(code);
         return ResponseEntity.ok(response);
     }

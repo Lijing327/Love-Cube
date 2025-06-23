@@ -1,4 +1,4 @@
-import config from "./pages/utils/config";
+import config from "./utils/config";
 
 App({
   globalData: {

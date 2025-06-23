@@ -1,31 +1,48 @@
-2025-06-20 10:57:55 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 29620 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
-2025-06-20 10:57:55 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
-2025-06-20 10:58:00 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
-2025-06-20 10:58:05 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-06-20 10:58:09 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-06-20 10:58:10 INFO  c.l.backend.BackendApplication - Started BackendApplication in 16.872 seconds (process running for 18.853)
-2025-06-20 11:02:56 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
-2025-06-20 11:02:56 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
-2025-06-20 11:03:04 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
-2025-06-20 11:03:09 INFO  c.l.backend.websockets.ChatWebSocket - 收到WebSocket消息: {"type":"chat","senderId":4,"receiverId":2,"content":"不知道啊","timestamp":1750388589669}
-2025-06-20 11:03:09 INFO  c.l.backend.websockets.ChatWebSocket - 解析消息成功: senderId=4, receiverId=2, content=不知道啊
-2025-06-20 11:03:09 INFO  c.l.backend.websockets.ChatWebSocket - 消息已保存: ID=6, 发送者=4, 接收者=2
-2025-06-20 11:03:09 INFO  c.l.backend.websockets.ChatWebSocket - 接收者用户 2 不在线，消息已存储
-2025-06-20 11:03:09 INFO  c.l.backend.websockets.ChatWebSocket - 发送确认已发送给发送者用户 4
-2025-06-20 11:03:17 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
-2025-06-20 11:03:19 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
-2025-06-20 11:03:37 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
-2025-06-20 11:03:46 INFO  c.l.backend.websockets.ChatWebSocket - 收到WebSocket消息: {"type":"chat","senderId":4,"receiverId":10,"content":"真的可以吗","timestamp":1750388625927}
-2025-06-20 11:03:46 INFO  c.l.backend.websockets.ChatWebSocket - 解析消息成功: senderId=4, receiverId=10, content=真的可以吗
-2025-06-20 11:03:46 INFO  c.l.backend.websockets.ChatWebSocket - 消息已保存: ID=7, 发送者=4, 接收者=10
-2025-06-20 11:03:46 INFO  c.l.backend.websockets.ChatWebSocket - 接收者用户 10 不在线，消息已存储
-2025-06-20 11:03:46 INFO  c.l.backend.websockets.ChatWebSocket - 发送确认已发送给发送者用户 4
-2025-06-20 11:03:47 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
-2025-06-20 11:03:49 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已连接
-2025-06-20 11:03:49 INFO  c.l.backend.websockets.ChatWebSocket - 收到WebSocket消息: {"type":"ping","timestamp":1750388629428}
-2025-06-20 11:04:19 INFO  c.l.backend.websockets.ChatWebSocket - 收到WebSocket消息: {"type":"ping","timestamp":1750388659421}
-2025-06-20 11:04:19 INFO  c.l.backend.websockets.ChatWebSocket - 收到WebSocket消息: {"type":"ping","timestamp":1750388659429}
-2025-06-20 11:04:32 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
-2025-06-20 11:04:32 INFO  c.l.backend.websockets.ChatWebSocket - 用户 4 已断开连接
-2025-06-20 11:06:32 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
-2025-06-20 11:06:32 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-23 09:11:13 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 26748 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
+2025-06-23 09:11:13 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
+2025-06-23 09:11:13 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
+2025-06-23 09:11:15 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-23 09:11:17 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-23 09:11:18 INFO  c.l.backend.BackendApplication - Started BackendApplication in 5.679 seconds (process running for 6.209)
+2025-06-23 09:11:25 WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1054, SQLState: 42S22
+2025-06-23 09:11:25 ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'u1_0.height' in 'field list'
+2025-06-23 09:19:09 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 27128 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
+2025-06-23 09:19:09 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
+2025-06-23 09:19:10 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
+2025-06-23 09:19:12 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-23 09:19:14 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-23 09:19:15 INFO  c.l.backend.BackendApplication - Started BackendApplication in 6.754 seconds (process running for 7.352)
+2025-06-23 09:19:48 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-23 09:19:48 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-23 09:19:51 WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1054, SQLState: 42S22
+2025-06-23 09:19:51 ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'cm1_0.message_type' in 'where clause'
+2025-06-23 09:19:51 WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1054, SQLState: 42S22
+2025-06-23 09:19:51 ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'cm1_0.created_at' in 'field list'
+2025-06-23 09:20:04 WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1054, SQLState: 42S22
+2025-06-23 09:20:04 ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'cm1_0.message_type' in 'where clause'
+2025-06-23 09:23:30 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 21592 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
+2025-06-23 09:23:30 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
+2025-06-23 09:23:31 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
+2025-06-23 09:23:32 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-23 09:23:34 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-23 09:23:35 INFO  c.l.backend.BackendApplication - Started BackendApplication in 4.816 seconds (process running for 5.282)
+2025-06-23 09:24:05 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-23 09:24:05 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-23 09:24:08 WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1054, SQLState: 42S22
+2025-06-23 09:24:08 WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1054, SQLState: 42S22
+2025-06-23 09:24:08 ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'cm1_0.message_type' in 'where clause'
+2025-06-23 09:24:08 ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'cm1_0.created_at' in 'field list'
+2025-06-23 09:25:00 WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1054, SQLState: 42S22
+2025-06-23 09:25:00 ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'cm1_0.message_type' in 'where clause'
+2025-06-23 09:25:05 WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1054, SQLState: 42S22
+2025-06-23 09:25:05 ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'cm1_0.message_type' in 'where clause'
+2025-06-23 09:25:12 WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1054, SQLState: 42S22
+2025-06-23 09:25:12 ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'cm1_0.created_at' in 'field list'
+2025-06-23 09:27:39 INFO  c.l.backend.BackendApplication - Starting BackendApplication using Java 17.0.12 with PID 11448 (E:\Project data\love-cube-project\backend\target\classes started by 123 in E:\Project data\love-cube-project\backend)
+2025-06-23 09:27:39 INFO  c.l.backend.BackendApplication - The following 1 profile is active: "dev"
+2025-06-23 09:27:40 WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.lovecube.backend]' package. Please check your configuration.
+2025-06-23 09:27:41 WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-23 09:27:44 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-06-23 09:27:45 INFO  c.l.backend.BackendApplication - Started BackendApplication in 6.365 seconds (process running for 7.03)
+2025-06-23 09:28:07 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null
+2025-06-23 09:28:07 INFO  c.l.b.controllers.MatchController - 获取全部用户列表 - gender: null

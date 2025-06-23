@@ -1,4 +1,4 @@
-import config from "../utils/config";
+import config from "../../utils/config";
 import { getUserId } from "../utils/auth";
 
 Page({

@@ -22,9 +22,12 @@ public class ChatMessageService {
 
     // 存储消息
     public ChatMessage saveMessage(ChatMessage msg) {
+        // 暂时注释掉type字段相关代码，因为数据库表中没有这个字段
+        /*
         if (msg.getType() == null) {
             msg.setType("chat");
         }
+        */
         msg.setRead(false);
         msg.setTimestamp(System.currentTimeMillis());
         return chatMessageRepository.save(msg);

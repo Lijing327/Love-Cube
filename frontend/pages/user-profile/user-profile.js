@@ -22,12 +22,7 @@ Page({
     if (options.id) {
       this.setData({ userId: options.id });
       
-      // 如果是测试用户，使用模拟数据
-      if (options.id.startsWith('test')) {
-        this.loadMockUserProfile(options.id);
-      } else {
-        this.loadUserProfile(options.id);
-      }
+      this.loadUserProfile(options.id);
     } else {
       wx.showToast({
         title: '用户ID不存在',
@@ -111,62 +106,7 @@ Page({
     });
   },
 
-  // 加载模拟用户资料（用于测试）
-  loadMockUserProfile(userId) {
-    const mockData = {
-      test1: {
-        profilePhoto: 'http://192.168.1.158:8090/admin/uploads/avatar/test1.jpg',
-        username: '测试用户1',
-        gender: '女',
-        age: 25,
-        constellation: '天秤座',
-        location: '北京市朝阳区',
-        occupation: '设计师',
-        height: 165,
-        bio: '热爱生活，喜欢设计和摄影',
-        photos: [
-          'http://192.168.1.158:8090/admin/uploads/photos/life1.jpg',
-          'http://192.168.1.158:8090/admin/uploads/photos/life2.jpg',
-          'http://192.168.1.158:8090/admin/uploads/photos/life3.jpg'
-        ]
-      },
-      test2: {
-        profilePhoto: 'http://192.168.1.158:8090/admin/uploads/avatar/test2.jpg',
-        username: '测试用户2',
-        gender: '男',
-        age: 28,
-        constellation: '狮子座',
-        location: '上海市浦东新区',
-        occupation: '工程师',
-        height: 175,
-        bio: '技术宅，喜欢编程和游戏',
-        photos: [
-          'http://192.168.1.158:8090/admin/uploads/photos/life4.jpg',
-          'http://192.168.1.158:8090/admin/uploads/photos/life5.jpg'
-        ]
-      }
-    };
 
-    const data = mockData[userId];
-    if (data) {
-      this.setData({
-        userInfo: {
-          avatar: this.handleImageUrl(data.profilePhoto) || config.defaults.avatar,
-          nickname: data.username || '未设置昵称',
-          gender: data.gender || '未设置',
-          age: data.age || '未知',
-          constellation: data.constellation || '未知',
-          location: data.location || '未设置',
-          occupation: data.occupation || '未设置',
-          height: data.height || '',
-          signature: data.bio || '',
-          isVip: false,
-          level: 1,
-          photos: data.photos.map(photo => this.handleImageUrl(photo))
-        }
-      });
-    }
-  },
 
   // 处理图片URL
   handleImageUrl(url) {

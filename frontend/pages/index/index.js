@@ -58,11 +58,18 @@ Page({
 
   // 加载推荐用户
   loadRecommends() {
+    const app = getApp();
+    const token = wx.getStorageSync("token");
+    
+    // 构建请求header
+    const header = {};
+    if (token && app.globalData.isLoggedIn) {
+      header.Authorization = "Bearer " + token;
+    }
+    
     wx.request({
       url: config.baseUrl + '/recommends',
-      header: {
-        Authorization: "Bearer " + wx.getStorageSync("token")
-      },
+      header: header,
       success: (res) => {
         if (res.statusCode === 200) {
           console.log('Recommends raw data:', res.data);
@@ -90,11 +97,18 @@ Page({
 
   // 加载新人推荐
   loadNewcomers() {
+    const app = getApp();
+    const token = wx.getStorageSync("token");
+    
+    // 构建请求header
+    const header = {};
+    if (token && app.globalData.isLoggedIn) {
+      header.Authorization = "Bearer " + token;
+    }
+    
     wx.request({
       url: config.baseUrl + '/newcomers',
-      header: {
-        Authorization: "Bearer " + wx.getStorageSync("token")
-      },
+      header: header,
       success: (res) => {
         if (res.statusCode === 200) {
           console.log('Newcomers raw data:', res.data);
@@ -293,47 +307,89 @@ Page({
   },
 
   // 查看用户资料
-  viewProfile(e) {
+  async viewProfile(e) {
     const userId = e.currentTarget.dataset.id;
     console.log('View profile event:', e);
     console.log('Current target:', e.currentTarget);
     console.log('Dataset:', e.currentTarget.dataset);
     console.log('Viewing profile for user:', userId);
-    if (userId) {
-      wx.navigateTo({
-        url: `/pages/user-profile/user-profile?id=${userId}`,
-        fail: function(err) {
-          console.error('Navigation failed:', err);
-          wx.showToast({
-            title: '页面跳转失败',
-            icon: 'none'
-          });
-        }
-      });
-    } else {
+    
+    if (!userId) {
       console.error('No userId provided for navigation');
       wx.showToast({
         title: '用户ID不存在',
         icon: 'none'
       });
+      return;
     }
+    
+    const app = getApp();
+    
+    // 检查是否需要登录
+    if (app.checkLoginRequired()) {
+      const shouldLogin = await app.promptLogin("查看用户详细资料");
+      if (!shouldLogin) {
+        return; // 用户选择不登录
+      }
+      return; // 跳转到登录页面了
+    }
+    
+    wx.navigateTo({
+      url: `/pages/user-profile/user-profile?id=${userId}`,
+      fail: function(err) {
+        console.error('Navigation failed:', err);
+        wx.showToast({
+          title: '页面跳转失败',
+          icon: 'none'
+        });
+      }
+    });
   },
 
   // 导航点击
-  onNavTap(e) {
+  async onNavTap(e) {
     const type = e.currentTarget.dataset.type;
+    const app = getApp();
+    
     switch(type) {
       case 'square':
-        wx.navigateTo({ url: '/pages/square/square' });
+        wx.switchTab({ url: '/pages/dynamic/dynamic' }); // 跳转到动态页面
         break;
       case 'match':
-        wx.navigateTo({ url: '/pages/match/match' });
+        // 匹配功能需要登录
+        if (app.checkLoginRequired()) {
+          const shouldLogin = await app.promptLogin("使用匹配功能");
+          if (!shouldLogin) return;
+          return;
+        }
+        wx.switchTab({ url: '/pages/match/match' });
         break;
       case 'date':
-        wx.navigateTo({ url: '/pages/date/date' });
+        // 约会功能需要登录
+        if (app.checkLoginRequired()) {
+          const shouldLogin = await app.promptLogin("使用约会功能");
+          if (!shouldLogin) return;
+          return;
+        }
+        wx.showToast({ title: '约会功能即将上线', icon: 'none' });
         break;
       case 'more':
-        wx.navigateTo({ url: '/pages/more/more' });
+        wx.showActionSheet({
+          itemList: ['搜索用户', '设置', '帮助'],
+          success: (res) => {
+            switch(res.tapIndex) {
+              case 0:
+                wx.navigateTo({ url: '/pages/search/search' });
+                break;
+              case 1:
+                wx.navigateTo({ url: '/pages/settings/settings' });
+                break;
+              case 2:
+                wx.showToast({ title: '帮助功能即将上线', icon: 'none' });
+                break;
+            }
+          }
+        });
         break;
     }
   },

@@ -67,11 +67,25 @@ function isLoggedIn() {
   return !!(userId && token);
 }
 
+/**
+ * 检查登录状态并引导登录
+ * @param {string} action 需要登录的操作描述
+ * @returns {Promise<boolean>} 是否已登录或用户同意登录
+ */
+async function checkLoginAndPrompt(action = "使用此功能") {
+  const app = getApp();
+  if (app && app.checkLoginRequired && app.checkLoginRequired()) {
+    return await app.promptLogin(action);
+  }
+  return true; // 已登录
+}
+
 module.exports = {
   getUserId,
   getToken,
   setUserId,
   setToken,
   clearAuth,
-  isLoggedIn
+  isLoggedIn,
+  checkLoginAndPrompt
 }; 

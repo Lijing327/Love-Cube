@@ -1,8 +1,8 @@
 {
   "pages": [
-    "pages/login/login",
-    "pages/welcome/welcome",
     "pages/index/index",
+    "pages/login/login", 
+    "pages/welcome/welcome",
     "pages/message/message",
     "pages/match/match",
     "pages/profile/profile",

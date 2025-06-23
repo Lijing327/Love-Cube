@@ -2,7 +2,7 @@
 const GLOBAL_CONFIG = {
   // 服务器配置
   server: {
-    ip: "192.168.1.158",      // 服务器IP地址 - 需要更改时只需修改这里
+    ip: "xifg.com.cn",      // 服务器IP地址 - 需要更改时只需修改这里
     port: "8090",             // 服务器端口
     basePath: "/admin"        // 基础路径
   },

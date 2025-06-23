@@ -26,7 +26,10 @@ Page({
 
   onShow() {
     console.log('个人页面 onShow');
-    this.checkLoginStatus();
+    // 延迟检查登录状态，确保登录成功后的状态更新
+    setTimeout(() => {
+      this.checkLoginStatus();
+    }, 100);
   },
 
   onHide() {
@@ -456,23 +459,36 @@ Page({
 
   // 检查登录状态
   checkLoginStatus() {
+    const app = getApp();
     const token = getToken();
-    console.log('当前token:', token);
+    const userId = wx.getStorageSync('userId');
     
-    if (token) {
+    console.log('检查登录状态 - token:', token ? '存在' : '不存在');
+    console.log('检查登录状态 - userId:', userId ? '存在' : '不存在');
+    console.log('检查登录状态 - globalData.isLoggedIn:', app.globalData.isLoggedIn);
+    
+    // 如果有 token 和 userId，认为已登录
+    if (token && userId) {
+      // 更新全局状态
+      app.globalData.isLoggedIn = true;
+      console.log('✅ 检测到登录信息，加载用户数据');
       this.loadUserInfo();
     } else {
-      console.log('未检测到token');
+      console.log('❌ 未检测到登录信息，显示登录引导');
+      app.globalData.isLoggedIn = false;
       this.setData({
         userInfo: null,
-        avatarUrl: ''
+        avatarUrl: '',
+        loadError: false
       });
     }
   },
 
   // 跳转到登录页
   goToLogin() {
-    wx.redirectTo({
+    // 保存当前页面路径，登录后返回
+    wx.setStorageSync('returnUrl', '/pages/personal/personal');
+    wx.navigateTo({
       url: '/pages/login/login'
     });
   },
@@ -505,5 +521,15 @@ Page({
       icon: 'none',
       duration: 2000
     });
+  },
+
+  // Debug: 手动刷新登录状态
+  debugRefreshLogin() {
+    console.log("🔄 手动刷新登录状态");
+    const app = getApp();
+    if (app.refreshLoginStatus) {
+      app.refreshLoginStatus();
+    }
+    this.checkLoginStatus();
   }
 });

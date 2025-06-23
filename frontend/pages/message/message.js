@@ -23,19 +23,43 @@ Page({
   },
 
   onLoad() {
-    this.loadMessages();
+    this.checkLoginAndLoad();
   },
 
   onShow() {
+    this.checkLoginAndLoad();
+  },
+
+  checkLoginAndLoad() {
+    const app = getApp();
+    if (app.checkLoginRequired()) {
+      // 显示未登录状态
+      this.setData({
+        showEmpty: true,
+        chatList: [],
+        interactList: [],
+        visitorList: []
+      });
+      return;
+    }
+    
     // 检查是否需要刷新消息列表
     const shouldRefresh = wx.getStorageSync('shouldRefreshMessages');
     if (shouldRefresh) {
       wx.removeStorageSync('shouldRefreshMessages');
       this.loadMessages(); // 刷新消息列表
+    } else {
+      this.loadMessages();
     }
     
     // 每次显示页面时更新未读消息数
     this.updateUnreadCount();
+  },
+
+  // 提示登录
+  async promptLogin() {
+    const app = getApp();
+    await app.promptLogin("查看消息");
   },
 
   onPullDownRefresh() {

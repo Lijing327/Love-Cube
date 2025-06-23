@@ -43,8 +43,7 @@ public class UserService
         result.put("age", user.getAge());
         result.put("occupation", user.getOccupation());
         result.put("bio", user.getBio());
-        // 暂时注释掉height字段相关代码
-        // result.put("height", user.getHeight());
+        result.put("height", user.getHeight());
         
         // 处理生活照片
         List<String> photosList = parsePhotosJson(user.getPhotos());
@@ -103,8 +102,7 @@ public class UserService
         if (user.getGender() != null) existingUser.setGender(user.getGender());
         if (user.getLocation() != null) existingUser.setLocation(user.getLocation());
         if (user.getOccupation() != null) existingUser.setOccupation(user.getOccupation());
-        // 暂时注释掉height字段相关代码
-        // if (user.getHeight() != null) existingUser.setHeight(user.getHeight());
+        if (user.getHeight() != null) existingUser.setHeight(user.getHeight());
         if (user.getProfilePhoto() != null) existingUser.setProfilePhoto(user.getProfilePhoto());
         if (user.getBio() != null) existingUser.setBio(user.getBio());
         if (user.getAge() != null) existingUser.setAge(user.getAge());

@@ -87,8 +87,6 @@ public class UserController {
             if (profileData.containsKey("occupation")) {
                 user.setOccupation((String) profileData.get("occupation"));
             }
-            // 暂时注释掉height字段相关代码
-            /*
             if (profileData.containsKey("height")) {
                 try {
                     Object heightObj = profileData.get("height");
@@ -105,7 +103,6 @@ public class UserController {
                     // 忽略身高解析错误
                 }
             }
-            */
             if (profileData.containsKey("signature")) {
                 user.setBio((String) profileData.get("signature"));
             }
@@ -226,10 +223,7 @@ public class UserController {
         result.put("occupation", user.getOccupation());
         result.put("signature", user.getBio()); // 前端期望的是 signature 字段
         result.put("bio", user.getBio()); // 保留原字段以兼容
-        // 暂时注释掉height字段相关代码
-        /*
         result.put("height", user.getHeight());
-        */
         
         // 处理生活照片
         List<String> photosList = parsePhotosJson(user.getPhotos());

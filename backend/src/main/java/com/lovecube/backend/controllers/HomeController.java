@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -23,12 +24,12 @@ public class HomeController {
     }
 
     @GetMapping("/recommends")
-    public ResponseEntity<List<User>> getRecommends() {
+    public ResponseEntity<List<Map<String, Object>>> getRecommends() {
         return ResponseEntity.ok(homeService.getRecommends());
     }
 
     @GetMapping("/newcomers")
-    public ResponseEntity<List<User>> getNewcomers() {
+    public ResponseEntity<List<Map<String, Object>>> getNewcomers() {
         return ResponseEntity.ok(homeService.getNewcomers());
     }
 

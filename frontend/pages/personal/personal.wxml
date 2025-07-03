@@ -16,7 +16,7 @@
           </view>
           <view class="benefit-item">
             <van-icon name="chat-o" size="16" color="#ff4d6a" />
-            <text>开始聊天交友</text>
+            <text>开始留言互动</text>
           </view>
           <view class="benefit-item">
             <van-icon name="friends-o" size="16" color="#ff4d6a" />

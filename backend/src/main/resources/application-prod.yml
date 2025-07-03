@@ -1,15 +1,15 @@
-锘縜pp:
+app:
   base-url: ${APP_BASE_URL:https://xifg.com.cn/admin}
   avatar-path: /uploads/avatar/
   photos-path: /uploads/photos/
-  # OSS閰嶇疆锛堢敓浜х幆澧冿級
+  # OSS配置（生产环境）
   oss:
     enabled: true
     access-key-id: ${OSS_ACCESS_KEY_ID:}
     access-key-secret: ${OSS_ACCESS_KEY_SECRET:}
-    endpoint: ${OSS_ENDPOINT:oss-cn-beijing.aliyuncs.com}  # 鏍规嵁浣犵殑瀹為檯鍖哄煙璋冩暣
+    endpoint: ${OSS_ENDPOINT:oss-cn-beijing.aliyuncs.com}  # 根据你的实际区域调整
     bucket-name: ${OSS_BUCKET_NAME:love-cube-files}
-    cdn-domain: ${OSS_CDN_DOMAIN:} # CDN鍩熷悕锛屽锛歝dn.yourdomain.com
+    cdn-domain: ${OSS_CDN_DOMAIN:} # CDN域名，如：cdn.yourdomain.com
     avatar-folder: avatars/
     photos-folder: photos/
 
@@ -48,7 +48,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: none
-    show-sql: false  # 鐢熶骇鐜鍏抽棴SQL鏃ュ織
+    show-sql: false  # 生产环境关闭SQL日志
     properties:
       hibernate:
         format_sql: false
@@ -86,7 +86,7 @@ logging:
     file: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
 
 wechat:
-  appid: ${WECHAT_APPID:wx4fd72b722c677342}
+  appid: ${WECHAT_APPID:wx5cd57f95b505d1f4}
   secret: ${WECHAT_SECRET:5dd1e246d84e0ff739338509fd952596}
   api:
     login:

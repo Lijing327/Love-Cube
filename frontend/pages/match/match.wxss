@@ -78,7 +78,22 @@
   font-size: 28rpx;
   font-weight: 500;
   color: #333;
-  margin-right: 12rpx;
+  margin-right: 8rpx;
+}
+
+.gender {
+  font-size: 22rpx;
+  color: #ff4d6a;
+  background: rgba(255, 77, 106, 0.1);
+  padding: 2rpx 6rpx;
+  border-radius: 6rpx;
+}
+
+.detail-info {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 8rpx;
 }
 
 .age {
@@ -86,7 +101,15 @@
   color: #666;
 }
 
-.detail-info {
+.distance {
+  font-size: 22rpx;
+  color: #999;
+  background: #f5f5f5;
+  padding: 2rpx 6rpx;
+  border-radius: 6rpx;
+}
+
+.extra-info {
   display: flex;
   flex-direction: column;
   gap: 4rpx;

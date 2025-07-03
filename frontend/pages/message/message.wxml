@@ -19,7 +19,7 @@
     <view class="nav-item {{currentTab === 'chat' ? 'active' : ''}}" 
       bindtap="switchTab" 
       data-tab="chat">
-      <text>聊天</text>
+      <text>留言互动</text>
       <view wx:if="{{unreadChat > 0}}" class="badge">{{unreadChat}}</view>
     </view>
     <view class="nav-item {{currentTab === 'interact' ? 'active' : ''}}" 
@@ -36,7 +36,7 @@
     </view>
   </view>
 
-  <!-- 聊天列表 -->
+  <!-- 留言互动列表 -->
   <view class="chat-list" wx:if="{{currentTab === 'chat'}}">
     <view class="chat-item" 
       wx:for="{{chatList}}" 

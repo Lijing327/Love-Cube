@@ -146,7 +146,7 @@ Page({
     });
   },
 
-  // 开始聊天
+  // 开始留言互动
   onChat() {
     const { userId } = this.data;
     const { nickname, avatar } = this.data.userInfo;

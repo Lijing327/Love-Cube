@@ -42,6 +42,33 @@
   justify-content: center;
 }
 
+/* 登录按钮 */
+.login-btn {
+  display: flex;
+  align-items: center;
+  padding: 8rpx 16rpx;
+  background: rgba(255, 77, 106, 0.1);
+  border-radius: 36rpx;
+  margin-left: 20rpx;
+}
+
+.login-text {
+  font-size: 24rpx;
+  color: #ff4d6a;
+  margin-left: 8rpx;
+}
+
+/* 用户信息 */
+.user-info {
+  margin-left: 20rpx;
+}
+
+.user-avatar {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+}
+
 /* 轮播图 */
 .banner {
   margin-top: 180rpx;
@@ -144,15 +171,36 @@
   text-align: center;
 }
 
+.recommend-basic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6rpx;
+}
+
 .recommend-name {
   font-size: 28rpx;
   color: #333;
-  margin-bottom: 4rpx;
+  margin-right: 8rpx;
+}
+
+.recommend-gender {
+  font-size: 24rpx;
+  color: #ff4d6a;
+  background: rgba(255, 77, 106, 0.1);
+  padding: 2rpx 8rpx;
+  border-radius: 8rpx;
 }
 
 .recommend-age {
   font-size: 24rpx;
   color: #999;
+  margin-bottom: 4rpx;
+}
+
+.recommend-distance {
+  font-size: 22rpx;
+  color: #666;
 }
 
 .recommend-tag {
@@ -199,12 +247,32 @@
 .newcomer-name {
   font-size: 28rpx;
   color: #333;
-  margin-right: 12rpx;
+  margin-right: 8rpx;
+}
+
+.newcomer-gender {
+  font-size: 22rpx;
+  color: #ff4d6a;
+  background: rgba(255, 77, 106, 0.1);
+  padding: 2rpx 6rpx;
+  border-radius: 6rpx;
+}
+
+.newcomer-details {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6rpx;
 }
 
 .newcomer-age {
   font-size: 24rpx;
   color: #ff4d6a;
+  margin-right: 12rpx;
+}
+
+.newcomer-distance {
+  font-size: 22rpx;
+  color: #666;
 }
 
 .newcomer-location {

@@ -8,7 +8,14 @@
       <van-icon name="search" size="36rpx" color="#999" />
       <text class="placeholder">搜索心仪的Ta</text>
     </view>
-
+    <!-- 添加登录入口 -->
+    <view class="login-btn" bindtap="goToLogin" wx:if="{{!isLoggedIn}}">
+      <van-icon name="user-o" size="36rpx" color="#ff4d6a" />
+      <text class="login-text">登录</text>
+    </view>
+    <view class="user-info" bindtap="goToPersonal" wx:else>
+      <image class="user-avatar" src="{{userInfo.avatar || '/images/default-avatar.svg'}}" mode="aspectFill" />
+    </view>
   </view>
 
   <!-- 轮播图 -->
@@ -48,8 +55,12 @@
           data-id="{{item.userId}}">
           <image class="recommend-avatar" src="{{item.avatar}}" mode="aspectFill" />
           <view class="recommend-info">
-            <text class="recommend-name">{{item.nickname}}</text>
+            <view class="recommend-basic">
+              <text class="recommend-name">{{item.nickname}}</text>
+              <text class="recommend-gender">{{item.gender}}</text>
+            </view>
             <text class="recommend-age">{{item.age}}岁</text>
+            <text class="recommend-distance" wx:if="{{item.distance}}">{{item.distance}}</text>
           </view>
           <text class="recommend-tag">{{item.tag}}</text>
         </view>
@@ -75,7 +86,11 @@
         <view class="newcomer-info">
           <view class="newcomer-basic">
             <text class="newcomer-name">{{item.nickname}}</text>
+            <text class="newcomer-gender">{{item.gender}}</text>
+          </view>
+          <view class="newcomer-details">
             <text class="newcomer-age">{{item.age}}岁</text>
+            <text class="newcomer-distance" wx:if="{{item.distance}}">{{item.distance}}</text>
           </view>
           <text class="newcomer-location">{{item.city}}</text>
         </view>

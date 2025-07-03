@@ -82,8 +82,8 @@ springdoc:
     path: /swagger-ui.html
 
 wechat:
-  appid: wx4fd72b722c677342
-  secret: 5dd1e246d84e0ff739338509fd952596
+  appid: wx5cd57f95b505d1f4
+  secret: f82aa93556baeaee07ca60297c7a2509
   api:
     login:
       path: /api/wechat/login

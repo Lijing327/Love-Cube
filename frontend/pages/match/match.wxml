@@ -17,9 +17,13 @@
         <view class="user-info">
           <view class="basic-info">
             <text class="name">{{item.username}}</text>
-            <text class="age">{{item.age}}岁</text>
+            <text class="gender">{{item.gender || '未知'}}</text>
           </view>
           <view class="detail-info">
+            <text class="age">{{item.age}}岁</text>
+            <text class="distance" wx:if="{{item.distance}}">{{item.distance}}km</text>
+          </view>
+          <view class="extra-info">
             <text class="occupation">{{item.occupation || '暂无职业'}}</text>
             <text class="location">{{item.location || '暂无地区'}}</text>
           </view>
@@ -89,9 +93,9 @@
         binderror="handleImageError" 
         data-type="success-image"
       />
-      <text class="success-text">匹配成功！</text>
+      <text class="success-text">话题互动成功！</text>
       <view class="success-actions">
-        <button class="chat-btn" bindtap="goToChat">开始聊天</button>
+        <button class="chat-btn" bindtap="goToChat">开始互动</button>
         <button class="close-btn" bindtap="closeMatchSuccess">关闭</button>
       </view>
     </view>

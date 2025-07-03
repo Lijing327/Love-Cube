@@ -16,7 +16,7 @@ Page({
       { name: '添加好友', color: '#333' }
     ],
     emptyText: {
-      chat: '暂无聊天消息',
+      chat: '暂无留言互动消息',
       interact: '暂无互动消息',
       visitor: '暂无访客记录'
     }

@@ -1,5 +1,5 @@
 {
-  "appid": "wx4fd72b722c677342",
+  "appid": "wx5cd57f95b505d1f4",
   "compileType": "miniprogram",
   "libVersion": "3.7.8",
   "packOptions": {
@@ -46,11 +46,20 @@
       "upload": [
         "http://192.168.1.158:8090"
       ]
-    }
+    },
+    "compileWorklet": false,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true
   },
   "condition": {},
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2
-  }
+  },
+  "simulatorPluginLibVersion": {}
 }

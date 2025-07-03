@@ -6,13 +6,15 @@ Page({
   data: {
     banners: [],
     navItems: [
-      { id: 1, type: 'square', icon: '/images/nav/square.png', text: '广场' },
+      { id: 1, type: 'square', icon: '/images/nav/square.png', text: '兴趣广场' },
       { id: 2, type: 'match', icon: '/images/nav/match.png', text: '速配' },
       { id: 3, type: 'date', icon: '/images/nav/date.png', text: '约会' },
       { id: 4, type: 'more', icon: '/images/nav/more.png', text: '更多' }
     ],
     recommends: [],
     newcomers: [],
+    isLoggedIn: false,
+    userInfo: {},
     showFilterPopup: false,
     showRegionPicker: false,
     areaList,
@@ -31,9 +33,40 @@ Page({
   },
 
   onLoad() {
+    this.checkLoginStatus();
     this.loadBanners();
     this.loadRecommends();
     this.loadNewcomers();
+  },
+
+  onShow() {
+    this.checkLoginStatus();
+  },
+
+  // 检查登录状态
+  checkLoginStatus() {
+    const app = getApp();
+    const token = wx.getStorageSync('token');
+    const userInfo = wx.getStorageSync('userInfo');
+    
+    this.setData({
+      isLoggedIn: !!(token && app.globalData.isLoggedIn),
+      userInfo: userInfo || {}
+    });
+  },
+
+  // 跳转到登录页面
+  goToLogin() {
+    wx.navigateTo({
+      url: '/pages/login/login'
+    });
+  },
+
+  // 跳转到个人页面
+  goToPersonal() {
+    wx.switchTab({
+      url: '/pages/personal/personal'
+    });
   },
 
   onPullDownRefresh() {
@@ -84,6 +117,8 @@ Page({
             avatar: this.getDisplayAvatar(user),
             nickname: user.username || '未设置昵称',
             age: user.age || '未知',
+            gender: user.gender || '未知',
+            distance: user.distance ? `${user.distance}km` : '',
             tag: user.tag || user.occupation || '暂无标签'
           }));
           console.log('Recommends formatted data:', formattedData);
@@ -123,7 +158,9 @@ Page({
             avatar: this.getDisplayAvatar(user),
             nickname: user.username || '未设置昵称',
             age: user.age || '未知',
-            city: user.city || user.location || '未知'
+            gender: user.gender || '未知',
+            city: user.city || user.location || '未知',
+            distance: user.distance ? `${user.distance}km` : ''
           }));
           console.log('Newcomers formatted data:', formattedData);
           this.setData({

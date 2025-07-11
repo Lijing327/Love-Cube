@@ -4,15 +4,81 @@ import areaList from "../../utils/area";
 // pages/index/index.js
 Page({
   data: {
-    banners: [],
+    // 添加默认轮播图
+    banners: [
+      {
+        id: 1,
+        imageUrl: '/images/心愿魔方.jpg',
+        title: '欢迎使用心愿魔方'
+      },
+      {
+        id: 2,
+        imageUrl: '/images/广告图.jpg', 
+        title: '填写资料开始匹配'
+      }
+    ],
     navItems: [
       { id: 1, type: 'square', icon: '/images/nav/square.png', text: '兴趣广场' },
       { id: 2, type: 'match', icon: '/images/nav/match.png', text: '速配' },
       { id: 3, type: 'date', icon: '/images/nav/date.png', text: '约会' },
       { id: 4, type: 'more', icon: '/images/nav/more.png', text: '更多' }
     ],
-    recommends: [],
-    newcomers: [],
+    // 添加虚拟推荐用户数据
+    recommends: [
+      {
+        id: 'demo_1',
+        userId: 'demo_1',
+        avatar: '/images/默认头像.jpg',
+        nickname: '小王',
+        age: 25,
+        gender: '女',
+        distance: '1.2km',
+        tag: '旅游爱好者'
+      },
+      {
+        id: 'demo_2', 
+        userId: 'demo_2',
+        avatar: '/images/默认头像.jpg',
+        nickname: '小李',
+        age: 28,
+        gender: '男',
+        distance: '2.5km',
+        tag: '音乐达人'
+      },
+      {
+        id: 'demo_3',
+        userId: 'demo_3', 
+        avatar: '/images/默认头像.jpg',
+        nickname: '小张',
+        age: 26,
+        gender: '女',
+        distance: '3.1km',
+        tag: '美食爱好者'
+      }
+    ],
+    // 添加虚拟新人数据
+    newcomers: [
+      {
+        id: 'newcomer_1',
+        userId: 'newcomer_1',
+        avatar: '/images/默认头像.jpg',
+        nickname: '小陈',
+        age: 24,
+        gender: '男',
+        city: '广州',
+        distance: '1.8km'
+      },
+      {
+        id: 'newcomer_2',
+        userId: 'newcomer_2', 
+        avatar: '/images/默认头像.jpg',
+        nickname: '小刘',
+        age: 27,
+        gender: '女',
+        city: '深圳',
+        distance: '2.3km'
+      }
+    ],
     isLoggedIn: false,
     userInfo: {},
     showFilterPopup: false,
@@ -80,11 +146,16 @@ Page({
     wx.request({
       url: config.baseUrl + '/banners',
       success: (res) => {
-        if (res.statusCode === 200) {
+        if (res.statusCode === 200 && res.data && res.data.length > 0) {
           this.setData({
             banners: res.data
           });
         }
+        // 如果后端没有数据，保持默认数据不变
+      },
+      fail: (err) => {
+        console.log('加载轮播图失败，使用默认数据:', err);
+        // 保持默认数据，不做任何操作
       }
     });
   },
@@ -104,7 +175,7 @@ Page({
       url: config.baseUrl + '/recommends',
       header: header,
       success: (res) => {
-        if (res.statusCode === 200) {
+        if (res.statusCode === 200 && res.data && res.data.length > 0) {
           console.log('Recommends raw data:', res.data);
           // 查看第一个用户的完整数据结构
           if (res.data.length > 0) {
@@ -126,6 +197,11 @@ Page({
             recommends: formattedData
           });
         }
+        // 如果没有数据，保持默认虚拟数据
+      },
+      fail: (err) => {
+        console.log('加载推荐用户失败，使用默认数据:', err);
+        // 保持默认虚拟数据，不做任何操作
       }
     });
   },
@@ -145,7 +221,7 @@ Page({
       url: config.baseUrl + '/newcomers',
       header: header,
       success: (res) => {
-        if (res.statusCode === 200) {
+        if (res.statusCode === 200 && res.data && res.data.length > 0) {
           console.log('Newcomers raw data:', res.data);
           // 查看第一个用户的完整数据结构
           if (res.data.length > 0) {
@@ -167,6 +243,11 @@ Page({
             newcomers: formattedData
           });
         }
+        // 如果没有数据，保持默认虚拟数据
+      },
+      fail: (err) => {
+        console.log('加载新人推荐失败，使用默认数据:', err);
+        // 保持默认虚拟数据，不做任何操作
       }
     });
   },
@@ -360,6 +441,24 @@ Page({
       return;
     }
     
+    // 检查是否为虚拟用户
+    if (userId.startsWith('demo_') || userId.startsWith('newcomer_')) {
+      wx.showModal({
+        title: '温馨提示',
+        content: '完善个人资料后即可查看更多真实用户信息',
+        confirmText: '去完善',
+        cancelText: '稍后再说',
+        success: (res) => {
+          if (res.confirm) {
+            wx.switchTab({
+              url: '/pages/personal/personal'
+            });
+          }
+        }
+      });
+      return;
+    }
+    
     const app = getApp();
     
     // 检查是否需要登录
@@ -435,6 +534,27 @@ Page({
   viewMoreNewcomers() {
     wx.navigateTo({
       url: '/pages/newcomers/newcomers'
+    });
+  },
+
+  // 跳转到注册/个人资料页面
+  goToRegister() {
+    const app = getApp();
+    if (!app.globalData.isLoggedIn) {
+      wx.navigateTo({
+        url: '/pages/login/login'
+      });
+    } else {
+      wx.switchTab({
+        url: '/pages/personal/personal'
+      });
+    }
+  },
+
+  // 跳转到匹配页面
+  goToMatch() {
+    wx.switchTab({
+      url: '/pages/match/match'
     });
   },
 

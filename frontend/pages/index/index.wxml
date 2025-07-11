@@ -98,6 +98,44 @@
     </view>
   </view>
 
+  <!-- 平台介绍 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">关于心愿魔方</text>
+    </view>
+    <view class="platform-intro">
+      <view class="intro-item">
+        <view class="intro-icon">🎯</view>
+        <view class="intro-content">
+          <text class="intro-title">智能匹配</text>
+          <text class="intro-desc">基于兴趣爱好和个人特质的精准匹配算法</text>
+        </view>
+      </view>
+      <view class="intro-item">
+        <view class="intro-icon">💬</view>
+        <view class="intro-content">
+          <text class="intro-title">安全聊天</text>
+          <text class="intro-desc">提供安全可靠的聊天环境，保护用户隐私</text>
+        </view>
+      </view>
+      <view class="intro-item">
+        <view class="intro-icon">🌟</view>
+        <view class="intro-content">
+          <text class="intro-title">真实资料</text>
+          <text class="intro-desc">严格审核用户资料，确保信息真实可靠</text>
+        </view>
+      </view>
+    </view>
+    <view class="action-buttons">
+      <view class="action-btn primary" bindtap="goToRegister">
+        <text>立即填写资料</text>
+      </view>
+      <view class="action-btn secondary" bindtap="goToMatch">
+        <text>看看谁匹配我</text>
+      </view>
+    </view>
+  </view>
+
   <!-- 筛选弹出层 -->
   <van-popup
     show="{{showFilterPopup}}"

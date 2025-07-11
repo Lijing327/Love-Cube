@@ -18,9 +18,9 @@ Page({
       }
     ],
     navItems: [
-      { id: 1, type: 'square', icon: '/images/nav/square.png', text: '兴趣广场' },
-      { id: 2, type: 'match', icon: '/images/nav/match.png', text: '速配' },
-      { id: 3, type: 'date', icon: '/images/nav/date.png', text: '约会' },
+      { id: 1, type: 'square', icon: '/images/nav/square.png', text: '动态广场' },
+      { id: 2, type: 'match', icon: '/images/nav/match.png', text: '推荐匹配' },
+      { id: 3, type: 'date', icon: '/images/nav/date.png', text: '活动' },
       { id: 4, type: 'more', icon: '/images/nav/more.png', text: '更多' }
     ],
     // 添加虚拟推荐用户数据
@@ -501,13 +501,13 @@ Page({
         wx.switchTab({ url: '/pages/match/match' });
         break;
       case 'date':
-        // 约会功能需要登录
+        // 活动功能需要登录
         if (app.checkLoginRequired()) {
-          const shouldLogin = await app.promptLogin("使用约会功能");
+          const shouldLogin = await app.promptLogin("使用活动功能");
           if (!shouldLogin) return;
           return;
         }
-        wx.showToast({ title: '约会功能即将上线', icon: 'none' });
+        wx.showToast({ title: '活动功能即将上线', icon: 'none' });
         break;
       case 'more':
         wx.showActionSheet({

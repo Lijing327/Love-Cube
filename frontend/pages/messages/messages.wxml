@@ -1,21 +1,52 @@
 <view class="container">
-  <!-- 消息列表 -->
-  <block wx:for="{{messages}}" wx:key="id">
-    <swiper class="swipe-item" data-id="{{item.id}}" catch:change="onSwipeChange">
-      <swiper-item>
-        <navigator url="/pages/chat/chat?userId={{item.id}}&username={{item.username}}&profile_photo={{item.avatar}}" class="message-item">
-          <image class="avatar" src="{{item.avatar}}" />
-          <view class="message-content">
-            <text class="username">{{item.username}}</text>
-            <text class="last-message">{{item.lastMessage}}</text>
-          </view>
-          <text class="time">{{item.time}}</text>
-        </navigator>
-      </swiper-item>
-      <swiper-item class="swipe-actions">
-        <button class="hide-btn" data-id="{{item.id}}" bindtap="hideMessage">隐藏</button>
-        <button class="delete-btn" data-id="{{item.id}}" bindtap="deleteMessage">删除</button>
-      </swiper-item>
-    </swiper>
-  </block>
+  <!-- 留言通知页面 -->
+  <view class="notification-header">
+    <text class="page-title">留言通知</text>
+    <button class="mark-read-btn" bindtap="markAllAsRead" wx:if="{{unreadCount > 0}}">
+      全部已读
+    </button>
+  </view>
+
+  <!-- 未读留言提示 -->
+  <view class="unread-notice" wx:if="{{unreadCount > 0}}">
+    <view class="notice-content">
+      <text class="notice-icon">💬</text>
+      <text class="notice-text">您有 {{unreadCount}} 条未读留言</text>
+    </view>
+  </view>
+
+  <!-- 我的留言墙入口 -->
+  <view class="message-wall-entry" bindtap="goToMyMessageWall">
+    <view class="entry-content">
+      <view class="entry-icon">
+        <text class="icon-text">📝</text>
+      </view>
+      <view class="entry-info">
+        <text class="entry-title">我的留言墙</text>
+        <text class="entry-desc">查看别人给我的留言</text>
+      </view>
+      <view class="entry-arrow">
+        <text class="arrow-icon">></text>
+        <text class="unread-badge" wx:if="{{unreadCount > 0}}">{{unreadCount}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能说明 -->
+  <view class="feature-notice">
+    <view class="notice-title">💡 留言功能说明</view>
+    <view class="notice-list">
+      <text class="notice-item">• 需要相互关注或喜欢后才能留言</text>
+      <text class="notice-item">• 留言会显示在对方的留言墙上</text>
+      <text class="notice-item">• 所有留言都是公开可见的</text>
+      <text class="notice-item">• 请文明留言，共建和谐社区</text>
+    </view>
+  </view>
+
+  <!-- 空状态提示 -->
+  <view class="empty-state" wx:if="{{unreadCount === 0}}">
+    <image class="empty-icon" src="/images/empty-messages.png" mode="aspectFit" />
+    <text class="empty-text">暂无新留言</text>
+    <text class="empty-sub-text">去给喜欢的人留言吧！</text>
+  </view>
 </view>

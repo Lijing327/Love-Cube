@@ -93,9 +93,10 @@
         binderror="handleImageError" 
         data-type="success-image"
       />
-      <text class="success-text">话题互动成功！</text>
+      <text class="success-text">相互关注成功！</text>
+      <text class="success-sub-text">现在可以在Ta的资料页给Ta留言了</text>
       <view class="success-actions">
-        <button class="chat-btn" bindtap="goToChat">开始互动</button>
+        <button class="profile-btn" bindtap="goToProfile">查看资料</button>
         <button class="close-btn" bindtap="closeMatchSuccess">关闭</button>
       </view>
     </view>

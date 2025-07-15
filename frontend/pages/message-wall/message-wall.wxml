@@ -1,0 +1,82 @@
+<view class="container">
+  <!-- 顶部导航 -->
+  <view class="safe-area-top"></view>
+  <view class="header">
+    <view class="header-content">
+      <view class="back-btn" bindtap="handleBack">
+        <text class="cuIcon-back"></text>
+      </view>
+      <view class="user-info">
+        <image 
+          class="user-avatar" 
+          src="{{avatar}}" 
+          binderror="handleImageError" 
+          data-type="avatar"
+          mode="aspectFill"
+        />
+        <view class="user-detail">
+          <text class="username">{{username}}</text>
+          <text class="user-status">留言墙</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 留言墙内容 -->
+  <scroll-view class="message-wall-content" scroll-y="true">
+    <!-- 留言权限提示 -->
+    <view class="permission-notice" wx:if="{{!canLeaveMessage}}">
+      <text class="notice-text">需要相互关注后才能留言</text>
+      <text class="notice-sub">先去给Ta点个赞吧！</text>
+    </view>
+
+    <!-- 留言列表 -->
+    <view class="message-list" wx:if="{{messages.length > 0}}">
+      <view class="message-item" wx:for="{{messages}}" wx:key="id">
+        <image 
+          class="message-avatar" 
+          src="{{item.senderAvatar}}" 
+          binderror="handleImageError"
+          data-type="message-avatar"
+          data-index="{{index}}"
+          mode="aspectFill"
+        />
+        <view class="message-content">
+          <view class="message-header">
+            <text class="sender-name">{{item.senderName}}</text>
+            <text class="message-time">{{item.createdAt}}</text>
+          </view>
+          <text class="message-text">{{item.content}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{messages.length === 0}}">
+      <image class="empty-icon" src="/images/empty-messages.png" mode="aspectFit" />
+      <text class="empty-text">暂无留言</text>
+      <text class="empty-sub-text" wx:if="{{canLeaveMessage}}">快来留下第一条留言吧！</text>
+    </view>
+  </scroll-view>
+
+  <!-- 留言输入区域 -->
+  <view class="message-input-area" wx:if="{{canLeaveMessage}}">
+    <view class="input-container">
+      <input 
+        class="message-input" 
+        placeholder="写下你的留言..."
+        value="{{inputText}}"
+        bindinput="onInputChange"
+        maxlength="200"
+        cursor-spacing="10"
+      />
+      <button 
+        class="send-btn {{inputText.length > 0 ? 'active' : ''}}" 
+        bindtap="sendMessage"
+        disabled="{{inputText.length === 0}}"
+      >
+        发送
+      </button>
+    </view>
+  </view>
+</view> 

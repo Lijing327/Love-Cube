@@ -2,7 +2,6 @@ const GLOBAL_CONFIG = require("../global-config");
 
 const config = {
   baseUrl: GLOBAL_CONFIG.urls.baseUrl,
-  wsBaseUrl: GLOBAL_CONFIG.urls.wsBaseUrl,
   version: '1.0.0',
   
   // 上传相关配置
@@ -15,11 +14,7 @@ const config = {
   // 默认配置
   defaults: {
     avatar: '/images/default-avatar.svg',
-    pageSize: 10,
-    wsReconnectInterval: 3000, // WebSocket重连间隔（毫秒）
-    wsHeartbeatInterval: 30000, // WebSocket心跳间隔（毫秒）
-    wsMaxReconnectAttempts: 5, // 最大重连次数
-    wsPath: '/ws/chat' // WebSocket 路径
+    pageSize: 10
   },
 
   // 图片处理配置

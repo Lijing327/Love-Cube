@@ -12,7 +12,6 @@ const GLOBAL_CONFIG = {
     const { ip, port, basePath } = this.server;
     return {
       baseUrl: `http://${ip}:${port}${basePath}/api`,
-      wsBaseUrl: `ws://${ip}:${port}${basePath}`,
       imageBaseUrl: `http://${ip}:${port}${basePath}`,
       uploadImageUrl: `http://${ip}:${port}${basePath}/api/upload/image`,
       uploadsPath: `http://${ip}:${port}${basePath}/uploads`,

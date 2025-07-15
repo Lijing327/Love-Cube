@@ -1,130 +1,173 @@
-/* 页面整体样式 */
+﻿/* 留言通知页面样式 */
 .container {
-  display: flex;
-  flex-direction: column;
-  background-color: #f8f8f8;
+  padding: 20rpx;
+  background-color: #f5f5f5;
   min-height: 100vh;
-  padding-bottom: 50px; /* 预留底部导航栏位置 */
 }
 
-/* 头部标题 */
-.header {
-  width: 100%;
-  text-align: center;
-  padding: 15px 0;
-  background: white;
-  font-size: 18px;
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx 0;
+  margin-bottom: 20rpx;
+}
+
+.page-title {
+  font-size: 36rpx;
   font-weight: bold;
   color: #333;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* 消息列表 */
-.message-list {
-  width: 100%;
-  background: white;
-  margin-top: 10px;
+.mark-read-btn {
+  background-color: #ff4d6a;
+  color: #fff;
+  padding: 10rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  border: none;
 }
 
-/* 单个消息项 */
-.message-item {
+.unread-notice {
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.notice-content {
   display: flex;
   align-items: center;
-  padding: 15px;
-  border-bottom: 1px solid #f0f0f0;
 }
 
-/* 头像 */
-.avatar {
-  width: 50px;
-  height: 50px;
+.notice-icon {
+  font-size: 40rpx;
+  margin-right: 20rpx;
+}
+
+.notice-text {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.message-wall-entry {
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.entry-content {
+  display: flex;
+  align-items: center;
+}
+
+.entry-icon {
+  width: 80rpx;
+  height: 80rpx;
+  background-color: #f0f0f0;
   border-radius: 50%;
-  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
 }
 
-/* 消息内容 */
-.message-content {
+.icon-text {
+  font-size: 32rpx;
+}
+
+.entry-info {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-.username {
-  font-size: 16px;
+.entry-title {
+  font-size: 28rpx;
   font-weight: bold;
   color: #333;
+  margin-bottom: 8rpx;
 }
 
-.last-message {
-  font-size: 14px;
-  color: #999;
-  margin-top: 5px;
-}
-
-/* 时间显示 */
-.time {
-  font-size: 12px;
-  color: #bbb;
-}
-
-
-.swipe-item {
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #eee;
-  overflow: hidden;
-}
-
-.message-item {
-  display: flex;
-  align-items: center;
-  padding: 15px;
-  width: 100%;
-  background: white;
-}
-
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-.message-content {
-  flex: 1;
-}
-
-.username {
-  font-weight: bold;
-}
-
-.last-message {
+.entry-desc {
+  font-size: 24rpx;
   color: #666;
-  font-size: 12px;
 }
 
-.time {
-  font-size: 12px;
+.entry-arrow {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.arrow-icon {
+  font-size: 24rpx;
   color: #999;
 }
 
-.swipe-actions {
+.unread-badge {
+  position: absolute;
+  top: -10rpx;
+  right: -10rpx;
+  background-color: #ff4d6a;
+  color: #fff;
+  font-size: 20rpx;
+  padding: 4rpx 8rpx;
+  border-radius: 20rpx;
+  min-width: 30rpx;
+  text-align: center;
+}
+
+.feature-notice {
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.notice-title {
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.notice-list {
   display: flex;
-  align-items: center;
-  justify-content: space-around;
-  background: #fff;
+  flex-direction: column;
 }
 
-.hide-btn {
-  background-color: #f0ad4e;
-  color: white;
-  border-radius: 5px;
-  padding: 10px;
+.notice-item {
+  font-size: 24rpx;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 10rpx;
 }
 
-.delete-btn {
-  background-color: #d9534f;
-  color: white;
-  border-radius: 5px;
-  padding: 10px;
+.empty-state {
+  text-align: center;
+  padding: 100rpx 0;
+}
+
+.empty-icon {
+  width: 120rpx;
+  height: 120rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.empty-sub-text {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
 }

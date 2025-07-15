@@ -380,13 +380,20 @@ Page({
     });
   },
 
-  goToChat() {
+  goToProfile() {
     const userId = this.data.matchedUserId;
     this.setData({
       showMatchSuccess: false
     });
     wx.navigateTo({
-      url: `/pages/chat/chat?id=${userId}&type=single`
+      url: `/pages/user-profile/user-profile?id=${userId}`,
+      fail: function(err) {
+        console.error('Navigation failed:', err);
+        wx.showToast({
+          title: '页面跳转失败',
+          icon: 'none'
+        });
+      }
     });
   },
 

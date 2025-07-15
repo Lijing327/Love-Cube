@@ -146,17 +146,48 @@ Page({
     });
   },
 
-  // 开始留言互动
-  onChat() {
+  // 留言
+  onMessage() {
     const { userId } = this.data;
     const { nickname, avatar } = this.data.userInfo;
     
     wx.navigateTo({
-      url: `/pages/chat/chat?targetId=${userId}&username=${encodeURIComponent(nickname)}&profile_photo=${encodeURIComponent(avatar)}`,
+      url: `/pages/message-wall/message-wall?targetId=${userId}&username=${encodeURIComponent(nickname)}&profile_photo=${encodeURIComponent(avatar)}`,
       fail: (err) => {
-        console.error('导航到聊天页面失败:', err);
+        console.error('导航到留言墙页面失败:', err);
         wx.showToast({
-          title: '打开聊天失败',
+          title: '打开留言墙失败',
+          icon: 'none'
+        });
+      }
+    });
+  },
+
+  // 关注
+  onFollow() {
+    wx.request({
+      url: `${config.baseUrl}/user-interactions/follow/${this.data.userId}`,
+      method: 'POST',
+      header: {
+        'Authorization': 'Bearer ' + wx.getStorageSync('token')
+      },
+      success: (res) => {
+        if (res.statusCode === 200) {
+          wx.showToast({
+            title: '关注成功',
+            icon: 'success'
+          });
+        } else {
+          wx.showToast({
+            title: res.data?.message || '关注失败',
+            icon: 'none'
+          });
+        }
+      },
+      fail: (err) => {
+        console.error('关注失败:', err);
+        wx.showToast({
+          title: '关注失败',
           icon: 'none'
         });
       }

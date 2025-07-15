@@ -103,11 +103,15 @@
     <view class="action-buttons">
       <button class="action-btn like-btn" bindtap="onLike">
         <van-icon name="like-o" size="40rpx" />
-        <text>喜欢</text>
+        <text>点赞</text>
       </button>
-      <button class="action-btn chat-btn" bindtap="onChat">
-        <van-icon name="chat-o" size="40rpx" />
-        <text>留言互动</text>
+      <button class="action-btn message-btn" bindtap="onMessage">
+        <van-icon name="edit" size="40rpx" />
+        <text>留言</text>
+      </button>
+      <button class="action-btn follow-btn" bindtap="onFollow">
+        <van-icon name="star-o" size="40rpx" />
+        <text>关注Ta</text>
       </button>
     </view>
   </view>

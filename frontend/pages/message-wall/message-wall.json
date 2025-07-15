@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "留言墙",
+  "navigationStyle": "custom",
+  "backgroundColor": "#f5f5f5",
+  "backgroundTextStyle": "dark",
+  "enablePullDownRefresh": false,
+  "onReachBottomDistance": 50
+} 

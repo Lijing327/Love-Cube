@@ -248,6 +248,22 @@ public class UserInteractionService {
     }
     
     /**
+     * 检查两个用户是否相互关注或者相互喜欢
+     */
+    public boolean areMutuallyInteracted(Long userId1, Long userId2) {
+        // 检查是否相互关注
+        boolean user1FollowsUser2 = isFollowing(userId1, userId2);
+        boolean user2FollowsUser1 = isFollowing(userId2, userId1);
+        
+        // 检查是否相互点赞
+        boolean user1LikesUser2 = isLiked(userId1, userId2, userId2);
+        boolean user2LikesUser1 = isLiked(userId2, userId1, userId1);
+        
+        // 如果相互关注或者相互点赞，就可以留言
+        return (user1FollowsUser2 && user2FollowsUser1) || (user1LikesUser2 && user2LikesUser1);
+    }
+
+    /**
      * 获取互动类型的文本描述
      */
     private String getActionText(UserInteraction.InteractionType type) {

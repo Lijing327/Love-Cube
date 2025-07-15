@@ -1,73 +1,107 @@
 import config from "../../utils/config";
-import { getUserId } from "../utils/auth";
 
 Page({
   data: {
-    messages: []
+    notifications: [], // 改为通知列表
+    unreadCount: 0
   },
 
   onLoad() {
-    let userId = getUserId();
-    if (!userId) {
-      console.warn("⚠️ userId 不存在，跳转登录页");
-      wx.redirectTo({ url: "/pages/login/login" });
-      return;
-    }
-    console.log("📩 请求聊天列表，用户ID:", userId);
+    this.loadNotifications();
+    this.loadUnreadCount();
+  },
 
+  onShow() {
+    this.loadNotifications();
+    this.loadUnreadCount();
+  },
+
+  // 加载留言通知
+  loadNotifications() {
     wx.request({
-      url: `${config.baseUrl}/chat/partners/${userId}`,
+      url: `${config.baseUrl}/message-wall/unread-count`,
       method: "GET",
+      header: {
+        'Authorization': 'Bearer ' + wx.getStorageSync('token')
+      },
       success: (res) => {
-        console.log("✅ 消息列表加载成功: ", res.data);
-        if (Array.isArray(res.data) && res.data.length > 0) {
-          let messages = res.data.map(item => ({
-            id: item.id, // ID
-            avatar: item.avatar, // 头像
-            username: item.username || "未知用户", // 用户名
-            lastMessage: item.lastMessage||"暂无聊天记录",
-            time: item.time || "刚刚" // 真实时间
-          }));
-          this.setData({ messages });
-        } else {
-          console.warn("⚠️ 消息列表为空");
-          wx.showToast({ title: "暂无聊天记录", icon: "none" });
+        console.log("✅ 留言通知加载成功: ", res.data);
+        if (res.data && res.data.success) {
+          // 这里简化处理，实际应该获取详细的通知列表
+          this.setData({ unreadCount: res.data.data || 0 });
         }
       },
       fail: (err) => {
-        console.error("❌ 获取消息列表失败: ", err);
+        console.error("❌ 获取留言通知失败: ", err);
       }
     });
   },
 
-  onSwipeChange(e) {
-    console.log("滑动事件:", e);
-  },
-
-
-  // 隐藏消息（不删除，只是隐藏）
-  hideMessage(e) {
-    let id = e.currentTarget.dataset.id;
-    let messages = this.data.messages.map(msg => {
-      if (msg.id === id) msg.hidden = true;
-      return msg;
-    });
-    this.setData({ messages });
-  },
-
-  // 删除消息（从数据库删除）
-  deleteMessage(e) {
-    let id = e.currentTarget.dataset.id;
+  // 加载未读留言数量
+  loadUnreadCount() {
     wx.request({
-      url: `${config.baseUrl}/chat/delete/${id}`,
-      method: "DELETE",
-      success(res) {
-        console.log("✅ 聊天对话删除成功");
-        let messages = this.data.messages.filter(msg => msg.id !== id);
-        this.setData({ messages });
+      url: `${config.baseUrl}/message-wall/unread-count`,
+      method: "GET",
+      header: {
+        'Authorization': 'Bearer ' + wx.getStorageSync('token')
       },
-      fail(err) {
-        console.error("❌ 删除聊天失败: ", err);
+      success: (res) => {
+        if (res.data && res.data.success) {
+          this.setData({ unreadCount: res.data.data || 0 });
+        }
+      },
+      fail: (err) => {
+        console.error("❌ 获取未读留言数量失败: ", err);
+      }
+    });
+  },
+
+  // 标记所有留言为已读
+  markAllAsRead() {
+    wx.request({
+      url: `${config.baseUrl}/message-wall/mark-all-read`,
+      method: "POST",
+      header: {
+        'Authorization': 'Bearer ' + wx.getStorageSync('token')
+      },
+      success: (res) => {
+        if (res.data && res.data.success) {
+          wx.showToast({
+            title: '已标记为已读',
+            icon: 'success'
+          });
+          this.setData({ unreadCount: 0 });
+        }
+      },
+      fail: (err) => {
+        console.error("❌ 标记已读失败: ", err);
+        wx.showToast({
+          title: '操作失败',
+          icon: 'none'
+        });
+      }
+    });
+  },
+
+  // 跳转到我的留言墙
+  goToMyMessageWall() {
+    const currentUserId = wx.getStorageSync('userId');
+    if (!currentUserId) {
+      wx.showToast({
+        title: '请先登录',
+        icon: 'none'
+      });
+      return;
+    }
+    
+    wx.navigateTo({
+      url: `/pages/message-wall/message-wall?targetId=${currentUserId}&username=${encodeURIComponent('我的留言墙')}&profile_photo=${encodeURIComponent('')}`,
+      fail: (err) => {
+        console.error('跳转失败:', err);
+        wx.showToast({
+          title: '跳转失败',
+          icon: 'none'
+        });
       }
     });
   }

@@ -3,17 +3,16 @@
     "pages/index/index",
     "pages/login/login", 
     "pages/welcome/welcome",
-    "pages/message/message",
+    "pages/messages/messages",
+    "pages/message-wall/message-wall",
     "pages/match/match",
     "pages/profile/profile",
     "pages/personal/personal",
-    "pages/chat/chat",
     "pages/dynamic/dynamic",
     "pages/search/search",
     "pages/newcomers/newcomers",
     "pages/gift/detail",
     "pages/gift/send",
-    "pages/chat/create-group",
     "pages/contact/add-friend",
     "pages/user-profile/user-profile"
   ],
@@ -49,7 +48,7 @@
         "selectedIconPath": "images/icons/match_active.png"
       },
       {
-        "pagePath": "pages/message/message",
+        "pagePath": "pages/messages/messages",
         "text": "消息",
         "iconPath": "images/icons/messages.png",
         "selectedIconPath": "images/icons/messages_active.png"

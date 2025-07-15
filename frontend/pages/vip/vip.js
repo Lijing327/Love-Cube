@@ -9,7 +9,7 @@ Page({
     vipStatus: "未开通 VIP",
     benefits: [
       { icon: "fire", text: "优先推荐匹配" },
-      { icon: "chat-o", text: "无限制留言互动" },
+      { icon: "chat-o", text: "无限制留言墙互动" },
       { icon: "eye-o", text: "查看访客" },
       { icon: "gold-coin-o", text: "尊贵身份标识" },
     ],

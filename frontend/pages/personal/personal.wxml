@@ -20,7 +20,7 @@
           </view>
           <view class="benefit-item">
             <van-icon name="friends-o" size="16" color="#ff4d6a" />
-            <text>智能匹配推荐</text>
+            <text>智能推荐系统</text>
           </view>
         </view>
         <van-button type="primary" color="#ff4d6a" bind:click="goToLogin">立即登录</van-button>
@@ -133,7 +133,7 @@
           </view>
           <view class="stat-info">
             <text class="stat-number">{{userInfo.statistics.newMatches || 0}}</text>
-            <text class="stat-label">新增匹配</text>
+            <text class="stat-label">新增推荐</text>
           </view>
         </view>
       </view>

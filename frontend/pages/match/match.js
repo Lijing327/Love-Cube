@@ -23,7 +23,7 @@ Page({
       { id: 3, text: '年收入20w+', selected: false },
       { id: 4, text: '名校毕业', selected: false },
       { id: 5, text: '海外经历', selected: false },
-      { id: 6, text: '单身', selected: false }
+      { id: 6, text: '兴趣爱好', selected: false }
     ],
     matchedUserId: null,
     touchStartX: 0,

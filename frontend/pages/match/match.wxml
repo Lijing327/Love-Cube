@@ -51,7 +51,7 @@
         binderror="handleImageError"
         data-type="empty-image"
       />
-      <text>暂无更多用户</text>
+      <text>暂无更多推荐</text>
     </view>
   </view>
 
@@ -84,7 +84,7 @@
     </view>
   </van-popup>
 
-  <!-- 匹配成功弹窗 -->
+  <!-- 推荐成功弹窗 -->
   <view class="match-success-popup" wx:if="{{showMatchSuccess}}">
     <view class="match-success-content">
       <image 
@@ -93,8 +93,8 @@
         binderror="handleImageError" 
         data-type="success-image"
       />
-      <text class="success-text">相互关注成功！</text>
-      <text class="success-sub-text">现在可以在Ta的资料页给Ta留言了</text>
+      <text class="success-text">推荐成功！</text>
+      <text class="success-sub-text">现在可以查看Ta的资料了</text>
       <view class="success-actions">
         <button class="profile-btn" bindtap="goToProfile">查看资料</button>
         <button class="close-btn" bindtap="closeMatchSuccess">关闭</button>

@@ -14,12 +14,12 @@ Page({
       {
         id: 2,
         imageUrl: '/images/广告图.jpg', 
-        title: '填写资料开始匹配'
+        title: '填写资料开始推荐'
       }
     ],
     navItems: [
       { id: 1, type: 'square', icon: '/images/nav/square.png', text: '动态广场' },
-      { id: 2, type: 'match', icon: '/images/nav/match.png', text: '推荐匹配' },
+      { id: 2, type: 'match', icon: '/images/nav/match.png', text: '智能推荐' },
       { id: 3, type: 'date', icon: '/images/nav/date.png', text: '活动' },
       { id: 4, type: 'more', icon: '/images/nav/more.png', text: '更多' }
     ],
@@ -492,9 +492,9 @@ Page({
         wx.switchTab({ url: '/pages/dynamic/dynamic' }); // 跳转到动态页面
         break;
       case 'match':
-        // 匹配功能需要登录
+        // 推荐功能需要登录
         if (app.checkLoginRequired()) {
-          const shouldLogin = await app.promptLogin("使用匹配功能");
+          const shouldLogin = await app.promptLogin("使用推荐功能");
           if (!shouldLogin) return;
           return;
         }
@@ -551,7 +551,7 @@ Page({
     }
   },
 
-  // 跳转到匹配页面
+  // 跳转到推荐页面
   goToMatch() {
     wx.switchTab({
       url: '/pages/match/match'

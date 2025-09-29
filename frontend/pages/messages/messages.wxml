@@ -43,8 +43,27 @@
     </view>
   </view>
 
+  <!-- 消息列表 -->
+  <view class="message-list" wx:if="{{notifications.length > 0}}">
+    <view class="message-item" wx:for="{{notifications}}" wx:key="id">
+      <view class="message-header">
+        <image class="message-avatar" src="{{item.userInfo.avatar}}" mode="aspectFill" />
+        <view class="message-user-info">
+          <text class="message-username">{{item.userInfo.nickname}}</text>
+          <text class="message-time">{{item.createTime}}</text>
+        </view>
+        <view class="unread-dot" wx:if="{{!item.isRead}}"></view>
+      </view>
+      <view class="message-content">{{item.content}}</view>
+      <view class="message-actions">
+        <button class="message-action-btn" bindtap="replyMessage" data-id="{{item.id}}">回复</button>
+        <button class="message-action-btn" bindtap="markAsRead" data-id="{{item.id}}" wx:if="{{!item.isRead}}">标记已读</button>
+      </view>
+    </view>
+  </view>
+
   <!-- 空状态提示 -->
-  <view class="empty-state" wx:if="{{unreadCount === 0}}">
+  <view class="empty-state" wx:if="{{notifications.length === 0}}">
     <image class="empty-icon" src="/images/empty-messages.png" mode="aspectFit" />
     <text class="empty-text">暂无新留言</text>
     <text class="empty-sub-text">去给喜欢的人留言吧！</text>

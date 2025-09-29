@@ -107,8 +107,8 @@
       <view class="intro-item">
         <view class="intro-icon">🎯</view>
         <view class="intro-content">
-          <text class="intro-title">智能匹配</text>
-          <text class="intro-desc">基于兴趣爱好和个人特质的精准匹配算法</text>
+          <text class="intro-title">智能推荐</text>
+          <text class="intro-desc">基于兴趣爱好和个人特质的精准推荐算法</text>
         </view>
       </view>
       <view class="intro-item">
@@ -131,7 +131,7 @@
         <text>立即填写资料</text>
       </view>
       <view class="action-btn secondary" bindtap="goToMatch">
-        <text>看看谁匹配我</text>
+        <text>看看推荐用户</text>
       </view>
     </view>
   </view>

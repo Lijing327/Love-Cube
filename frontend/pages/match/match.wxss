@@ -36,7 +36,7 @@
   transform: translateY(-50%);
 }
 
-/* 匹配区域 */
+/* 推荐区域 */
 .match-area {
   margin-top: calc(44px + var(--status-bar-height));
   padding: 20rpx;
@@ -168,7 +168,7 @@
   gap: 20rpx;
 }
 
-/* 匹配成功弹窗 */
+/* 推荐成功弹窗 */
 .match-success-popup {
   position: fixed;
   top: 0;

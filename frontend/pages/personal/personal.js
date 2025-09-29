@@ -385,7 +385,7 @@ Page({
   showAbout() {
     wx.showModal({
       title: '关于我们',
-      content: '恋爱魔方 v' + config.version + '\n让每个人都能找到心仪的另一半',
+      content: '心愿魔方 v' + config.version + '\n让每个人都能分享生活的美好',
       showCancel: false
     });
   },
@@ -453,7 +453,7 @@ Page({
   showAboutDialog() {
     Dialog.alert({
       title: '关于我们',
-      message: '心愿魔方致力于为用户提供优质的社交服务。\n客服电话：400-123-4567\n版本号：1.0.0',
+      message: '心愿魔方致力于为用户提供优质的生活分享服务。\n客服电话：400-123-4567\n版本号：1.0.0',
     });
   },
 

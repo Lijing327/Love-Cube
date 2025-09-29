@@ -2,7 +2,78 @@ import config from "../../utils/config";
 
 Page({
   data: {
-    dynamicList: [],
+    dynamicList: [
+      {
+        id: 1,
+        content: '欢迎来到心愿魔方！在这里你可以分享生活点滴，记录美好时光。',
+        userInfo: {
+          nickname: '心愿魔方官方',
+          avatar: '/images/default-avatar.svg'
+        },
+        createTime: '刚刚',
+        images: ['/images/心愿魔方.jpg'],
+        likeCount: 15,
+        commentCount: 3,
+        isLiked: false,
+        topComments: [
+          {
+            id: 1,
+            content: '很棒的平台！',
+            userInfo: { nickname: '用户A' }
+          },
+          {
+            id: 2,
+            content: '期待更多功能',
+            userInfo: { nickname: '用户B' }
+          }
+        ]
+      },
+      {
+        id: 2,
+        content: '今天天气真好，适合出去走走。大家有什么推荐的地方吗？',
+        userInfo: {
+          nickname: '小明',
+          avatar: '/images/default-avatar.svg'
+        },
+        createTime: '2小时前',
+        images: [],
+        likeCount: 8,
+        commentCount: 5,
+        isLiked: true,
+        topComments: [
+          {
+            id: 3,
+            content: '公园不错哦',
+            userInfo: { nickname: '小红' }
+          }
+        ]
+      },
+      {
+        id: 3,
+        content: '分享一张美食照片，这家餐厅的味道真的很棒！',
+        userInfo: {
+          nickname: '美食达人',
+          avatar: '/images/default-avatar.svg'
+        },
+        createTime: '5小时前',
+        images: ['/images/广告图.jpg'],
+        likeCount: 22,
+        commentCount: 7,
+        isLiked: false,
+        topComments: [
+          {
+            id: 4,
+            content: '看起来很好吃！',
+            userInfo: { nickname: '吃货小王' }
+          },
+          {
+            id: 5,
+            content: '求地址',
+            userInfo: { nickname: '美食爱好者' }
+          }
+        ]
+      }
+    ],
     pageNum: 1,
     pageSize: 10,
     isLoading: false,
@@ -20,6 +91,7 @@ Page({
   },
 
   onLoad() {
+    // 先显示示例内容，然后尝试加载真实数据
     this.loadDynamicList();
   },
 
@@ -31,37 +103,51 @@ Page({
 
     this.setData({ isLoading: true });
 
-    wx.request({
-      url: config.baseUrl + '/dynamics',
-      method: 'GET',
-      data: {
-        pageNum,
-        pageSize: this.data.pageSize
-      },
-      header: {
-        Authorization: "Bearer " + wx.getStorageSync("token")
-      },
-      success: (res) => {
-        if (res.statusCode === 200) {
-          const newList = res.data.list.map(item => ({
-            ...item,
-            createTime: this.formatTime(item.createTime)
-          }));
+    // 模拟网络请求延迟
+    setTimeout(() => {
+      // 如果有真实数据，使用真实数据；否则保持示例数据
+      const token = wx.getStorageSync("token");
+      if (token && config.baseUrl) {
+        wx.request({
+          url: config.baseUrl + '/dynamics',
+          method: 'GET',
+          data: {
+            pageNum,
+            pageSize: this.data.pageSize
+          },
+          header: {
+            Authorization: "Bearer " + token
+          },
+          success: (res) => {
+            if (res.statusCode === 200 && res.data && res.data.list) {
+              const newList = res.data.list.map(item => ({
+                ...item,
+                createTime: this.formatTime(item.createTime)
+              }));
 
-          this.setData({
-            dynamicList: refresh ? newList : [...this.data.dynamicList, ...newList],
-            pageNum: refresh ? 2 : this.data.pageNum + 1,
-            noMore: newList.length < this.data.pageSize
-          });
-        }
-      },
-      complete: () => {
+              this.setData({
+                dynamicList: refresh ? newList : [...this.data.dynamicList, ...newList],
+                pageNum: refresh ? 2 : this.data.pageNum + 1,
+                noMore: newList.length < this.data.pageSize
+              });
+            }
+          },
+          complete: () => {
+            this.setData({ 
+              isLoading: false,
+              isRefreshing: false
+            });
+          }
+        });
+      } else {
+        // 没有真实数据时，保持示例数据
         this.setData({ 
           isLoading: false,
-          isRefreshing: false
+          isRefreshing: false,
+          noMore: true
         });
       }
-    });
+    }, 500);
   },
 
   // 下拉刷新

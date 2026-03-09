@@ -1,9 +1,122 @@
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*~
+.DS_Store
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
 # 微信小程序相关
 frontend/.DS_Store
 frontend/miniprogram_npm/
 frontend/node_modules/
+frontend/package-lock.json
+frontend/yarn.lock
 
 # Java 后端相关
 backend/target/
 backend/.idea/
 backend/*.iml
+backend/**/*.iml
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/bin/
+backend/out/
+
+# Maven
+.m2/
+*.jar
+*.war
+*.ear
+
+# Gradle
+.gradle
+build/
+gradle/
+
+# Database
+*.sql~
+*.sql.bak
+.mysql_history
+
+# 日志
+logs/
+*.log
+*.log.*
+
+# 上传文件（不提交用户上传的文件）
+backend/uploads/
+uploads/
+
+# 环境配置文件（包含敏感信息）
+backend/src/main/resources/application-local.yml
+backend/src/main/resources/application-prod.yml
+.env
+.env.local
+.env.*.local
+
+# 临时文件
+temp/
+tmp/
+*.tmp
+*.bak
+
+# OS 相关
+Thumbs.db
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# 小程序构建文件
+frontend/miniprogram_npm/
+frontend/.miniprogram_npm/
+frontend/dist/
+
+# Node 相关（如果前端使用 npm）
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 依赖锁定文件（可选）
+# package-lock.json
+# yarn.lock
+# pom.xml.bak
+
+# 配置密钥（绝不提交！）
+*.key
+*.keystore
+*.p12
+*.pfx
+*.pem
+secrets/
+
+# 构建输出
+dist/
+build/
+target/
+out/
+
+# 文档生成
+docs/generated/
+javadoc/
+
+# 测试覆盖率
+coverage/
+.nyc_output/
+lcov.info
+
+# 其他临时文件
+*.pid
+*.seed
+*.pid.lock
